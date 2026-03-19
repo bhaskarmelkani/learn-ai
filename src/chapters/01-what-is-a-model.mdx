@@ -1,0 +1,59 @@
+---
+title: "What Is a Model?"
+chapter: 1
+subtitle: "The foundation of everything in AI"
+---
+
+# What Is a Model?
+
+A **model** is just a function that maps inputs to outputs.
+
+$$y = f(x)$$
+
+That's it. Every AI system — from a spam filter to ChatGPT — is a function that takes some input and produces a prediction.
+
+## Everyday Examples
+
+| Input $x$ | Output $y$ | Model |
+|-----------|-----------|-------|
+| House features (sqft, beds, location) | Price ($) | Real estate pricing |
+| Email text | Spam or Not Spam | Spam filter |
+| Photo pixels | "Cat" or "Dog" | Image classifier |
+| Sequence of words | Next word | Language model (GPT) |
+
+## Why "Model"?
+
+The word "model" means the same thing it does in everyday life — a **simplified representation** of something real.
+
+A weather model doesn't recreate the atmosphere. It captures enough patterns to make useful predictions.
+
+> An AI model captures patterns in data to make predictions about new, unseen inputs.
+
+## The Two Key Questions
+
+Every model is defined by two questions:
+
+1. **What is the function's shape?** (architecture)
+2. **What are the function's numbers?** (parameters)
+
+The rest of this session is about answering those two questions — starting simple and building up to neural networks and LLMs.
+
+<Callout type="idea">
+If you understand that a model is a function with tunable numbers, you already have the core intuition for all of AI.
+</Callout>
+
+## What Does "Learning" Mean?
+
+**Learning = finding the right numbers (parameters) for your function.**
+
+We don't hand-code the answer. Instead:
+
+1. Start with a function shape (e.g., $y = wx + b$)
+2. Show it many examples of input → output
+3. Let an algorithm adjust $w$ and $b$ until the function fits the data
+
+This process is called **training**. The data drives the learning.
+
+<Callout type="analogy">
+Think of it like tuning a guitar. The shape of the guitar is fixed (architecture), but you adjust the tuning pegs (parameters) until it sounds right (fits the data).
+</Callout>

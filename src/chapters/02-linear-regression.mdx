@@ -1,0 +1,126 @@
+---
+title: "Linear Regression"
+chapter: 2
+subtitle: "The simplest model that actually works"
+---
+
+# Linear Regression
+
+The simplest useful model is a straight line:
+
+$$y = wx + b$$
+
+Where:
+- $x$ = input (e.g., house size in sqft)
+- $y$ = output prediction (e.g., price)
+- $w$ = **weight** (slope — how much $x$ affects $y$)
+- $b$ = **bias** (intercept — the baseline)
+
+<Callout type="idea">
+The weight and bias are the **parameters** — the tunable numbers that the model learns from data.
+</Callout>
+
+## Try It: Fit a Line
+
+Drag the sliders to adjust **w** (slope) and **b** (intercept). Try to minimize the loss by fitting the line to the data points.
+
+<LinearRegressionDemo />
+
+## A Concrete Example
+
+Predicting house prices from square footage:
+
+| Sqft ($x$) | Actual Price ($y$) |
+|-----------|-------------------|
+| 1000 | 200,000 |
+| 1500 | 280,000 |
+| 2000 | 350,000 |
+| 2500 | 420,000 |
+
+If we set $w = 150$ and $b = 50000$:
+
+$$y = 150x + 50000$$
+
+For a 1500 sqft house: $y = 150(1500) + 50000 = 275000$
+
+Close to the actual 280,000! But not perfect. How do we measure "not perfect"?
+
+## Loss: Measuring How Wrong We Are
+
+The **loss function** tells us how far off our predictions are:
+
+$$\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
+
+- $y_i$ = actual value
+- $\hat{y}_i$ = our prediction
+- We square the errors so negatives don't cancel positives
+
+**Lower loss = better model.**
+
+## Gradient Descent: Finding Better Parameters
+
+How do we find the best $w$ and $b$? **Gradient descent.**
+
+The intuition: imagine you're standing on a hilly landscape blindfolded. You want to reach the lowest point. Strategy: feel the slope under your feet and step downhill.
+
+1. Start with random $w$ and $b$
+2. Compute the loss
+3. Compute the **gradient** (which direction increases loss?)
+4. Step in the **opposite** direction (decrease loss)
+5. Repeat
+
+$$w \leftarrow w - \alpha \frac{\partial L}{\partial w}$$
+
+Where $\alpha$ is the **learning rate** — how big each step is.
+
+<Callout type="warning">
+Too large a learning rate → overshoot the minimum. Too small → takes forever. This is the most important hyperparameter to tune.
+</Callout>
+
+## Try It: Gradient Descent
+
+Watch gradient descent find the minimum of a loss function. Try different learning rates!
+
+<GradientDescentDemo />
+
+## Lab: Fitting a Line in Python
+
+```python
+import numpy as np
+
+# Data: square footage → price (in thousands)
+X = np.array([1.0, 1.5, 2.0, 2.5, 3.0])
+Y = np.array([200, 280, 350, 420, 500])
+
+# Initialize parameters
+w = 0.0
+b = 0.0
+lr = 0.01  # learning rate
+
+# Training loop
+for epoch in range(1000):
+    # Forward pass: make predictions
+    Y_pred = w * X + b
+
+    # Compute loss (MSE)
+    loss = np.mean((Y - Y_pred) ** 2)
+
+    # Compute gradients
+    dw = -2 * np.mean(X * (Y - Y_pred))
+    db = -2 * np.mean(Y - Y_pred)
+
+    # Update parameters
+    w -= lr * dw
+    b -= lr * db
+
+    if epoch % 200 == 0:
+        print(f"Epoch {epoch}: w={w:.1f}, b={b:.1f}, loss={loss:.1f}")
+
+print(f"\nFinal model: y = {w:.1f}x + {b:.1f}")
+```
+
+After training, the model learns values close to $w \approx 150$ and $b \approx 50$ — purely from data!
+
+<Callout type="idea">
+This is the core training loop used in ALL of machine learning — even in trillion-parameter LLMs. Forward pass → compute loss → compute gradients → update parameters.
+</Callout>

@@ -1,0 +1,120 @@
+---
+title: "Training Neural Networks"
+chapter: 6
+subtitle: "Backpropagation and the training loop"
+---
+
+# Training Neural Networks
+
+Training a neural network uses the exact same loop as linear regression:
+
+1. **Forward pass** — compute predictions
+2. **Compute loss** — how wrong are we?
+3. **Backward pass** — compute gradients (backpropagation)
+4. **Update parameters** — gradient descent step
+
+The only new piece is **backpropagation** — computing gradients through multiple layers.
+
+## Backpropagation: The Chain Rule at Scale
+
+Remember calculus? The chain rule says:
+
+$$\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial a_2} \cdot \frac{\partial a_2}{\partial z_2} \cdot \frac{\partial z_2}{\partial a_1} \cdot \frac{\partial a_1}{\partial z_1} \cdot \frac{\partial z_1}{\partial w_1}$$
+
+Backpropagation is just the chain rule applied systematically from the output back to every parameter. That's it.
+
+<Callout type="idea">
+Backpropagation is not a special algorithm — it's the chain rule from calculus, applied efficiently layer by layer from output to input. Every framework (PyTorch, TensorFlow) does this automatically.
+</Callout>
+
+## The Training Recipe
+
+| Ingredient | What it is | Example |
+|-----------|-----------|---------|
+| **Data** | Input-output pairs | 10,000 labeled images |
+| **Model** | Network architecture | 3-layer MLP |
+| **Loss function** | Measures error | Cross-entropy |
+| **Optimizer** | Gradient descent variant | Adam |
+| **Learning rate** | Step size | 0.001 |
+| **Epochs** | Passes through data | 50 |
+| **Batch size** | Examples per gradient step | 32 |
+
+## Lab: Training a Neural Network with PyTorch
+
+```python
+import torch
+import torch.nn as nn
+
+# Define a 3-layer neural network
+model = nn.Sequential(
+    nn.Linear(3, 16),     # 3 inputs → 16 hidden neurons
+    nn.ReLU(),            # non-linearity
+    nn.Linear(16, 8),     # 16 → 8 hidden neurons
+    nn.ReLU(),
+    nn.Linear(8, 1),      # 8 → 1 output
+    nn.Sigmoid()          # output probability
+)
+
+# Count parameters
+total_params = sum(p.numel() for p in model.parameters())
+print(f"Total parameters: {total_params}")
+# → 3*16+16 + 16*8+8 + 8*1+1 = 48+16+128+8+8+1 = 209
+
+# Training setup
+criterion = nn.BCELoss()           # Binary Cross-Entropy
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+# Dummy data: 100 samples, 3 features each
+X = torch.randn(100, 3)
+Y = (X[:, 0] + X[:, 1] > 0).float().unsqueeze(1)  # simple rule
+
+# Training loop
+for epoch in range(200):
+    # Forward pass
+    predictions = model(X)
+    loss = criterion(predictions, Y)
+
+    # Backward pass
+    optimizer.zero_grad()
+    loss.backward()       # ← backpropagation happens here!
+
+    # Update parameters
+    optimizer.step()
+
+    if epoch % 50 == 0:
+        accuracy = ((predictions > 0.5) == Y).float().mean()
+        print(f"Epoch {epoch}: loss={loss:.3f}, accuracy={accuracy:.0%}")
+```
+
+<Callout type="tip">
+Notice `loss.backward()` — this one line computes ALL gradients for ALL parameters in the entire network using backpropagation. PyTorch's autograd tracks every operation and applies the chain rule automatically.
+</Callout>
+
+## Key Concepts in Practice
+
+### Overfitting vs Underfitting
+
+| Problem | Symptom | Fix |
+|---------|---------|-----|
+| **Underfitting** | Bad on training data | Bigger model, more features |
+| **Overfitting** | Great on training, bad on new data | More data, regularization, dropout |
+
+### Common Optimizers
+
+| Optimizer | Key Idea |
+|-----------|---------|
+| SGD | Basic gradient descent |
+| SGD + Momentum | Accumulates velocity (like a ball rolling downhill) |
+| **Adam** | Adaptive learning rates per parameter — the default choice |
+
+### GPU Acceleration
+
+Matrix multiplication is the core operation. GPUs are designed for this:
+
+| Hardware | Speed | Use Case |
+|----------|-------|----------|
+| CPU | 1x | Small models, inference |
+| GPU (NVIDIA) | 10-100x | Training |
+| TPU (Google) | 100x+ | Massive scale training |
+
+> Training GPT-4 reportedly used ~25,000 GPUs for months. The algorithm is the same as our 200-line example — just scaled up.

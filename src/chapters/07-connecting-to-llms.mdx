@@ -1,0 +1,142 @@
+---
+title: "Connecting to LLMs"
+chapter: 7
+subtitle: "From neural networks to ChatGPT and Claude"
+---
+
+# Connecting to LLMs
+
+Everything we've learned builds directly to Large Language Models.
+
+## The Core Idea: Next Token Prediction
+
+An LLM is a neural network trained on one task:
+
+> Given a sequence of words, predict the **next word** (token).
+
+Input: `"The cat sat on the"`
+Output: probability distribution over all possible next words.
+
+| Next Token | Probability |
+|-----------|------------|
+| mat | 0.25 |
+| floor | 0.18 |
+| roof | 0.12 |
+| table | 0.08 |
+| dog | 0.02 |
+| ... | ... |
+
+That's it. The entire power of ChatGPT and Claude comes from training a massive neural network to be really, really good at this one task.
+
+## Try It: Next Token Prediction
+
+See how an LLM chooses the next word. Click on tokens to generate text one token at a time.
+
+<TokenPredictionDemo />
+
+<Callout type="idea">
+An LLM is a classification model over a vocabulary. The input is a sequence of tokens. The output is a probability distribution over ~100,000 possible next tokens. It's the same sigmoid/softmax idea from Chapter 4 — just at enormous scale.
+</Callout>
+
+## The Journey We've Taken
+
+| Chapter | Concept | How It Appears in LLMs |
+|---------|---------|----------------------|
+| 1 | Model = function with parameters | LLM = function with billions of parameters |
+| 2 | $y = wx + b$, gradient descent | Same training loop, same math |
+| 3 | Non-linearity | Deep Transformer layers with GELU activation |
+| 4 | Classification + softmax | Softmax over vocabulary for next token |
+| 5 | Neural network layers | 96+ Transformer layers |
+| 6 | Backpropagation + training | Trained on trillions of tokens from the internet |
+
+## What Makes LLMs Special?
+
+### 1. The Transformer Architecture
+
+The key innovation (2017 paper: "Attention Is All You Need"):
+
+**Self-attention** — every token can look at every other token in the sequence to decide what matters.
+
+```
+"The cat sat on the [???]"
+
+ The → (low attention)
+ cat → (medium attention)
+ sat → (high attention — verb determines what comes next)
+ on  → (high attention — preposition constrains the answer)
+ the → (medium attention)
+```
+
+This lets the model capture long-range relationships in text.
+
+### 2. Scale
+
+| Component | Typical LLM |
+|-----------|------------|
+| Parameters | 7B to 1T+ |
+| Training data | Trillions of tokens |
+| Training cost | 10M - 100M+ USD |
+| Vocabulary | ~100,000 tokens |
+| Context window | 4K - 200K tokens |
+
+### 3. Emergent Abilities
+
+As models get larger, they develop capabilities that weren't explicitly trained:
+- Reasoning and chain-of-thought
+- Code generation
+- Translation between languages
+- Following complex instructions
+- In-context learning (learning from examples in the prompt)
+
+## How Text Generation Works
+
+```
+Step 1: Input  → "The cat"
+        Output → "sat"  (sampled from probability distribution)
+
+Step 2: Input  → "The cat sat"
+        Output → "on"
+
+Step 3: Input  → "The cat sat on"
+        Output → "the"
+
+Step 4: Input  → "The cat sat on the"
+        Output → "mat"
+
+Result: "The cat sat on the mat"
+```
+
+Each step is one forward pass through the entire neural network. The model generates text one token at a time, feeding its output back as input.
+
+<Callout type="analogy">
+LLM text generation is like autocomplete on your phone — but trained on the entire internet, with billions of parameters, running hundreds of times per response.
+</Callout>
+
+## The Mental Model Progression
+
+$$\text{Linear} \xrightarrow{\text{add layers}} \text{Neural Net} \xrightarrow{\text{add attention}} \text{Transformer} \xrightarrow{\text{scale up}} \text{LLM}$$
+
+Each step is an incremental addition, not a revolution:
+
+1. **Linear regression**: $y = wx + b$ → learns straight lines
+2. **Add non-linearity**: stack layers with activations → learns complex functions
+3. **Add attention**: tokens look at each other → learns language structure
+4. **Scale**: billions of parameters + trillions of tokens → emergent intelligence
+
+<Callout type="idea" title="The Big Picture">
+There is no magic. LLMs are functions with parameters, trained with gradient descent, on the task of next-token prediction. The same $w \leftarrow w - \alpha \frac{\partial L}{\partial w}$ from Chapter 2 trains every model from linear regression to Claude.
+
+The only differences are **scale** (more parameters), **data** (more examples), and **architecture** (Transformers with attention). The fundamental algorithm hasn't changed.
+</Callout>
+
+## What You Now Know
+
+After this session, you can explain:
+
+- What a model is (a function with learned parameters)
+- How models learn (gradient descent on a loss function)
+- Why neural networks work (stacked non-linear transformations)
+- How LLMs generate text (next-token prediction with Transformers)
+- Why scale matters (emergent abilities from more parameters + data)
+
+> The best way to build intuition from here: experiment. Train a small model. Break things. The math is the same at every scale.
