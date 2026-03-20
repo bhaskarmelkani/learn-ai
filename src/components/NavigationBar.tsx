@@ -7,6 +7,7 @@ export function NavigationBar({
   nextTitle,
   isDesktop,
   sidebarVisible,
+  sidebarCollapsed,
 }: {
   current: number;
   total: number;
@@ -16,11 +17,12 @@ export function NavigationBar({
   nextTitle?: string;
   isDesktop: boolean;
   sidebarVisible: boolean;
+  sidebarCollapsed: boolean;
 }) {
   return (
     <div
       className={`fixed bottom-0 right-0 z-10 flex h-16 items-center justify-between border-t border-stone-200 bg-stone-100/92 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-950/92 md:px-8 ${
-        isDesktop && sidebarVisible ? "left-80" : "left-0"
+        isDesktop && sidebarVisible ? (sidebarCollapsed ? "left-20" : "left-80") : "left-0"
       }`}
     >
       <button
