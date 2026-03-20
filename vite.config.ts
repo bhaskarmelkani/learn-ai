@@ -9,6 +9,7 @@ import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 
 export default defineConfig({
+  base: process.env.BASE_PATH || "/",
   plugins: [
     mdx({
       remarkPlugins: [
