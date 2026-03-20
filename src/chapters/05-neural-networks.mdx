@@ -8,6 +8,18 @@ subtitle: "Stacking simple models into powerful ones"
 
 Here's the key insight: **a neural network is just many small models connected together**.
 
+<Path
+  current="Now we connect the pieces. A neuron is a tiny model, and layers are many neurons working together."
+  prev={{
+    title: "Classification",
+    hint: "The sigmoid classifier becomes the basic building block for a neuron.",
+  }}
+  next={{
+    title: "Training Neural Networks",
+    hint: "Once we can build a network, we need to train it efficiently.",
+  }}
+/>
+
 Each neuron computes a weighted sum and then applies an activation:
 
 $$z = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b$$
@@ -106,6 +118,8 @@ Add and remove layers and neurons. Watch how the parameter count changes. Hover 
 
 <NeuralNetworkDemo />
 
+<XorDemo />
+
 ## Parameter Count
 
 A simple network: 3 inputs → 4 hidden → 1 output
@@ -126,3 +140,11 @@ That's it. Just 21 numbers to tune. But modern networks...
 | Frontier LLMs | Tens to hundreds of billions+ (architecture-dependent) |
 
 Same idea — just more parameters, more data, and more compute.
+
+<Exercise title="Tiny Challenge">
+Switch the XOR demo between a single neuron and a two-layer network. What change actually makes XOR solvable?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Neural networks are just layers of simple units, but hidden layers plus non-linearity give them real expressive power.
+</Callout>

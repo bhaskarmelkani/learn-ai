@@ -10,6 +10,18 @@ The simplest useful model is a straight line:
 
 $$y = wx + b$$
 
+<Path
+  current="This chapter makes the model concrete. We use one line, two parameters, and one loss function so the training loop feels tangible."
+  prev={{
+    title: "What Is a Model?",
+    hint: "We started with the idea that a model is a function with parameters.",
+  }}
+  next={{
+    title: "Non-Linear Models",
+    hint: "Once a line is clear, we can ask when a line is not enough.",
+  }}
+/>
+
 Where:
 - $x$ = input (e.g., house size in sqft)
 - $y$ = output prediction (e.g., price)
@@ -96,6 +108,8 @@ Watch gradient descent find the minimum of a loss function. Try different learni
 The updates can overshoot the minimum and bounce back and forth instead of settling down. That is the key intuition behind unstable training.
 </Checkpoint>
 
+<LinearRegressionOutlierDemo />
+
 ## Notebook Lab: Fitting a Line
 
 Edit and run the cells below. Try changing the dataset, the learning rate, and the number of epochs so learners can see the training loop respond.
@@ -106,4 +120,12 @@ After training, the model learns values close to $w \approx 150$ and $b \approx 
 
 <Callout type="idea">
 This is the core training loop used in ALL of machine learning — even in trillion-parameter LLMs. Forward pass → compute loss → compute gradients → update parameters.
+</Callout>
+
+<Exercise title="Tiny Challenge">
+Move the outlier around and describe whether the fitted line changes more in slope or in intercept.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Linear regression gives us the first concrete training loop: predict, measure error, update the numbers, repeat.
 </Callout>

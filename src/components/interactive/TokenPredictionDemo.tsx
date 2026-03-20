@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Slider } from "./Slider";
 
 interface PredictionNode {
   predictions: Record<string, number>;
@@ -141,31 +142,53 @@ function samplePrediction(entries: [string, number][]) {
   return entries[entries.length - 1]?.[0];
 }
 
+function applyTemperature(preds: [string, number][], temperature: number) {
+  const scaled = preds.map(([token, prob]) => [token, Math.pow(prob, 1 / temperature)] as [string, number]);
+  const total = scaled.reduce((sum, [, prob]) => sum + prob, 0) || 1;
+  return scaled.map(([token, prob]) => [token, prob / total] as [string, number]).sort((a, b) => b[1] - a[1]);
+}
+
+function attentionWeights(length: number, focusIndex: number) {
+  const raw = Array.from({ length }, (_, index) => 1 / (1 + Math.abs(index - focusIndex)));
+  const total = raw.reduce((sum, value) => sum + value, 0) || 1;
+  return raw.map((value) => value / total);
+}
+
 export function TokenPredictionDemo() {
   const [promptIdx, setPromptIdx] = useState(0);
   const [generated, setGenerated] = useState<string[]>([]);
   const [node, setNode] = useState<PredictionNode | null>(SCENARIOS[PROMPTS[0]].root);
   const [showProbs, setShowProbs] = useState(true);
+  const [temperature, setTemperature] = useState(0.8);
+  const [focusedIndex, setFocusedIndex] = useState(0);
 
   const prompt = PROMPTS[promptIdx];
   const scenario = SCENARIOS[prompt];
+  const visibleTokens = [...scenario.tokens, ...generated];
 
   useEffect(() => {
     setGenerated([]);
     setNode(scenario.root);
+    setFocusedIndex(Math.max(0, scenario.tokens.length - 1));
   }, [scenario]);
 
-  const preds = useMemo(
-    () => Object.entries(node?.predictions ?? {}).sort((a, b) => b[1] - a[1]),
-    [node]
-  );
+  const preds = useMemo(() => {
+    const current = Object.entries(node?.predictions ?? {}).sort((a, b) => b[1] - a[1]);
+    return applyTemperature(current, temperature);
+  }, [node, temperature]);
+
   const sampleablePreds = preds.filter(([token]) => token !== "other");
   const maxProb = preds[0]?.[1] ?? 1;
+  const attention = attentionWeights(visibleTokens.length, focusedIndex);
 
   const selectToken = (token: string) => {
     if (!node) return;
 
-    setGenerated((g) => [...g, token]);
+    setGenerated((g) => {
+      const next = [...g, token];
+      setFocusedIndex(scenario.tokens.length + next.length - 1);
+      return next;
+    });
 
     if (token === TERMINAL_TOKEN) {
       setNode(null);
@@ -178,6 +201,7 @@ export function TokenPredictionDemo() {
   const reset = () => {
     setGenerated([]);
     setNode(scenario.root);
+    setFocusedIndex(Math.max(0, scenario.tokens.length - 1));
   };
 
   const runGreedyStep = () => {
@@ -208,36 +232,69 @@ export function TokenPredictionDemo() {
         ))}
       </div>
 
-      <div className="min-h-[60px] rounded-2xl border border-stone-200 bg-stone-50 p-3 dark:border-gray-800 dark:bg-gray-950/70">
-        <div className="flex flex-wrap items-center gap-2">
-          {scenario.tokens.map((t, i) => (
-            <span key={i} className="rounded-lg bg-white px-2 py-1 text-sm font-mono text-stone-700 shadow-sm dark:bg-gray-800 dark:text-gray-300">
-              {formatToken(t)}
-            </span>
-          ))}
-          {generated.map((t, i) => (
-            <span
-              key={`g${i}`}
-              className={`rounded-lg px-2 py-1 text-sm font-mono font-bold shadow-sm ${
-                t === TERMINAL_TOKEN
-                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
-                  : "bg-cyan-50 text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-300"
+      <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/70">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500 dark:text-gray-500">
+          Tokenization
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {visibleTokens.map((token, index) => (
+            <button
+              key={`${token}-${index}`}
+              onClick={() => setFocusedIndex(index)}
+              className={`rounded-lg px-2 py-1 text-sm font-mono shadow-sm transition-colors ${
+                index === focusedIndex
+                  ? "bg-cyan-600 text-white"
+                  : "bg-white text-stone-700 dark:bg-gray-800 dark:text-gray-300"
               }`}
             >
-              {formatToken(t)}
-            </span>
+              {formatToken(token)}
+            </button>
           ))}
           {node && <span className="h-5 w-2 animate-pulse rounded-sm bg-cyan-500" />}
         </div>
       </div>
 
+      <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/70">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500 dark:text-gray-500">
+              Attention
+            </p>
+            <p className="mt-1 text-sm text-stone-600 dark:text-gray-400">
+              Click a token to change what the model is "looking at". Recent tokens usually matter more.
+            </p>
+          </div>
+          <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-stone-600 shadow-sm dark:bg-gray-800 dark:text-gray-400">
+            Focus: {formatToken(visibleTokens[focusedIndex] ?? "")}
+          </span>
+        </div>
+        <div className="mt-4 space-y-2">
+          {visibleTokens.map((token, index) => (
+            <div key={`${token}-att-${index}`} className="flex items-center gap-2">
+              <span className="w-16 text-right text-xs font-mono text-stone-600 dark:text-gray-400">
+                {formatToken(token)}
+              </span>
+              <div className="h-6 flex-1 rounded-full bg-stone-200 dark:bg-gray-800">
+                <div
+                  className="h-full rounded-full bg-cyan-500 transition-all"
+                  style={{ width: `${attention[index] * 100}%` }}
+                />
+              </div>
+              <span className="w-12 text-right text-xs font-mono text-stone-500 dark:text-gray-400">
+                {(attention[index] * 100).toFixed(0)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 dark:border-gray-800 dark:bg-gray-950/60">
-        <div>
+        <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500 dark:text-gray-500">
             Generation mode
           </p>
           <p className="mt-1 text-sm text-stone-600 dark:text-gray-400">
-            Compare greedy decoding with sampling and notice how the distribution changes after each choice.
+            Compare greedy decoding with sampling. Temperature changes how sharp or flat the probabilities feel.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -264,60 +321,60 @@ export function TokenPredictionDemo() {
         </div>
       </div>
 
-      {!node && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-200">
-          This branch has ended. In a real model, the next distribution always depends on the full updated context.
-        </div>
-      )}
+      <Slider
+        label="temp"
+        value={temperature}
+        min={0.2}
+        max={2}
+        step={0.1}
+        onChange={setTemperature}
+      />
 
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-medium text-stone-500 dark:text-gray-400">Next token probabilities:</span>
-          <button
-            onClick={() => setShowProbs((s) => !s)}
-            className="text-xs text-stone-400 hover:text-stone-700 dark:hover:text-gray-300"
-          >
-            {showProbs ? "Hide" : "Show"} probabilities
-          </button>
-        </div>
-        {showProbs && (
-          <div className="space-y-2">
-            {preds.length > 0 ? (
-              preds.map(([token, prob]) => (
-                <button
-                  key={token}
-                  onClick={() => token !== "other" && selectToken(token)}
-                  className="group flex w-full items-center gap-2"
-                  disabled={token === "other"}
-                >
-                  <span className="w-16 text-right text-xs font-mono text-stone-600 transition-colors group-hover:text-cyan-700 dark:text-gray-400 dark:group-hover:text-cyan-300">
-                    {formatToken(token)}
-                  </span>
-                  <div className="h-7 flex-1 overflow-hidden rounded-full bg-stone-200 dark:bg-gray-800">
-                    <div
-                      className="h-full rounded-full bg-cyan-500 transition-all group-hover:bg-cyan-400"
-                      style={{ width: `${(prob / maxProb) * 100}%` }}
-                    />
-                  </div>
-                  <span className="w-12 text-right text-xs font-mono text-stone-500 dark:text-gray-400">
-                    {(prob * 100).toFixed(1)}%
-                  </span>
-                </button>
-              ))
-            ) : (
-              <p className="text-sm text-stone-500 dark:text-gray-400">No further tokens in this mini-demo.</p>
-            )}
+      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-medium text-stone-500 dark:text-gray-400">Next token probabilities:</span>
+            <button
+              onClick={() => setShowProbs((s) => !s)}
+              className="text-xs text-stone-400 hover:text-stone-700 dark:hover:text-gray-300"
+            >
+              {showProbs ? "Hide" : "Show"} probabilities
+            </button>
           </div>
-        )}
-      </div>
+          {showProbs && (
+            <div className="space-y-2">
+              {preds.length > 0 ? (
+                preds.map(([token, prob]) => (
+                  <button
+                    key={token}
+                    onClick={() => token !== "other" && selectToken(token)}
+                    className="group flex w-full items-center gap-2"
+                    disabled={token === "other"}
+                  >
+                    <span className="w-16 text-right text-xs font-mono text-stone-600 transition-colors group-hover:text-cyan-700 dark:text-gray-400 dark:group-hover:text-cyan-300">
+                      {formatToken(token)}
+                    </span>
+                    <div className="h-7 flex-1 overflow-hidden rounded-full bg-stone-200 dark:bg-gray-800">
+                      <div
+                        className="h-full rounded-full bg-cyan-500 transition-all group-hover:bg-cyan-400"
+                        style={{ width: `${(prob / maxProb) * 100}%` }}
+                      />
+                    </div>
+                    <span className="w-12 text-right text-xs font-mono text-stone-500 dark:text-gray-400">
+                      {(prob * 100).toFixed(1)}%
+                    </span>
+                  </button>
+                ))
+              ) : (
+                <p className="text-sm text-stone-500 dark:text-gray-400">No further tokens in this mini-demo.</p>
+              )}
+            </div>
+          )}
+        </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-xs text-stone-500 dark:text-gray-500">
-          Click a token manually, pick the top token, or sample from the distribution. The key lesson is that the probabilities update after every step.
-        </p>
-        <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600 dark:bg-gray-800 dark:text-gray-400">
-          Step {generated.length + 1}
-        </span>
+        <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+          The important piece is not just the probabilities. It is the whole loop: tokenize the text, score the next token, and choose how sharp or creative the generation should be.
+        </div>
       </div>
     </div>
   );

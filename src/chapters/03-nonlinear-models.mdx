@@ -8,6 +8,18 @@ subtitle: "When a straight line isn't enough"
 
 Real-world data rarely follows a straight line.
 
+<Path
+  current="Here we keep the same idea from linear regression, but stretch the function so it can curve."
+  prev={{
+    title: "Linear Regression",
+    hint: "We learned how one line can fit simple patterns and how gradient descent moves its parameters.",
+  }}
+  next={{
+    title: "Classification",
+    hint: "If the output is not a number but a category, we need a different target.",
+  }}
+/>
+
 Consider predicting the trajectory of a ball:
 
 $$y = -4.9t^2 + v_0 t + h_0$$
@@ -37,6 +49,8 @@ At a certain point, adding more square footage has diminishing returns on price.
 Try fitting a parabola to the data. First set a=0 to see why a straight line fails, then adjust all three parameters.
 
 <NonlinearDemo />
+
+<NonlinearComparisonDemo />
 
 ## Adding Non-Linearity
 
@@ -79,3 +93,11 @@ Hand-crafting features is like writing specific rules: "if the email contains 'N
 </Callout>
 
 We'll get to neural networks in Chapter 5. But first — what if the output isn't a number?
+
+<Exercise title="Tiny Challenge">
+Explain why the same dataset can look fine to a quadratic model but awkward to a line.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Non-linearity gives a model enough shape to follow real-world curves and interactions.
+</Callout>

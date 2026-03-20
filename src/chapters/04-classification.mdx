@@ -8,6 +8,18 @@ subtitle: "Predicting categories instead of numbers"
 
 So far we've predicted **numbers** (prices, temperatures). This is **regression**.
 
+<Path
+  current="This chapter takes the same linear idea and changes the output from a number to a category."
+  prev={{
+    title: "Non-Linear Models",
+    hint: "We stretched linear models so they could curve; now we change the target itself.",
+  }}
+  next={{
+    title: "Neural Networks",
+    hint: "The sigmoid classifier becomes a single neuron once we start stacking units together.",
+  }}
+/>
+
 But many real problems ask: **which category?**
 
 | Task | Input | Output |
@@ -55,6 +67,8 @@ Adjust w and b to separate the red (class 0) and blue (class 1) points. The dash
 
 <SigmoidDemo />
 
+<ClassificationLab />
+
 <Exercise title="Boundary Intuition">
 Try changing only one parameter at a time:
 
@@ -93,3 +107,11 @@ This converts a vector of raw scores into probabilities that sum to 1.
 <Checkpoint prompt="Why not just threshold the raw score wx + b directly?">
 Because classification is easier to reason about when the output behaves like a **probability**. The sigmoid maps any raw score into the 0 to 1 range, which makes both the interpretation and the loss function much cleaner.
 </Checkpoint>
+
+<Exercise title="Tiny Challenge">
+Pick one scenario in the classification lab and lower the threshold. Which error type becomes more common?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Classification turns a score into a decision, and the threshold controls how strict that decision is.
+</Callout>

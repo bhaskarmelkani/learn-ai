@@ -8,6 +8,14 @@ subtitle: "From neural networks to ChatGPT and Claude"
 
 Everything we've learned builds directly to Large Language Models.
 
+<Path
+  current="This is the final handoff: all the earlier chapters collapse into next-token prediction at scale."
+  prev={{
+    title: "Training Neural Networks",
+    hint: "We already know the training loop. LLMs are that loop applied to much larger models and much more data.",
+  }}
+/>
+
 ## The Core Idea: Next Token Prediction
 
 An LLM is a neural network trained on one task:
@@ -176,3 +184,11 @@ After this session, you can explain:
 - Why scale matters (larger models and more data can make capabilities more reliable)
 
 > The best way to build intuition from here: experiment. Train a small model. Break things. The math is the same at every scale.
+
+<Exercise title="Tiny Challenge">
+Change the temperature in the token demo and describe how the output becomes more conservative or more exploratory.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+LLMs are just next-token predictors, but attention, scale, and decoding turn that into something people experience as intelligence.
+</Callout>

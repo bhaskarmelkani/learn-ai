@@ -12,6 +12,14 @@ $$y = f(x)$$
 
 That's it. Every AI system — from a spam filter to ChatGPT — is a function that takes some input and produces a prediction.
 
+<Path
+  current="This chapter is the starting point: we define what a model is and why the idea of inputs, outputs, and parameters matters."
+  next={{
+    title: "Linear Regression",
+    hint: "We turn the abstract idea of a model into the simplest trainable function: a line.",
+  }}
+/>
+
 ## Everyday Examples
 
 | Input $x$ | Output $y$ | Model |
@@ -20,6 +28,8 @@ That's it. Every AI system — from a spam filter to ChatGPT — is a function t
 | Email text | Spam or Not Spam | Spam filter |
 | Photo pixels | "Cat" or "Dog" | Image classifier |
 | Sequence of words | Next word | Language model (GPT) |
+
+<ConceptMatcher />
 
 ## Why "Model"?
 
@@ -67,3 +77,11 @@ That habit is the whole session in miniature. If learners leave with only one in
 <Checkpoint prompt="During training, what usually changes: the function shape or the numbers inside it?">
 Usually the **numbers** change. We choose a model family first, then training adjusts its parameters so the same overall function shape makes better predictions.
 </Checkpoint>
+
+<Exercise title="Tiny Challenge">
+Pick one AI product you know and describe its input, output, parameters, and architecture in one sentence.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+A model is a function with learned numbers, and that idea will keep showing up all the way to LLMs.
+</Callout>

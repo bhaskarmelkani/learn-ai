@@ -8,6 +8,18 @@ subtitle: "Backpropagation and the training loop"
 
 Training a neural network uses the exact same loop as linear regression:
 
+<Path
+  current="This chapter shows that once the network exists, the training math is still the same idea as before."
+  prev={{
+    title: "Neural Networks",
+    hint: "We built layers of neurons; now we need a way to tune all of their parameters.",
+  }}
+  next={{
+    title: "Connecting to LLMs",
+    hint: "The same training loop scales up into transformers and language models.",
+  }}
+/>
+
 1. **Forward pass** — compute predictions
 2. **Compute loss** — how wrong are we?
 3. **Backward pass** — compute gradients (backpropagation)
@@ -45,6 +57,8 @@ Instead of only reading PyTorch code, run a tiny two-layer network directly in t
 
 <NeuralNetworkNotebook />
 
+<TrainingCurveDemo />
+
 <Callout type="tip">
 Once learners understand the notebook above, it becomes much easier to appreciate what frameworks like PyTorch automate for us. In PyTorch, `loss.backward()` computes these gradients automatically instead of making you write them by hand.
 </Callout>
@@ -81,3 +95,11 @@ Matrix multiplication is the core operation. GPUs are designed for this:
 | TPU (Google) | 100x+ | Massive scale training |
 
 > Frontier models are trained on massive accelerator clusters for weeks or months. The core loop is still the same one you see above — just scaled up dramatically.
+
+<Exercise title="Tiny Challenge">
+Switch the training-curve lab between underfit, balanced, and overfit. Which one looks best on training data and which one looks best on validation data?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Training is optimization at scale, and validation is what tells us whether the model learned the right thing.
+</Callout>
