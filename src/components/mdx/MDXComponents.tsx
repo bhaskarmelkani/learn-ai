@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import type { MDXComponents as MDXComponentsType } from "mdx/types";
 import { Callout } from "./Callout";
 import { Exercise } from "./Exercise";
@@ -8,6 +9,24 @@ import { SigmoidDemo } from "../interactive/SigmoidDemo";
 import { GradientDescentDemo } from "../interactive/GradientDescentDemo";
 import { NeuralNetworkDemo } from "../interactive/NeuralNetworkDemo";
 import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
+
+const LazyLinearRegressionNotebook = lazy(async () => ({
+  default: (await import("../interactive/LinearRegressionNotebook")).LinearRegressionNotebook,
+}));
+const LazyClassificationNotebook = lazy(async () => ({
+  default: (await import("../interactive/ClassificationNotebook")).ClassificationNotebook,
+}));
+const LazyNeuralNetworkNotebook = lazy(async () => ({
+  default: (await import("../interactive/NeuralNetworkNotebook")).NeuralNetworkNotebook,
+}));
+
+function NotebookFallback() {
+  return (
+    <div className="my-8 rounded-[1.5rem] border border-stone-200 bg-white px-5 py-6 text-sm text-stone-500 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
+      Loading notebook runtime...
+    </div>
+  );
+}
 
 export const mdxComponents: MDXComponentsType = {
   h1: (props) => (
@@ -23,16 +42,25 @@ export const mdxComponents: MDXComponentsType = {
     />
   ),
   h3: (props) => (
-    <h3 className="mt-8 mb-3 text-xl font-semibold text-stone-800 dark:text-gray-200" {...props} />
+    <h3 className="mt-8 mb-3 max-w-4xl text-xl font-semibold text-stone-800 dark:text-gray-200" {...props} />
   ),
   p: (props) => (
-    <p className="my-4 text-lg leading-relaxed text-stone-700 dark:text-gray-300" {...props} />
+    <p
+      className="my-4 max-w-3xl text-[1.16rem] leading-8 text-stone-700 dark:text-gray-300 [font-family:var(--font-content)]"
+      {...props}
+    />
   ),
   ul: (props) => (
-    <ul className="my-4 ml-6 list-disc space-y-2 text-lg text-stone-700 dark:text-gray-300" {...props} />
+    <ul
+      className="my-4 ml-6 max-w-3xl list-disc space-y-2 text-[1.12rem] leading-8 text-stone-700 dark:text-gray-300 [font-family:var(--font-content)]"
+      {...props}
+    />
   ),
   ol: (props) => (
-    <ol className="my-4 ml-6 list-decimal space-y-2 text-lg text-stone-700 dark:text-gray-300" {...props} />
+    <ol
+      className="my-4 ml-6 max-w-3xl list-decimal space-y-2 text-[1.12rem] leading-8 text-stone-700 dark:text-gray-300 [font-family:var(--font-content)]"
+      {...props}
+    />
   ),
   li: (props) => <li className="leading-relaxed" {...props} />,
   table: (props) => (
@@ -52,7 +80,7 @@ export const mdxComponents: MDXComponentsType = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="my-6 rounded-r-xl border-l-4 border-cyan-500 bg-cyan-50 px-4 py-3 italic text-stone-700 dark:bg-cyan-500/10 dark:text-gray-300 [&>p]:my-1"
+      className="my-6 max-w-3xl rounded-r-xl border-l-4 border-cyan-500 bg-cyan-50 px-4 py-3 italic text-stone-700 dark:bg-cyan-500/10 dark:text-gray-300 [&>p]:my-1"
       {...props}
     />
   ),
@@ -68,4 +96,19 @@ export const mdxComponents: MDXComponentsType = {
   GradientDescentDemo,
   NeuralNetworkDemo,
   TokenPredictionDemo,
+  LinearRegressionNotebook: () => (
+    <Suspense fallback={<NotebookFallback />}>
+      <LazyLinearRegressionNotebook />
+    </Suspense>
+  ),
+  ClassificationNotebook: () => (
+    <Suspense fallback={<NotebookFallback />}>
+      <LazyClassificationNotebook />
+    </Suspense>
+  ),
+  NeuralNetworkNotebook: () => (
+    <Suspense fallback={<NotebookFallback />}>
+      <LazyNeuralNetworkNotebook />
+    </Suspense>
+  ),
 };

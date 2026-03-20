@@ -39,55 +39,14 @@ Backpropagation is not a special algorithm — it's the chain rule from calculus
 | **Epochs** | Passes through data | 50 |
 | **Batch size** | Examples per gradient step | 32 |
 
-## Lab: Training a Neural Network with PyTorch
+## Notebook Lab: Train a Tiny Neural Network
 
-```python
-import torch
-import torch.nn as nn
+Instead of only reading PyTorch code, run a tiny two-layer network directly in the browser. Change the hidden size, learning rate, or epochs and see what it does to XOR.
 
-# Define a 3-layer neural network
-model = nn.Sequential(
-    nn.Linear(3, 16),     # 3 inputs → 16 hidden neurons
-    nn.ReLU(),            # non-linearity
-    nn.Linear(16, 8),     # 16 → 8 hidden neurons
-    nn.ReLU(),
-    nn.Linear(8, 1),      # 8 → 1 output
-    nn.Sigmoid()          # output probability
-)
-
-# Count parameters
-total_params = sum(p.numel() for p in model.parameters())
-print(f"Total parameters: {total_params}")
-# → 3*16+16 + 16*8+8 + 8*1+1 = 48+16+128+8+8+1 = 209
-
-# Training setup
-criterion = nn.BCELoss()           # Binary Cross-Entropy
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-
-# Dummy data: 100 samples, 3 features each
-X = torch.randn(100, 3)
-Y = (X[:, 0] + X[:, 1] > 0).float().unsqueeze(1)  # simple rule
-
-# Training loop
-for epoch in range(200):
-    # Forward pass
-    predictions = model(X)
-    loss = criterion(predictions, Y)
-
-    # Backward pass
-    optimizer.zero_grad()
-    loss.backward()       # ← backpropagation happens here!
-
-    # Update parameters
-    optimizer.step()
-
-    if epoch % 50 == 0:
-        accuracy = ((predictions > 0.5) == Y).float().mean()
-        print(f"Epoch {epoch}: loss={loss:.3f}, accuracy={accuracy:.0%}")
-```
+<NeuralNetworkNotebook />
 
 <Callout type="tip">
-Notice `loss.backward()` — this one line computes ALL gradients for ALL parameters in the entire network using backpropagation. PyTorch's autograd tracks every operation and applies the chain rule automatically.
+Once learners understand the notebook above, it becomes much easier to appreciate what frameworks like PyTorch automate for us. In PyTorch, `loss.backward()` computes these gradients automatically instead of making you write them by hand.
 </Callout>
 
 <Checkpoint prompt="Why does `loss.backward()` matter so much?">

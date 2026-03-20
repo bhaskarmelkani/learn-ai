@@ -74,54 +74,11 @@ If $P > 0.5$, predict "spam". Otherwise, "not spam".
 The sigmoid squashes any number into a probability. This is the building block for classification — and it shows up again inside neural networks as an "activation function."
 </Callout>
 
-## Lab: Classifying Emails
+## Notebook Lab: Classifying Emails
 
-```python
-import numpy as np
+Edit the training data, rerun the cells, and test new examples. This is a nice place to let learners feel the difference between a raw score and a probability.
 
-def sigmoid(z):
-    return 1 / (1 + np.exp(-z))
-
-# Features: [word_count, has_link, exclamation_marks]
-# Labels: 1 = spam, 0 = not spam
-X = np.array([
-    [50,  1, 5],   # spam
-    [200, 0, 0],   # not spam
-    [30,  1, 8],   # spam
-    [150, 0, 1],   # not spam
-    [20,  1, 10],  # spam
-])
-Y = np.array([1, 0, 1, 0, 1])
-
-# Initialize
-w = np.zeros(3)
-b = 0.0
-lr = 0.01
-
-for epoch in range(1000):
-    z = X @ w + b
-    pred = sigmoid(z)
-
-    # Cross-entropy loss
-    loss = -np.mean(Y * np.log(pred + 1e-8) + (1 - Y) * np.log(1 - pred + 1e-8))
-
-    # Gradients
-    error = pred - Y
-    dw = X.T @ error / len(Y)
-    db = np.mean(error)
-
-    w -= lr * dw
-    b -= lr * db
-
-    if epoch % 200 == 0:
-        accuracy = np.mean((pred > 0.5) == Y)
-        print(f"Epoch {epoch}: loss={loss:.3f}, accuracy={accuracy:.0%}")
-
-# Test
-test = np.array([25, 1, 7])  # short, has link, lots of !!!
-prob = sigmoid(test @ w + b)
-print(f"\nSpam probability: {prob:.1%}")
-```
+<ClassificationNotebook />
 
 ## Multi-Class: Softmax
 

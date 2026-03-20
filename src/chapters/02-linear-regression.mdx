@@ -96,43 +96,13 @@ Watch gradient descent find the minimum of a loss function. Try different learni
 The updates can overshoot the minimum and bounce back and forth instead of settling down. That is the key intuition behind unstable training.
 </Checkpoint>
 
-## Lab: Fitting a Line in Python
+## Notebook Lab: Fitting a Line
 
-```python
-import numpy as np
+Edit and run the cells below. Try changing the dataset, the learning rate, and the number of epochs so learners can see the training loop respond.
 
-# Data: square footage → price (in thousands)
-X = np.array([1.0, 1.5, 2.0, 2.5, 3.0])
-Y = np.array([200, 280, 350, 420, 500])
+<LinearRegressionNotebook />
 
-# Initialize parameters
-w = 0.0
-b = 0.0
-lr = 0.01  # learning rate
-
-# Training loop
-for epoch in range(1000):
-    # Forward pass: make predictions
-    Y_pred = w * X + b
-
-    # Compute loss (MSE)
-    loss = np.mean((Y - Y_pred) ** 2)
-
-    # Compute gradients
-    dw = -2 * np.mean(X * (Y - Y_pred))
-    db = -2 * np.mean(Y - Y_pred)
-
-    # Update parameters
-    w -= lr * dw
-    b -= lr * db
-
-    if epoch % 200 == 0:
-        print(f"Epoch {epoch}: w={w:.1f}, b={b:.1f}, loss={loss:.1f}")
-
-print(f"\nFinal model: y = {w:.1f}x + {b:.1f}")
-```
-
-After training, the model learns values close to $w \approx 150$ and $b \approx 50$ — purely from data!
+After training, the model learns values close to $w \approx 150$ and $b \approx 50$ — purely from data.
 
 <Callout type="idea">
 This is the core training loop used in ALL of machine learning — even in trillion-parameter LLMs. Forward pass → compute loss → compute gradients → update parameters.
