@@ -3,6 +3,9 @@ import type { MDXComponents as MDXComponentsType } from "mdx/types";
 import { Callout } from "./Callout";
 import { Exercise } from "./Exercise";
 import { Checkpoint } from "./Checkpoint";
+import { ChapterBridge } from "./ChapterBridge";
+import { CaseCards } from "./CaseCards";
+import { ChapterRecap } from "./ChapterRecap";
 import { ConceptMatcher } from "../interactive/ConceptMatcher";
 import { LinearRegressionDemo } from "../interactive/LinearRegressionDemo";
 import { LinearRegressionOutlierDemo } from "../interactive/LinearRegressionOutlierDemo";
@@ -17,6 +20,7 @@ import { NeuralNetworkDemo } from "../interactive/NeuralNetworkDemo";
 import { XorDemo } from "../interactive/XorDemo";
 import { TrainingCurveDemo } from "../interactive/TrainingCurveDemo";
 import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
+import { CapstoneStudio } from "../interactive/CapstoneStudio";
 
 const LazyLinearRegressionNotebook = lazy(async () => ({
   default: (await import("../interactive/LinearRegressionNotebook")).LinearRegressionNotebook,
@@ -98,6 +102,9 @@ export const mdxComponents: MDXComponentsType = {
   Callout,
   Exercise,
   Checkpoint,
+  ChapterBridge,
+  CaseCards,
+  ChapterRecap,
   ConceptMatcher,
   LinearRegressionDemo,
   LinearRegressionOutlierDemo,
@@ -112,6 +119,7 @@ export const mdxComponents: MDXComponentsType = {
   XorDemo,
   TrainingCurveDemo,
   TokenPredictionDemo,
+  CapstoneStudio,
   LinearRegressionNotebook: () => (
     <Suspense fallback={<NotebookFallback />}>
       <LazyLinearRegressionNotebook />

@@ -10,6 +10,11 @@ interface NotebookCell {
   code: string;
   packages?: string[];
   description?: string;
+  expected?: string[];
+  hints?: string[];
+  breakPrompt?: string;
+  noCodeFallback?: string;
+  successKeywords?: string[];
 }
 
 interface PythonNotebookProps {
@@ -213,6 +218,15 @@ export function PythonNotebook({
     setOutputs(cells.map(() => ""));
   };
 
+  const cellSucceeded = (cell: NotebookCell, output: string) =>
+    Boolean(
+      output &&
+        cell.successKeywords?.length &&
+        cell.successKeywords.every((keyword) =>
+          output.toLowerCase().includes(keyword.toLowerCase())
+        )
+    );
+
   return (
     <div className="not-prose my-10 overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <div className="border-b border-stone-200 bg-gradient-to-r from-stone-50 via-white to-cyan-50 px-5 py-4 dark:border-gray-800 dark:from-gray-900 dark:via-gray-900 dark:to-cyan-500/10">
@@ -281,6 +295,12 @@ export function PythonNotebook({
                   </p>
                 )}
               </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {cellSucceeded(cell, outputs[index]) && (
+                  <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300">
+                    Expected signal detected
+                  </span>
+                )}
               <button
                 onClick={() => executeCell(index)}
                 disabled={runningIndex !== null}
@@ -288,7 +308,56 @@ export function PythonNotebook({
               >
                 {runningIndex === index ? "Running..." : "Run cell"}
               </button>
+              </div>
             </div>
+
+            <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_1fr]">
+              {cell.expected && cell.expected.length > 0 && (
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                    Success looks like
+                  </p>
+                  <ul className="mt-2 space-y-1">
+                    {cell.expected.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {cell.noCodeFallback && (
+                <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                    No-code fallback
+                  </p>
+                  <p className="mt-2">{cell.noCodeFallback}</p>
+                </div>
+              )}
+            </div>
+
+            {(cell.hints?.length || cell.breakPrompt) && (
+              <div className="mb-4 grid gap-3 lg:grid-cols-[1fr_1fr]">
+                {cell.hints && cell.hints.length > 0 && (
+                  <details className="rounded-2xl border border-stone-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-gray-900">
+                    <summary className="cursor-pointer text-sm font-semibold text-stone-800 dark:text-gray-100">
+                      Need a hint?
+                    </summary>
+                    <ul className="mt-3 space-y-2 text-sm leading-6 text-stone-700 dark:text-gray-200">
+                      {cell.hints.map((hint) => (
+                        <li key={hint}>{hint}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+                {cell.breakPrompt && (
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                      Break this on purpose
+                    </p>
+                    <p className="mt-2">{cell.breakPrompt}</p>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-gray-800 dark:bg-gray-900">
               <CodeMirror

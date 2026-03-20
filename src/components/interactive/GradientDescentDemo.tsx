@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Graph, PlotLine } from "./Graph";
 import { HOUSE_LINEAR_DATA } from "./data";
+import { GuidedPrediction } from "./GuidedPrediction";
+import { useLearning } from "../../learning/LearningContext";
 
 const FIXED_BIAS = 0.6;
 const START_W = 1.8;
@@ -22,12 +24,20 @@ function gradientForWeight(w: number) {
 }
 
 export function GradientDescentDemo() {
+  const {
+    state: { guidedMode },
+  } = useLearning();
   const [w, setW] = useState(START_W);
   const [running, setRunning] = useState(false);
   const [lr, setLr] = useState(0.08);
   const [history, setHistory] = useState<number[]>([START_W]);
+  const [guidedLocked, setGuidedLocked] = useState(guidedMode);
   const rafRef = useRef<number>(0);
   const wRef = useRef(w);
+
+  useEffect(() => {
+    setGuidedLocked(guidedMode);
+  }, [guidedMode]);
 
   const step = useCallback(() => {
     const grad = gradientForWeight(wRef.current);
@@ -62,6 +72,7 @@ export function GradientDescentDemo() {
     wRef.current = START_W;
     setHistory([START_W]);
   };
+  const controlsDisabled = guidedMode && guidedLocked;
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -78,6 +89,32 @@ export function GradientDescentDemo() {
               This demo freezes the bias and only moves the weight. That gives us one clean slice of the line-fitting loss landscape.
             </p>
           </div>
+
+          {guidedMode && (
+            <GuidedPrediction
+              title="Predict the effect of a high learning rate"
+              prompt="If the learning rate is too high, what should happen as gradient descent moves across the loss curve?"
+              compareText="Unlock the controls, raise the learning rate, and compare the path of the blue dots with the stable path at a lower rate."
+              onUnlockChange={setGuidedLocked}
+              choices={[
+                {
+                  value: "overshoot",
+                  label: "The updates overshoot the good region and may bounce around instead of settling.",
+                  explanation: "That is the classic failure mode. Big steps can keep jumping over the valley.",
+                },
+                {
+                  value: "faster",
+                  label: "Training always becomes better because larger steps reach the minimum faster.",
+                  explanation: "Larger steps can help only until they become unstable. Past that point they work against convergence.",
+                },
+                {
+                  value: "data",
+                  label: "The loss curve itself changes shape because the learning rate changes the dataset.",
+                  explanation: "The learning rate changes the update size, not the data or the underlying loss surface.",
+                },
+              ]}
+            />
+          )}
 
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: the gradient tells us which way makes the house-price fit worse. Gradient descent walks in the opposite direction.
@@ -121,28 +158,31 @@ export function GradientDescentDemo() {
               max={0.2}
               step={0.01}
               value={lr}
+              disabled={controlsDisabled}
               onChange={(event) => setLr(parseFloat(event.target.value))}
-              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-gray-200 accent-blue-500 dark:bg-gray-700"
+              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-gray-200 accent-blue-500 disabled:cursor-not-allowed dark:bg-gray-700"
             />
           </div>
 
           <div className="flex justify-center gap-2">
             <button
+              disabled={controlsDisabled}
               onClick={() => setRunning((current) => !current)}
-              className="rounded-lg bg-cyan-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-cyan-500"
+              className="rounded-lg bg-cyan-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {running ? "Pause" : "Run"}
             </button>
             <button
               onClick={step}
-              disabled={running}
+              disabled={running || controlsDisabled}
               className="rounded-lg bg-stone-200 px-4 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-300 disabled:opacity-30 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             >
               Step
             </button>
             <button
+              disabled={controlsDisabled}
               onClick={reset}
-              className="rounded-lg bg-stone-200 px-4 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
+              className="rounded-lg bg-stone-200 px-4 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-300 disabled:cursor-not-allowed disabled:opacity-40 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
             >
               Reset
             </button>

@@ -1,4 +1,6 @@
 import type { Chapter } from "../chapters";
+import type { AudienceTrack } from "../learning/LearningContext";
+import { getTrackLabel } from "../learning/LearningContext";
 
 export function Sidebar({
   chapters,
@@ -10,6 +12,12 @@ export function Sidebar({
   progress,
   onToggleSidebar,
   onToggleTheme,
+  track,
+  onSelectTrack,
+  guidedMode,
+  onToggleGuidedMode,
+  masterySummary,
+  reviewQueue,
 }: {
   chapters: Chapter[];
   current: number;
@@ -20,6 +28,20 @@ export function Sidebar({
   progress: number;
   onToggleSidebar: () => void;
   onToggleTheme: () => void;
+  track: AudienceTrack;
+  onSelectTrack: (track: AudienceTrack) => void;
+  guidedMode: boolean;
+  onToggleGuidedMode: () => void;
+  masterySummary: {
+    completedChecks: number;
+    attemptedChecks: number;
+    reviewedChapters: number;
+  };
+  reviewQueue: Array<{
+    concept: string;
+    misses: number;
+    chapter: number;
+  }>;
 }) {
   return (
     <aside
@@ -91,6 +113,53 @@ export function Sidebar({
             Keyboard shortcuts: arrow keys navigate, <kbd className="rounded bg-stone-100 px-1 py-0.5 font-mono dark:bg-gray-800">Esc</kbd> toggles this panel, <kbd className="rounded bg-stone-100 px-1 py-0.5 font-mono dark:bg-gray-800">f</kbd> enters fullscreen.
           </p>
         </div>
+        <div className="mt-4 rounded-2xl border border-stone-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
+                Audience Track
+              </p>
+              <p className="mt-1 text-xs text-stone-500 dark:text-gray-500">
+                Tune the notes, labs, and recaps to your goal.
+              </p>
+            </div>
+            <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-700 dark:bg-gray-800 dark:text-gray-300">
+              {getTrackLabel(track)}
+            </span>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {(["conceptual", "builder", "educator"] as AudienceTrack[]).map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => onSelectTrack(option)}
+                className={`rounded-full px-3 py-1.5 text-xs transition-colors ${
+                  option === track
+                    ? "bg-cyan-600 text-white"
+                    : "bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
+                }`}
+              >
+                {getTrackLabel(option)}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={onToggleGuidedMode}
+            className={`mt-4 w-full rounded-2xl border px-4 py-3 text-left text-sm transition-colors ${
+              guidedMode
+                ? "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100"
+                : "border-stone-200 bg-stone-50 text-stone-700 dark:border-gray-800 dark:bg-gray-950/60 dark:text-gray-300"
+            }`}
+          >
+            <p className="font-semibold">Guided mode {guidedMode ? "on" : "off"}</p>
+            <p className="mt-1 text-xs opacity-80">
+              {guidedMode
+                ? "Learners must predict before touching key controls."
+                : "Open exploration. Demos unlock immediately."}
+            </p>
+          </button>
+        </div>
       </div>
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         {chapters.map((ch, i) => (
@@ -118,6 +187,48 @@ export function Sidebar({
             </div>
           </button>
         ))}
+        <div className="mt-6 rounded-2xl border border-stone-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
+            Mastery
+          </p>
+          <div className="mt-3 grid gap-2 text-sm">
+            <div className="rounded-2xl bg-stone-50 px-3 py-2 dark:bg-gray-950/60">
+              Checks understood: {masterySummary.completedChecks}/{Math.max(masterySummary.attemptedChecks, 1)}
+            </div>
+            <div className="rounded-2xl bg-stone-50 px-3 py-2 dark:bg-gray-950/60">
+              Chapter recaps reviewed: {masterySummary.reviewedChapters}
+            </div>
+          </div>
+          <div className="mt-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
+              Review queue
+            </p>
+            <div className="mt-2 space-y-2">
+              {reviewQueue.length === 0 ? (
+                <p className="rounded-2xl bg-stone-50 px-3 py-2 text-xs text-stone-500 dark:bg-gray-950/60 dark:text-gray-400">
+                  No weak concepts yet. Miss a checkpoint and it will appear here for review.
+                </p>
+              ) : (
+                reviewQueue.slice(0, 4).map((item) => {
+                  const chapterIndex = chapters.findIndex((chapter) => chapter.chapter === item.chapter);
+                  return (
+                    <button
+                      key={`${item.concept}-${item.chapter}`}
+                      type="button"
+                      onClick={() => chapterIndex >= 0 && onSelect(chapterIndex)}
+                      className="w-full rounded-2xl border border-stone-200 bg-stone-50 px-3 py-2 text-left text-xs text-stone-700 transition-colors hover:border-stone-300 hover:bg-white dark:border-gray-800 dark:bg-gray-950/60 dark:text-gray-300 dark:hover:bg-gray-900"
+                    >
+                      <p className="font-semibold">{item.concept}</p>
+                      <p className="mt-1 text-stone-500 dark:text-gray-400">
+                        Missed {item.misses} time{item.misses === 1 ? "" : "s"} · revisit Chapter {item.chapter}
+                      </p>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
       </nav>
       <div className="border-t border-stone-200 px-6 py-4 text-xs text-stone-500 dark:border-gray-800 dark:text-gray-500">
         Built for workshop pacing and solo reading. You can jump out of order, and the app will remember where you stopped.

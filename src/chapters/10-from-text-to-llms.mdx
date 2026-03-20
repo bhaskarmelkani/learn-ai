@@ -1,10 +1,22 @@
 ---
-title: "From Text to Tokens, Embeddings, Attention, and LLMs"
+title: "From Text to Tokens and Embeddings"
 chapter: 10
-subtitle: "The bridge from neural networks to modern language models"
+subtitle: "How language becomes numbers a neural network can work with"
 ---
 
-# From Text to Tokens, Embeddings, Attention, and LLMs
+# From Text to Tokens and Embeddings
+
+<ChapterBridge
+  why="This chapter starts the LLM section by stripping away the biggest confusion point: language models do not receive meaning directly. They receive token sequences turned into numbers."
+  buildsOn="Neural networks as systems that operate on numeric representations."
+  unlocks="Attention, next-token prediction, and the later discussion of LLM training and alignment."
+  map={["Text", "Tokens", "Embeddings", "Numeric representation"]}
+  trackFocus={{
+    conceptual: "The main leap is simple: text must be converted into learned numeric representations before a neural network can use it.",
+    builder: "Tokenization and embeddings are implementation choices with real downstream effects on cost, context length, and behavior.",
+    educator: "If learners skip this step, everything about LLMs feels magical instead of engineered."
+  }}
+/>
 
 By now we have the big pattern:
 
@@ -12,7 +24,7 @@ By now we have the big pattern:
 - parameters are learned from data
 - neural networks learn useful internal representations
 
-The final step is to ask: how do we apply that same story to language?
+The next question is: how do we apply that same story to language?
 
 ## Step 1: Break Text into Tokens
 
@@ -26,6 +38,8 @@ A token might be:
 - part of a word
 - punctuation
 - whitespace or formatting
+
+The reason is practical: a model needs a discrete unit it can look up, count, and represent numerically.
 
 ## Step 2: Turn Tokens into Vectors
 
@@ -42,45 +56,73 @@ You can think of an embedding as the model's learned numeric representation of a
 | `(` | another learned vector |
 | `ing` | another learned vector |
 
-## Step 3: Let Tokens Influence Each Other
+The important shift is this: once tokens become embeddings, language is now in a form a neural network can transform.
 
-For language, context matters.
+<CaseCards
+  title="Where tokenization and embeddings matter"
+  cards={[
+    {
+      title: "Code assistant",
+      product: "A developer prompt becomes a sequence of code tokens the model must continue or rewrite.",
+      modelIdea: "Tokenization decides how code fragments are chunked, while embeddings give those pieces learned numeric meaning inside the model.",
+      failureMode: "If learners think the model 'reads code like a person,' they miss why formatting, partial tokens, and token count limits matter so much.",
+      trackPrompt: {
+        builder: "This is where token cost and prompt length start becoming engineering constraints."
+      }
+    },
+    {
+      title: "Customer-support chatbot",
+      product: "User text becomes tokens and embeddings before any response reasoning happens.",
+      modelIdea: "The assistant is still a numeric model under the surface, even when the UX feels conversational.",
+      failureMode: "Without this mental model, teams may expect the model to understand context the way a human does rather than as transformed token patterns.",
+      trackPrompt: {
+        educator: "This is a good place to slow down and de-mystify 'conversation' as structured numeric processing."
+      }
+    }
+  ]}
+/>
 
-The token after "The cat sat on the" should be influenced by what came before it.
-
-That need leads to **attention**: a way for tokens to weigh which other tokens matter for the next prediction.
-
-## Step 4: Predict the Next Token
-
-Once the model has token embeddings and context-aware representations, it produces a probability distribution over possible next tokens.
-
-<TokenPredictionDemo />
-
-## The Architecture Name
-
-The architecture built around attention is called the **transformer**.
-
-When we train a transformer at large scale on next-token prediction, then add instruction-following and preference tuning, we get what people call an **LLM**.
-
-## The Smooth Connection
-
-So the progression is not:
-
-"simple models ... and then somehow magic LLMs."
-
-It is:
-
-1. models learn numbers
-2. lines learn simple patterns
-3. non-linear models learn curves
-4. neural networks learn internal features
-5. transformers let language tokens use context
-6. scale turns that into a powerful language model
-
-<Checkpoint prompt="What is the role of embeddings?">
-Embeddings turn discrete tokens into learned numeric vectors so a neural network can work with them.
-</Checkpoint>
+<Checkpoint
+  id="ch10-embeddings"
+  chapter={10}
+  prompt="What is the role of embeddings?"
+  concepts={["tokens", "embeddings", "llms"]}
+  options={[
+    {
+      label: "They turn discrete tokens into learned numeric vectors so the network can work with them.",
+      correct: true,
+      explanation: "Exactly. Embeddings are the bridge between symbolic token IDs and the numeric world neural networks operate in."
+    },
+    {
+      label: "They are the final output probabilities over next tokens.",
+      explanation: "Output probabilities come later. Embeddings are the internal representations used before later transformations and predictions."
+    },
+    {
+      label: "They replace the need for tokenization entirely.",
+      explanation: "Embeddings depend on tokens. Tokenization happens first so the model knows which discrete units it is representing."
+    }
+  ]}
+/>
 
 <Callout type="idea" title="Takeaway">
-An LLM is still the same core story: a model with learned parameters, trained to make better predictions. The main differences are language input, attention-based architecture, and scale.
+Before an LLM can predict language, text must be broken into tokens and converted into learned numeric representations.
 </Callout>
+
+<ChapterRecap
+  chapter={10}
+  summary={[
+    "Language models work on tokens, not raw human meaning.",
+    "Embeddings turn tokens into learned numeric vectors.",
+    "This numeric view is what lets later transformer layers operate on language."
+  ]}
+  checks={[
+    "Why does a neural network need tokenization before it can model text?",
+    "What problem do embeddings solve?"
+  ]}
+  nextStep="Next we explain how tokens use context and influence one another through attention."
+  trackActions={{
+    conceptual: "Keep the phrase 'text becomes numbers' in mind. It makes the rest of the LLM stack easier to trust and inspect.",
+    builder: "Think about how tokenization choices affect latency, context size, and downstream behavior.",
+    educator: "Make sure learners can say what tokens and embeddings are before talking about attention."
+  }}
+/>

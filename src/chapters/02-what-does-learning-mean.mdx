@@ -6,9 +6,21 @@ subtitle: "Training is just adjusting numbers until predictions improve"
 
 # What Does Learning Mean?
 
+<ChapterBridge
+  why="This chapter removes the biggest beginner misconception: 'learning' sounds mystical until you realize it is just repeated improvement against examples."
+  buildsOn="The idea that a model has parameters inside a chosen architecture."
+  unlocks="Regression, classification, and every later training loop in the course."
+  map={["Prediction", "Comparison", "Update", "Repeat"]}
+  trackFocus={{
+    conceptual: "Focus on the loop, not the formulas. The loop is the portable mental model.",
+    builder: "Think like a debugger: what information does the model need so an update can happen at all?",
+    educator: "This is where learners either calm down or panic. Keep 'learning' grounded in repeated correction."
+  }}
+/>
+
 Suppose we want a model that helps estimate house prices.
 
-At first, the model's guesses will be rough. The whole point of learning is to make those guesses better.
+At first, the model's guesses are rough. The whole point of learning is to make those guesses better.
 
 That is all training really is:
 
@@ -31,16 +43,42 @@ But the core idea is ordinary:
 Think of tuning a guitar. The guitar shape stays the same, but you keep adjusting the tuning pegs until the sound gets better. Training does the same thing with parameters.
 </Callout>
 
+<CaseCards
+  title="Where this loop shows up in products"
+  cards={[
+    {
+      title: "Recommendation system",
+      product: "Clicks, watch time, skips, and likes become a ranking of what to show next.",
+      modelIdea: "The system predicts which items are worth showing, then updates its internal numbers based on how users actually respond.",
+      failureMode: "If the feedback signal is shallow, the system can optimize for short-term clicks while making the product worse.",
+      trackPrompt: {
+        builder: "Ask what the true training signal is: clicks, watch time, conversions, or something else.",
+        educator: "Use this to show that improving a metric is not the same as improving the user experience."
+      }
+    },
+    {
+      title: "Resume screening tool",
+      product: "Resume text and candidate signals become a shortlist recommendation.",
+      modelIdea: "The model learns patterns from past labeled decisions or outcomes.",
+      failureMode: "If the historical labels reflect biased hiring patterns, training can preserve that bias instead of fixing it.",
+      trackPrompt: {
+        conceptual: "Learning is only as good as the examples and targets it is given.",
+        educator: "This is a strong case for explaining why 'better fit to history' can still be socially harmful."
+      }
+    }
+  ]}
+/>
+
 ## Two Common Kinds of Prediction
 
-The predictions we will study in this course mostly fall into two families:
+The predictions in this course mostly fall into two families:
 
 | Problem | Output | Example |
 |---------|--------|---------|
 | Predict a number | continuous value | house price |
 | Make a decision | category | approve / reject |
 
-The names for those families come later. First we want to feel the need for them.
+The names come later. First we want to feel the need for them.
 
 ## A Concrete Question
 
@@ -57,16 +95,53 @@ What is the most obvious first way to guess its price?
 
 Most people do the same thing: they imagine a line between the known examples and place the new house somewhere along that trend.
 
-That is where we will start next.
+That is where we start next.
 
 <Exercise title="Prediction First">
 Before going to the next chapter, make a quick guess for the 1500 sqft house. You do not need a formula yet. Just use the trend you see.
 </Exercise>
 
-<Checkpoint prompt="What changes during learning: the examples, or the model's numbers?">
-The examples stay fixed. The model's numbers change so its predictions line up better with those examples.
-</Checkpoint>
+<Checkpoint
+  id="ch2-learning-loop"
+  chapter={2}
+  prompt="What actually changes during learning?"
+  concepts={["training loop", "parameters", "examples"]}
+  options={[
+    {
+      label: "The model's numbers change so its predictions line up better with the examples.",
+      correct: true,
+      explanation: "Exactly. The model improves by changing internal parameters in response to the examples and targets it sees."
+    },
+    {
+      label: "The examples change so the model can stay the same.",
+      explanation: "That would destroy the whole point of supervised learning. The examples are the reference point the model is trying to match."
+    },
+    {
+      label: "Nothing changes until the model becomes fully accurate.",
+      explanation: "Training is gradual. Small updates happen long before the model is anywhere close to perfect."
+    }
+  ]}
+/>
 
 <Callout type="idea" title="Takeaway">
 Learning is not magic. It is repeated improvement: predict, compare, adjust, repeat.
 </Callout>
+
+<ChapterRecap
+  chapter={2}
+  summary={[
+    "Training is a loop, not a single moment.",
+    "Examples stay fixed while parameters move.",
+    "The same learning loop later drives regression, classification, and neural networks."
+  ]}
+  checks={[
+    "Why is 'predict, compare, adjust, repeat' a better explanation of machine learning than 'the model teaches itself'?",
+    "What information must exist before any supervised update can happen?"
+  ]}
+  nextStep="Next we put this loop inside the simplest possible predictive shape: a line."
+  trackActions={{
+    conceptual: "Say the training loop out loud until it feels boring. Boring is good here.",
+    builder: "Identify the target signal in one real system you know. What counts as 'reality' for the comparison step?",
+    educator: "Pressure-test whether the loop is intuitive before adding equations. If not, slow down."
+  }}
+/>

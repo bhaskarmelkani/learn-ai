@@ -1,0 +1,119 @@
+---
+title: "Context, Attention, and Next-Token Prediction"
+chapter: 11
+subtitle: "How tokens influence one another and how a language model chooses what comes next"
+---
+
+# Context, Attention, and Next-Token Prediction
+
+<ChapterBridge
+  why="Once text becomes tokens and embeddings, the next challenge is context: the meaning of a token depends on what came before it."
+  buildsOn="Tokens and embeddings as numeric inputs to a neural network."
+  unlocks="Transformers, next-token training, and later discussion of assistant behavior and failure modes."
+  map={["Context", "Attention", "Token scores", "Next-token distribution"]}
+  trackFocus={{
+    conceptual: "Treat attention as a mechanism for deciding which other tokens matter right now.",
+    builder: "This is the core transformer insight: context is not bolted on afterward. It is built into how tokens influence one another.",
+    educator: "This chapter is where learners often need permission to accept a simplified attention picture before the math."
+  }}
+/>
+
+For language, context matters.
+
+The token after "The cat sat on the" should be influenced by what came before it.
+
+That need leads to **attention**: a way for tokens to weigh which other tokens matter for the next prediction.
+
+## Attention as Context Selection
+
+At a high level, attention asks:
+
+- which earlier tokens matter most right now?
+- how strongly should they influence this position?
+- how should that context change the next prediction?
+
+This does **not** mean the model "understands" context like a person. It means the architecture has a learned way to move information between tokens.
+
+## Predict the Next Token
+
+Once the model has context-aware representations, it produces a probability distribution over possible next tokens.
+
+That distribution is the immediate output of the language model.
+
+<TokenPredictionDemo />
+
+## Why the Transformer Matters
+
+The architecture built around attention is called the **transformer**.
+
+Transformers matter because they let tokens interact with one another in a flexible, learned way instead of treating every token in isolation.
+
+<CaseCards
+  title="What attention changes in real products"
+  cards={[
+    {
+      title: "Legal-document assistant",
+      product: "A long clause or paragraph must be interpreted relative to terms that appeared much earlier in the document.",
+      modelIdea: "Attention helps the model decide which earlier tokens and phrases matter for the next prediction or summary step.",
+      failureMode: "If context is too long, noisy, or poorly framed, the model may attend to the wrong clues and confidently continue in the wrong direction.",
+      trackPrompt: {
+        builder: "Think of context quality as an input-design problem, not just a model-size problem."
+      }
+    },
+    {
+      title: "Coding copilot",
+      product: "The next line of code depends on imports, variable names, comments, and nearby structure.",
+      modelIdea: "Attention helps the model pull relevant tokens from different parts of the code context before scoring the next token.",
+      failureMode: "If the wrong local cue dominates, the model may produce syntactically plausible but semantically wrong code.",
+      trackPrompt: {
+        conceptual: "The model is predicting locally, but the local choice depends heavily on earlier context.",
+        educator: "This case makes 'context-sensitive prediction' feel concrete for non-ML learners."
+      }
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch11-attention"
+  chapter={11}
+  prompt="What is attention doing in this simplified story?"
+  concepts={["attention", "context", "transformers"]}
+  options={[
+    {
+      label: "It lets tokens weigh which other tokens matter for the current prediction.",
+      correct: true,
+      explanation: "Right. Attention is the architecture's way of moving context information between tokens in a learned, flexible way."
+    },
+    {
+      label: "It memorizes the entire training corpus word for word before making any prediction.",
+      explanation: "Attention is about context interaction inside the current sequence, not literal storage of the whole training set."
+    },
+    {
+      label: "It replaces tokenization by working directly on raw character meaning.",
+      explanation: "Tokenization still happens first. Attention operates on the token representations that come afterward."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Takeaway">
+Attention helps tokens use context, and the model's immediate job is still the same: predict a probability distribution over the next token.
+</Callout>
+
+<ChapterRecap
+  chapter={11}
+  summary={[
+    "Context matters because token meaning depends on surrounding tokens.",
+    "Attention is a learned mechanism for deciding which other tokens matter right now.",
+    "Transformers produce next-token distributions from these context-aware token representations."
+  ]}
+  checks={[
+    "Why is next-token prediction still the right frame even when the model seems to answer questions or write code?",
+    "What problem does attention solve that embeddings alone do not?"
+  ]}
+  nextStep="Next we separate base language-model training from the extra alignment steps that make some LLMs behave like assistants."
+  trackActions={{
+    conceptual: "Hold onto 'context-sensitive next-token prediction' as the bridge to assistant behavior.",
+    builder: "Start thinking about prompt quality and context assembly as system design, not magic prompt phrasing.",
+    educator: "This is the chapter to reinforce that transformers are engineered context machines, not minds."
+  }}
+/>

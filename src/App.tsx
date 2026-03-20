@@ -4,6 +4,7 @@ import { Sidebar } from "./components/Sidebar";
 import { SlideView } from "./components/SlideView";
 import { NavigationBar } from "./components/NavigationBar";
 import { useKeyboardNav } from "./hooks/useKeyboardNav";
+import { getTrackLabel, useLearning } from "./learning/LearningContext";
 
 const STORAGE_KEYS = {
   chapter: "learn-ai-current-chapter",
@@ -48,6 +49,13 @@ function getChapterHash(index: number) {
 }
 
 export default function App() {
+  const {
+    state: { track, guidedMode },
+    setTrack,
+    setGuidedMode,
+    masterySummary,
+    reviewQueue,
+  } = useLearning();
   const [current, setCurrent] = useState(getInitialChapter);
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window === "undefined" ? true : window.innerWidth >= 1024
@@ -122,6 +130,12 @@ export default function App() {
         progress={progress}
         onToggleSidebar={onToggleSidebar}
         onToggleTheme={() => setDark((d) => !d)}
+        track={track}
+        onSelectTrack={setTrack}
+        guidedMode={guidedMode}
+        onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
+        masterySummary={masterySummary}
+        reviewQueue={reviewQueue}
       />
       {sidebarVisible && !isDesktop && (
         <button
@@ -155,12 +169,15 @@ export default function App() {
                 {chapter.subtitle ?? "Build intuition step by step through concise explanations and live demos."}
               </p>
             </div>
+            <div className="hidden rounded-full bg-white px-3 py-1 text-xs font-medium text-stone-700 shadow-sm dark:bg-gray-900 dark:text-gray-200 md:block">
+              {getTrackLabel(track)}
+            </div>
             <div className="hidden text-right md:block">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
                 Progress
               </p>
               <p className="text-sm font-semibold text-stone-700 dark:text-gray-200">
-                {current + 1} / {chapters.length}
+                {current + 1} / {chapters.length} · {masterySummary.completedChecks} checks
               </p>
             </div>
           </div>

@@ -6,6 +6,18 @@ subtitle: "The bridge from classification to neural networks"
 
 # Why One Boundary Is Not Enough
 
+<ChapterBridge
+  why="This chapter explains the real need behind neural networks. The goal is not 'more layers because AI uses layers.' The goal is to solve patterns one boundary cannot capture."
+  buildsOn="Binary classification, thresholds, and decision boundaries."
+  unlocks="Hidden features, layered representations, and the logic behind neural networks."
+  map={["One score", "One boundary", "Multiple signals", "Better fit"]}
+  trackFocus={{
+    conceptual: "This is the most important bridge chapter in the course. If it lands, neural networks stop feeling mystical.",
+    builder: "Think in terms of representation power: what internal signals would you want a model to discover before the final decision?",
+    educator: "Do not rush this. The entire network section becomes easier once learners feel the need for internal detectors."
+  }}
+/>
+
 One score can create one boundary.
 
 That is powerful, but it has a clear limit: some decision problems do not look like one clean split.
@@ -31,6 +43,30 @@ Instead of asking the model for one final score immediately, we can first ask it
 
 Those intermediate signals are often called **features**, **detectors**, or **representations**.
 
+<CaseCards
+  title="What this looks like in real products"
+  cards={[
+    {
+      title: "Loan approval assistant",
+      product: "Income, savings, debt, and stability signals become an approval recommendation.",
+      modelIdea: "A useful model may need separate internal detectors for different ways a candidate can look strong or risky.",
+      failureMode: "One crude boundary can reject applicants who are strong in one dimension but unusual in another.",
+      trackPrompt: {
+        builder: "This is a good example of why hand-designed one-score heuristics hit a ceiling quickly."
+      }
+    },
+    {
+      title: "Content moderation system",
+      product: "Text, image, and metadata signals become a moderation decision.",
+      modelIdea: "Different internal detectors might look for harassment, sexual content, impersonation, or context cues separately before the final decision.",
+      failureMode: "A single coarse score can miss nuanced harms or overfire on safe content.",
+      trackPrompt: {
+        educator: "Use this to connect hidden representations with product safety rather than treating them as abstract neurons."
+      }
+    }
+  ]}
+/>
+
 ## Why This Matters
 
 This is the real bridge to neural networks.
@@ -41,6 +77,47 @@ Neural networks are not powerful because they are mysterious. They are powerful 
 Explain the bridge in plain language: why is one final boundary sometimes too weak, and why do multiple internal detectors help?
 </Exercise>
 
+<Checkpoint
+  id="ch7-detectors-bridge"
+  chapter={7}
+  prompt="Why do multiple internal detectors help?"
+  concepts={["representation", "hidden features", "decision boundaries"]}
+  options={[
+    {
+      label: "They let the model build several useful signals first and combine them into a richer final decision.",
+      correct: true,
+      explanation: "Exactly. Hidden detectors increase the model's ability to represent more complex patterns before the last step."
+    },
+    {
+      label: "They guarantee that every classification problem becomes perfectly separable.",
+      explanation: "More expressive structure helps, but it does not guarantee perfection or remove data-quality limits."
+    },
+    {
+      label: "They matter only because they create more parameters, not because they learn different signals.",
+      explanation: "Extra parameters matter only because they enable richer intermediate representations. Parameter count alone is not the point."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Takeaway">
 The jump to neural networks is really a jump from one score to many learned internal signals.
 </Callout>
+
+<ChapterRecap
+  chapter={7}
+  summary={[
+    "One score gives one boundary.",
+    "Some problems need multiple useful internal signals before the final decision.",
+    "Hidden representations are the conceptual bridge to neural networks."
+  ]}
+  checks={[
+    "Can you name a product problem where two different positive regions should both count as success?",
+    "Why is 'more detectors' a better intuition for networks than 'AI uses layers'?"
+  ]}
+  nextStep="Next we finally name the system that learns those internal detectors: the neural network."
+  trackActions={{
+    conceptual: "Treat hidden detectors as 'useful intermediate questions' the model learns to answer.",
+    builder: "Ask what useful intermediate representation would make your final task easier.",
+    educator: "If learners still think a network is 'just a bigger line,' pause here and revisit the bridge."
+  }}
+/>

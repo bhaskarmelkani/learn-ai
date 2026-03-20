@@ -6,6 +6,18 @@ subtitle: "Why some patterns need curves instead of lines"
 
 # When Straight Lines Fail
 
+<ChapterBridge
+  why="This chapter teaches the first honest reason to make a model more powerful: the world sometimes bends in ways a line cannot express."
+  buildsOn="Linear regression and the idea that every model family brings a different shape."
+  unlocks="Classification boundaries, hidden features, and the later jump to neural networks."
+  map={["Data pattern", "Model shape", "Fit quality", "Need for flexibility"]}
+  trackFocus={{
+    conceptual: "The core lesson is not the quadratic formula. It is the idea that model expressiveness must match the pattern.",
+    builder: "Model complexity should answer a data need, not just a desire to use something fancier.",
+    educator: "This is the bridge from 'one simple model' to 'different model families exist for a reason.'"
+  }}
+/>
+
 The same house-price story that made lines feel natural also shows where lines break.
 
 For smaller and mid-sized homes, price may rise steadily. But premium homes can rise faster because location, scarcity, and luxury effects start to matter more.
@@ -23,6 +35,31 @@ Before naming anything, just look at the problem:
 That means we need a model with more shape.
 
 <NonlinearDemo />
+
+<CaseCards
+  title="Products where the line breaks"
+  cards={[
+    {
+      title: "Cloud-cost forecasting",
+      product: "Usage signals become a cost forecast for next month.",
+      modelIdea: "A line may work at low usage, but discounts, thresholds, and bursting behavior can create strong non-linear effects.",
+      failureMode: "The forecast looks reliable on ordinary weeks and then fails badly during spikes or pricing step changes.",
+      trackPrompt: {
+        builder: "This is a reminder that system behavior often changes at thresholds, not smoothly forever."
+      }
+    },
+    {
+      title: "Customer growth model",
+      product: "Marketing spend becomes predicted signups.",
+      modelIdea: "Early spend can help a lot, then saturation kicks in, then new channels bend the curve again.",
+      failureMode: "A linear model can overpromise growth or hide diminishing returns.",
+      trackPrompt: {
+        conceptual: "The important feeling is that one straight trend is sometimes too rigid for reality.",
+        educator: "This case makes non-linearity feel like a business reality, not just a math upgrade."
+      }
+    }
+  ]}
+/>
 
 ## Naming the Idea
 
@@ -46,10 +83,47 @@ A line is great when the world looks roughly linear.
 
 But if the pattern bends, the model needs more expressive shape. That is the first hint that simple models may not be enough for all problems.
 
-<Exercise title="Tiny Challenge">
-Set the curve term to zero in the demo. What gets worse immediately?
-</Exercise>
+<Checkpoint
+  id="ch5-expressiveness"
+  chapter={5}
+  prompt="Why do we add a more flexible model shape here?"
+  concepts={["non-linearity", "model family", "expressiveness"]}
+  options={[
+    {
+      label: "Because the pattern bends in a way one straight line cannot represent well.",
+      correct: true,
+      explanation: "Yes. More expressive shape is justified only because the data pattern asks for it."
+    },
+    {
+      label: "Because every later AI system must always use the most complex model possible.",
+      explanation: "Complexity is not automatically better. We add it when simpler shapes stop matching the pattern."
+    },
+    {
+      label: "Because training stops working on linear models once there are enough data points.",
+      explanation: "Training still works on linear models. The issue here is mismatch between model shape and data shape."
+    }
+  ]}
+/>
 
 <Callout type="idea" title="Takeaway">
 When reality bends, the model must gain more shape. That is the intuition behind non-linear models.
 </Callout>
+
+<ChapterRecap
+  chapter={5}
+  summary={[
+    "Model families differ in the shapes they can represent.",
+    "More expressive models are useful only when the data pattern requires them.",
+    "Non-linearity is the first signal that simple one-shape models will not solve every problem."
+  ]}
+  checks={[
+    "What concrete sign in the data tells you a straight line is no longer enough?",
+    "Why is extra model complexity justified here but not automatically elsewhere?"
+  ]}
+  nextStep="Next we switch from predicting numbers to making decisions and probability-based choices."
+  trackActions={{
+    conceptual: "Say the lesson as 'shape should match pattern.' That sentence carries a lot of future meaning.",
+    builder: "Treat this as the first model-selection decision in the course: complexity should answer a real failure mode.",
+    educator: "Ask learners to contrast 'the line trained poorly' with 'the line was the wrong shape.'"
+  }}
+/>

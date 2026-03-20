@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Slider } from "./Slider";
+import { GuidedPrediction } from "./GuidedPrediction";
+import { useLearning } from "../../learning/LearningContext";
 
 const LABELS = ["Cat", "Dog", "Bird"] as const;
 
@@ -11,13 +13,22 @@ function softmax(values: number[]) {
 }
 
 export function SoftmaxDemo() {
+  const {
+    state: { guidedMode },
+  } = useLearning();
   const [cat, setCat] = useState(2.2);
   const [dog, setDog] = useState(1.1);
   const [bird, setBird] = useState(0.2);
+  const [guidedLocked, setGuidedLocked] = useState(guidedMode);
+
+  useEffect(() => {
+    setGuidedLocked(guidedMode);
+  }, [guidedMode]);
 
   const logits = [cat, dog, bird];
   const probs = useMemo(() => softmax(logits), [cat, dog, bird]);
   const winnerIndex = probs.indexOf(Math.max(...probs));
+  const controlsDisabled = guidedMode && guidedLocked;
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -35,6 +46,32 @@ export function SoftmaxDemo() {
             </p>
           </div>
 
+          {guidedMode && (
+            <GuidedPrediction
+              title="Predict the probability tradeoff"
+              prompt="If you raise the dog score and keep the others fixed, what should happen to the other probabilities?"
+              compareText="Unlock the sliders, move only the dog score, and compare how the whole probability distribution rebalances."
+              onUnlockChange={setGuidedLocked}
+              choices={[
+                {
+                  value: "rebalance",
+                  label: "Dog probability rises and at least one other class must fall because the total still sums to 1.",
+                  explanation: "Exactly. Softmax couples the classes, so one score changing reshapes the whole distribution.",
+                },
+                {
+                  value: "independent",
+                  label: "Dog rises, but the other class probabilities stay unchanged.",
+                  explanation: "That would be independent binary outputs, not softmax. Softmax compares classes against each other.",
+                },
+                {
+                  value: "all",
+                  label: "All class probabilities rise together because all scores are positive.",
+                  explanation: "Probabilities cannot all rise together in a softmax output because they must add up to 1.",
+                },
+              ]}
+            />
+          )}
+
           <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/60">
             {LABELS.map((label, index) => (
               <div key={label} className="mb-3 last:mb-0">
@@ -44,6 +81,7 @@ export function SoftmaxDemo() {
                   min={-2}
                   max={4}
                   step={0.1}
+                  disabled={controlsDisabled}
                   onChange={(value) => {
                     if (index === 0) setCat(value);
                     if (index === 1) setDog(value);

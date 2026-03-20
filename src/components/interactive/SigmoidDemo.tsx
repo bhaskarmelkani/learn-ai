@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Graph, PlotLine, PlotPoints } from "./Graph";
 import { Slider } from "./Slider";
+import { GuidedPrediction } from "./GuidedPrediction";
+import { useLearning } from "../../learning/LearningContext";
 
 const DATA: [number, number][] = [
   [-4.0, 0],
@@ -26,12 +28,21 @@ function sigmoid(z: number) {
 }
 
 export function SigmoidDemo() {
+  const {
+    state: { guidedMode },
+  } = useLearning();
   const [w, setW] = useState(INITIAL_W);
   const [b, setB] = useState(INITIAL_B);
+  const [guidedLocked, setGuidedLocked] = useState(guidedMode);
+
+  useEffect(() => {
+    setGuidedLocked(guidedMode);
+  }, [guidedMode]);
 
   const probability = (x: number) => sigmoid(w * x + b);
   const rawScore = (x: number) => w * x + b;
   const boundary = Math.abs(w) < 1e-9 ? null : -b / w;
+  const controlsDisabled = guidedMode && guidedLocked;
 
   const { accuracy, midpointScore } = useMemo(() => {
     const correct = DATA.filter(([x, y]) => (probability(x) >= THRESHOLD ? 1 : 0) === y).length;
@@ -56,6 +67,32 @@ export function SigmoidDemo() {
               First we compute a raw score <span className="font-mono">z = wx + b</span>. Then sigmoid turns that score into a probability between 0 and 1.
             </p>
           </div>
+
+          {guidedMode && (
+            <GuidedPrediction
+              title="Predict the boundary shift"
+              prompt="If you increase the bias while keeping the weight fixed, what should happen to the decision boundary?"
+              compareText="Unlock the sliders, move only b, and compare the vertical decision-boundary line with the curve."
+              onUnlockChange={setGuidedLocked}
+              choices={[
+                {
+                  value: "left",
+                  label: "The decision boundary moves left, so approval becomes easier.",
+                  explanation: "Correct. A larger bias raises the raw score everywhere, so the 0.5 crossing happens earlier in x.",
+                },
+                {
+                  value: "steeper",
+                  label: "The curve gets steeper, but the boundary stays fixed.",
+                  explanation: "Steepness mostly comes from weight. Bias shifts the curve left or right instead.",
+                },
+                {
+                  value: "threshold",
+                  label: "The 0.5 threshold itself moves upward on the graph.",
+                  explanation: "The threshold line is fixed at 0.5. The curve and boundary move relative to that line.",
+                },
+              ]}
+            />
+          )}
 
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: the horizontal 0.5 line is just the <strong>probability threshold</strong>. The real decision boundary is the <strong>x-value</strong> where the curve crosses it.
@@ -102,16 +139,17 @@ export function SigmoidDemo() {
             </p>
           </div>
 
-          <Slider label="w" value={w} min={0.2} max={2.2} step={0.05} onChange={setW} />
-          <Slider label="b" value={b} min={-2.5} max={2.5} step={0.05} onChange={setB} />
+          <Slider label="w" value={w} min={0.2} max={2.2} step={0.05} onChange={setW} disabled={controlsDisabled} />
+          <Slider label="b" value={b} min={-2.5} max={2.5} step={0.05} onChange={setB} disabled={controlsDisabled} />
 
           <div className="flex justify-center">
             <button
+              disabled={controlsDisabled}
               onClick={() => {
                 setW(INITIAL_W);
                 setB(INITIAL_B);
               }}
-              className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-stone-400 hover:bg-white dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+              className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-stone-400 hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
             >
               Reset sliders
             </button>

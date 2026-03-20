@@ -6,6 +6,18 @@ subtitle: "Forward pass, backward pass, validation, and the training loop"
 
 # How Networks Learn
 
+<ChapterBridge
+  why="This chapter shows that neural-network training is not a new kind of magic. It is the same loop as before, just with many more parameters and a smarter credit-assignment step."
+  buildsOn="The training loop for simple models and the idea of hidden representations."
+  unlocks="Modern deep-learning training, overfitting awareness, and later LLM training concepts."
+  map={["Forward pass", "Loss", "Backward pass", "Validation"]}
+  trackFocus={{
+    conceptual: "Backpropagation is best learned as credit assignment before it is learned as calculus.",
+    builder: "This is the chapter where optimization and generalization finally meet.",
+    educator: "Use plain-language blame-and-credit language first. Symbols can come later."
+  }}
+/>
+
 The training loop for neural networks is the same loop we already saw with a line:
 
 1. make predictions
@@ -28,7 +40,7 @@ The formal name for that backward credit assignment is **backpropagation**.
 Backpropagation is best understood as “how blame and credit move backward through the network,” not as a wall of calculus symbols.
 </Callout>
 
-## Runnable Notebook
+## Guided Lab
 
 The notebook below trains a tiny neural network directly in the browser.
 
@@ -45,10 +57,75 @@ That is why we separate:
 
 <TrainingCurveDemo />
 
+<CaseCards
+  title="Why generalization matters"
+  cards={[
+    {
+      title: "Customer-support routing model",
+      product: "Incoming ticket text becomes a routing decision for the right team.",
+      modelIdea: "The model needs to perform well on new tickets, not just the ones it already saw during training.",
+      failureMode: "A model can memorize wording patterns from historical tickets and then collapse when new product names or issue types arrive.",
+      trackPrompt: {
+        builder: "Validation is the reality check that stops you from trusting training loss alone."
+      }
+    },
+    {
+      title: "Student-success predictor",
+      product: "Behavioral and course signals become a dropout-risk score.",
+      modelIdea: "The model's value depends on whether it generalizes to future cohorts, not whether it memorizes last semester.",
+      failureMode: "An overfit model can look brilliant on old data and useless on the next term's students.",
+      trackPrompt: {
+        educator: "This is the right chapter to connect overfitting with real decision harm."
+      }
+    }
+  ]}
+/>
+
 <Exercise title="Tiny Challenge">
 Switch between underfit, balanced, and overfit. Which setting looks best on training data? Which one gives the best validation story?
 </Exercise>
 
+<Checkpoint
+  id="ch9-validation"
+  chapter={9}
+  prompt="Why do we keep validation data separate from training data?"
+  concepts={["generalization", "validation", "overfitting"]}
+  options={[
+    {
+      label: "Because we need a check on whether the model works on unseen examples instead of just the data it practiced on.",
+      correct: true,
+      explanation: "Exactly. Validation is how we test whether the learned pattern transfers beyond the training examples."
+    },
+    {
+      label: "Because training data is only for measuring loss and should never update parameters.",
+      explanation: "That is backward. Training data is precisely what updates the parameters."
+    },
+    {
+      label: "Because validation data makes backpropagation mathematically simpler.",
+      explanation: "Validation is about trustworthy evaluation, not simplifying the gradient calculation."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Takeaway">
 Training a neural network is still the same prediction-measure-update loop. The difference is that we are now adjusting many layers of learned detectors.
 </Callout>
+
+<ChapterRecap
+  chapter={9}
+  summary={[
+    "Forward pass computes predictions; backward pass sends credit and blame backward.",
+    "Training loss alone is not enough to trust a model.",
+    "Validation checks whether the model generalizes beyond the examples it optimized on."
+  ]}
+  checks={[
+    "Can you explain backpropagation without using calculus?",
+    "Why can a low training loss still be bad news?"
+  ]}
+  nextStep="Next we turn from general neural-network ideas to the specific choices that make language models work."
+  trackActions={{
+    conceptual: "Keep 'credit assignment' as the main intuition for backpropagation.",
+    builder: "Start treating validation as a product-safety habit, not just a training metric.",
+    educator: "This chapter is a good place to reinforce that apparent performance can be misleading."
+  }}
+/>

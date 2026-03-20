@@ -1,0 +1,126 @@
+---
+title: "From Pretraining to Aligned LLMs"
+chapter: 12
+subtitle: "Base models, assistant behavior, and the practical failure modes teams need to expect"
+---
+
+# From Pretraining to Aligned LLMs
+
+<ChapterBridge
+  why="This chapter fixes the biggest oversimplification in many LLM explainers: a base language model and an assistant-like LLM are related, but they are not the same training stage."
+  buildsOn="Tokens, embeddings, attention, and next-token prediction."
+  unlocks="A more honest product understanding of instruction tuning, preference optimization, retrieval, tools, and failure handling."
+  map={["Pretraining", "Base LLM", "Instruction tuning", "Aligned assistant"]}
+  trackFocus={{
+    conceptual: "The key distinction is base model vs assistant behavior.",
+    builder: "Treat an LLM product as a system layer stack: base model, alignment, retrieval, tool use, and UX guardrails.",
+    educator: "This chapter is where learners need nuance. Helpful behavior is an added training and product layer, not the whole definition of an LLM."
+  }}
+/>
+
+At large scale, a transformer trained on next-token prediction is already a **language model**.
+
+That base model learns broad statistical patterns of language, code, and structure from its training data.
+
+## Base Model vs Assistant
+
+A base language model is optimized to continue text.
+
+An assistant-style LLM is what you get when extra steps are added on top, such as:
+
+- **instruction tuning** so the model follows tasks more reliably
+- **preference optimization / alignment tuning** so outputs better match human preferences
+- product-level systems such as retrieval, tools, memory, moderation, and UX constraints
+
+That means it is more accurate to say:
+
+1. pretraining creates a base language model
+2. alignment steps can make that model more useful as an assistant
+3. product systems around the model shape the real user experience
+
+## Important Failure Modes
+
+Even a strong LLM product can still fail in familiar ways:
+
+- hallucinating unsupported details
+- following the wrong instruction from messy context
+- sounding confident when evidence is weak
+- failing silently on long or noisy context
+- inheriting bias from training data or retrieval data
+
+The right mental model is not "the LLM knows" but "the system predicts likely continuations under learned patterns and product constraints."
+
+## Retrieval and Tools Are System Layers
+
+Modern AI products often add **retrieval**, **tool use**, or **workflow logic** around the model.
+
+That can make the product much more useful, but it also means the visible behavior is not coming from the base model alone.
+
+<CaseCards
+  title="What aligned LLM systems really look like"
+  cards={[
+    {
+      title: "Customer-support assistant with retrieval",
+      product: "The system answers with a language model plus retrieved help-center content.",
+      modelIdea: "The base model generates text, but retrieval supplies grounded context and the product wrapper decides how that context is used.",
+      failureMode: "If retrieval fetches the wrong document, the assistant can still sound polished while being wrong.",
+      trackPrompt: {
+        builder: "Do not attribute every product behavior to the base model. System design choices around retrieval often dominate quality."
+      }
+    },
+    {
+      title: "Teacher-facing lesson generator",
+      product: "A classroom tool turns prompts and standards into lesson drafts and quizzes.",
+      modelIdea: "Instruction tuning makes the model more assistant-like, but quality also depends on prompt structure, templates, review flows, and educator trust.",
+      failureMode: "A fluent draft can hide shallow pedagogy or factual slips if the surrounding workflow has no review checkpoints.",
+      trackPrompt: {
+        educator: "This is the clearest example of why polished language is not the same as verified instructional quality."
+      }
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch12-base-vs-aligned"
+  chapter={12}
+  prompt="Which statement is the most accurate?"
+  concepts={["llms", "pretraining", "alignment", "assistant systems"]}
+  options={[
+    {
+      label: "Pretraining produces a base language model, and alignment steps can make that model behave more like an assistant.",
+      correct: true,
+      explanation: "Yes. This is the cleanest way to separate base LLM training from later assistant behavior."
+    },
+    {
+      label: "An LLM is only an LLM after instruction tuning and preference optimization.",
+      explanation: "That is too narrow. A pretrained transformer language model is already an LLM, even before assistant-style alignment steps."
+    },
+    {
+      label: "Retrieval and tool use happen inside the model's weights, so product teams do not need to think about them separately.",
+      explanation: "In practice they are often system layers around the model, and they need separate product and engineering design."
+    }
+  ]}
+/>
+
+<Callout type="warning" title="Modern Product Reality">
+An LLM product is usually not just "one model." It is a model plus prompts, retrieval, tool access, guardrails, UX, evaluation, and human oversight.
+</Callout>
+
+<ChapterRecap
+  chapter={12}
+  summary={[
+    "A pretrained transformer language model is already an LLM.",
+    "Instruction tuning and preference optimization shape assistant-like behavior on top of that base.",
+    "Real AI products often depend on retrieval, tools, and workflow design around the model."
+  ]}
+  checks={[
+    "Can you explain the difference between a base model and an assistant-style system?",
+    "Why is fluent output not enough to trust an LLM product?"
+  ]}
+  nextStep="The final chapter turns these ideas into a capstone teardown of an AI product."
+  trackActions={{
+    conceptual: "Use 'base model vs aligned assistant' as your clean mental split.",
+    builder: "Start thinking like a systems designer, not just a model selector.",
+    educator: "Center trust, review, and failure handling as part of the AI lesson rather than an appendix."
+  }}
+/>

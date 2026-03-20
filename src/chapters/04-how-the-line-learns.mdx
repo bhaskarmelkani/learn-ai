@@ -6,6 +6,18 @@ subtitle: "Error, loss, gradient descent, and why outliers matter"
 
 # How the Line Learns
 
+<ChapterBridge
+  why="This is the chapter where the model stops being a static equation and becomes something that improves itself from data."
+  buildsOn="Weight, bias, and the idea that changing parameters changes predictions."
+  unlocks="Optimization, robustness, and the same training loop inside later neural networks."
+  map={["Prediction", "Loss", "Gradient", "Update"]}
+  trackFocus={{
+    conceptual: "Treat loss as a 'badness score' and gradient descent as repeated downhill steps.",
+    builder: "Notice how the update rule turns a static model into a trainable system.",
+    educator: "This chapter works best when learners feel the geometry of improvement before they face formal math."
+  }}
+/>
+
 Drawing a good line by hand is helpful for intuition.
 
 But once we have many houses, we want the model to improve its own line from data.
@@ -25,7 +37,7 @@ For many examples, we need one summary number. A common choice is **mean squared
 
 $$\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
 
-The name is less important than the intuition: lower MSE means the line fits the data better.
+The name matters less than the intuition: lower MSE means the line fits the data better.
 
 ## Improving the Line
 
@@ -37,9 +49,51 @@ That update process is called **gradient descent**.
 
 <GradientDescentDemo />
 
-<Checkpoint prompt="What happens if the learning rate is too high?">
-The updates can overshoot the good region and bounce around instead of settling down.
-</Checkpoint>
+<CaseCards
+  title="Why optimization quality matters in products"
+  cards={[
+    {
+      title: "Ad bidding system",
+      product: "Campaign and user signals become a bid or ranking score.",
+      modelIdea: "Training tries to lower a loss by nudging parameters so useful predictions get better over time.",
+      failureMode: "If optimization is unstable or the objective is poorly chosen, the system can chase the wrong behavior at massive scale.",
+      trackPrompt: {
+        builder: "Ask what the loss is actually rewarding. Stable optimization on a bad objective still produces a bad product."
+      }
+    },
+    {
+      title: "Fraud detector",
+      product: "Transaction features become a fraud risk score.",
+      modelIdea: "The system needs a consistent way to measure wrongness before it can improve its parameters.",
+      failureMode: "Rare but extreme cases can dominate the fit or produce brittle thresholds if the training story is naive.",
+      trackPrompt: {
+        educator: "This is a good chapter to connect optimization with downstream business and trust costs."
+      }
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch4-learning-rate"
+  chapter={4}
+  prompt="What happens if the learning rate is too high?"
+  concepts={["gradient descent", "optimization", "learning rate"]}
+  options={[
+    {
+      label: "Updates can overshoot the good region and bounce around instead of settling down.",
+      correct: true,
+      explanation: "Exactly. Larger steps can help only up to a point. After that, the update rule becomes unstable."
+    },
+    {
+      label: "The model always learns faster and reaches a better answer.",
+      explanation: "A higher learning rate is not automatically better. Too much step size can work against convergence."
+    },
+    {
+      label: "The data points move to make the loss surface easier.",
+      explanation: "The data stays fixed. The learning rate changes step size on the same loss surface."
+    }
+  ]}
+/>
 
 ## One Weird Point Can Move the Whole Story
 
@@ -49,9 +103,9 @@ If one house sale looks very unusual, it can pull the line away from the main cl
 
 <LinearRegressionOutlierDemo />
 
-## Notebook Lab
+## Guided Lab
 
-Now that the idea is clear, edit the training loop directly and watch the line improve.
+Now that the loop is clear, edit the training code directly and watch the numbers move.
 
 <LinearRegressionNotebook />
 
@@ -62,3 +116,22 @@ Say the training loop in plain language without math symbols: prediction, measur
 <Callout type="idea" title="Takeaway">
 Learning a line means measuring error and repeatedly updating the parameters until the fit improves.
 </Callout>
+
+<ChapterRecap
+  chapter={4}
+  summary={[
+    "Loss gives one summary number for how wrong the model is.",
+    "Gradient descent uses that signal to move parameters downhill.",
+    "Outliers matter because not every point pulls on the fit equally."
+  ]}
+  checks={[
+    "Why does a training loop need both a loss and an update rule?",
+    "What is the product risk of ignoring outliers or edge cases?"
+  ]}
+  nextStep="Next we keep the same training story but change the shape of the model when a straight line stops being enough."
+  trackActions={{
+    conceptual: "Keep the picture of downhill steps. That picture survives even when the math gets harder.",
+    builder: "Notice how sensitive training can be to hyperparameters and data quality even in tiny examples.",
+    educator: "Ask learners to explain why a weird point can move the whole fit before you leave the chapter."
+  }}
+/>

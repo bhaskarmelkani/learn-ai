@@ -1,6 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Graph, PlotLine, PlotPoints } from "./Graph";
 import { Slider } from "./Slider";
+import { GuidedPrediction } from "./GuidedPrediction";
+import { useLearning } from "../../learning/LearningContext";
 
 type Mode = "single" | "detectors";
 
@@ -31,11 +33,19 @@ function detectorPrediction(x: number, y: number, xThreshold: number, yThreshold
 }
 
 export function DecisionBoundaryBridgeDemo() {
+  const {
+    state: { guidedMode },
+  } = useLearning();
   const [mode, setMode] = useState<Mode>("single");
   const [slope, setSlope] = useState(0.9);
   const [intercept, setIntercept] = useState(0.5);
   const [xThreshold, setXThreshold] = useState(3.3);
   const [yThreshold, setYThreshold] = useState(3.4);
+  const [guidedLocked, setGuidedLocked] = useState(guidedMode);
+
+  useEffect(() => {
+    setGuidedLocked(guidedMode);
+  }, [guidedMode]);
 
   const accuracy = useMemo(() => {
     const singleCorrect =
@@ -50,6 +60,7 @@ export function DecisionBoundaryBridgeDemo() {
 
     return mode === "single" ? singleCorrect / 12 : detectorCorrect / 12;
   }, [intercept, mode, slope, xThreshold, yThreshold]);
+  const controlsDisabled = guidedMode && guidedLocked;
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -67,9 +78,36 @@ export function DecisionBoundaryBridgeDemo() {
             </p>
           </div>
 
+          {guidedMode && (
+            <GuidedPrediction
+              title="Predict which strategy fits better"
+              prompt="This dataset has two separate positive regions. Which mode should fit that pattern more naturally?"
+              compareText="Unlock the controls, compare one boundary vs two detectors, and watch how accuracy changes."
+              onUnlockChange={setGuidedLocked}
+              choices={[
+                {
+                  value: "detectors",
+                  label: "Two detectors, because they can separately capture the two useful regions.",
+                  explanation: "Yes. This is the bridge to hidden features: separate detectors can model separate useful conditions.",
+                },
+                {
+                  value: "single",
+                  label: "One boundary, because one line is always the simplest and therefore the best fit.",
+                  explanation: "Simplicity helps only when the pattern matches it. Here one line cannot carve out two different positive regions well.",
+                },
+                {
+                  value: "same",
+                  label: "Both modes should behave almost the same because the labels are fixed.",
+                  explanation: "The labels are fixed, but the representation is not. Better internal structure can fit the same labels differently.",
+                },
+              ]}
+            />
+          )}
+
           <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setMode("single")}
+              <button
+              onClick={() => !controlsDisabled && setMode("single")}
+              disabled={controlsDisabled}
               className={`rounded-full px-3 py-1.5 text-xs transition-colors ${
                 mode === "single"
                   ? "bg-cyan-600 text-white"
@@ -78,8 +116,9 @@ export function DecisionBoundaryBridgeDemo() {
             >
               One boundary
             </button>
-            <button
-              onClick={() => setMode("detectors")}
+              <button
+              onClick={() => !controlsDisabled && setMode("detectors")}
+              disabled={controlsDisabled}
               className={`rounded-full px-3 py-1.5 text-xs transition-colors ${
                 mode === "detectors"
                   ? "bg-cyan-600 text-white"
@@ -105,13 +144,14 @@ export function DecisionBoundaryBridgeDemo() {
 
           {mode === "single" ? (
             <>
-              <Slider label="m" value={slope} min={-0.2} max={1.8} step={0.05} onChange={setSlope} />
+              <Slider label="m" value={slope} min={-0.2} max={1.8} step={0.05} onChange={setSlope} disabled={controlsDisabled} />
               <Slider
                 label="b"
                 value={intercept}
                 min={-0.8}
                 max={3.5}
                 step={0.05}
+                disabled={controlsDisabled}
                 onChange={setIntercept}
               />
               <p className="text-xs text-stone-500 dark:text-gray-500">
@@ -126,6 +166,7 @@ export function DecisionBoundaryBridgeDemo() {
                 min={2.4}
                 max={4.4}
                 step={0.05}
+                disabled={controlsDisabled}
                 onChange={setXThreshold}
               />
               <Slider
@@ -134,6 +175,7 @@ export function DecisionBoundaryBridgeDemo() {
                 min={2.4}
                 max={4.4}
                 step={0.05}
+                disabled={controlsDisabled}
                 onChange={setYThreshold}
               />
               <p className="text-xs text-stone-500 dark:text-gray-500">

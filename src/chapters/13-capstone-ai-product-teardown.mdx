@@ -1,0 +1,94 @@
+---
+title: "Capstone: Teardown an AI Product End to End"
+chapter: 13
+subtitle: "Bring the full course together through product thinking, model thinking, and failure analysis"
+---
+
+# Capstone: Teardown an AI Product End to End
+
+<ChapterBridge
+  why="A tutorial becomes a learning product only when learners can transfer the concepts to a new case. This capstone is where the course stops telling and starts asking."
+  buildsOn="Everything in the course: inputs, outputs, parameters, training loops, thresholds, hidden representations, and LLM system layers."
+  unlocks="Independent analysis of AI products instead of chapter-by-chapter imitation."
+  map={["Input / output", "Model choice", "Training signal", "Failure handling"]}
+  trackFocus={{
+    conceptual: "Your goal is to explain the system clearly without falling back on buzzwords.",
+    builder: "Your goal is to choose the right model and surface the real system and evaluation constraints.",
+    educator: "Your goal is to connect pedagogy, product trust, and human oversight."
+  }}
+/>
+
+The course has built one repeated habit:
+
+- what goes in?
+- what comes out?
+- what numbers get learned?
+- what failure mode matters?
+- how would a human catch that failure?
+
+Now use that habit on a product of your own.
+
+<CapstoneStudio />
+
+<CaseCards
+  title="What strong capstones should surface"
+  cards={[
+    {
+      title: "Grounding and evidence",
+      product: "Any AI assistant that sounds fluent but cannot show where its answer came from.",
+      modelIdea: "A good product teardown separates raw generation from grounding, retrieval, or human review.",
+      failureMode: "Teams often over-credit the model and under-design the evidence and review layer."
+    },
+    {
+      title: "Error ownership",
+      product: "Any decision-support system used by clinicians, teachers, recruiters, or customer-support agents.",
+      modelIdea: "The product needs a clear human loop, not just a prediction score.",
+      failureMode: "If no one owns the correction path, the system can quietly cause harm while looking efficient."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch13-system-thinking"
+  chapter={13}
+  prompt="What makes an AI product analysis trustworthy?"
+  concepts={["product teardown", "evaluation", "human oversight"]}
+  options={[
+    {
+      label: "It identifies the input/output story, the model or system choice, the likely failure mode, and how that failure gets caught.",
+      correct: true,
+      explanation: "Yes. A trustworthy analysis covers both how the system works and how the team would know when it is going wrong."
+    },
+    {
+      label: "It describes the architecture name and parameter count, because that tells you almost everything important.",
+      explanation: "Architecture matters, but product quality depends just as much on data, evaluation, workflow, and safeguards."
+    },
+    {
+      label: "It focuses mainly on whether the UI feels polished, because product trust comes from presentation.",
+      explanation: "Presentation helps, but it cannot replace evidence, evaluation, and failure handling."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Final Takeaway">
+Good AI understanding is not memorizing vocabulary. It is being able to explain the system, predict its likely strengths, and anticipate where it can fail.
+</Callout>
+
+<ChapterRecap
+  chapter={13}
+  summary={[
+    "A mature AI explanation includes model choice, training signal, and failure handling.",
+    "Modern AI products are systems, not just model names.",
+    "The strongest sign of understanding is transfer: applying the concepts to a new product case."
+  ]}
+  checks={[
+    "Can you explain an AI product from inputs to oversight without hiding behind jargon?",
+    "Can you name the failure mode that would matter most to the user, not just to the model?"
+  ]}
+  nextStep="From here, the best path depends on your track: deepen the math, build a project, or design stronger learning experiences."
+  trackActions={{
+    conceptual: "Repeat the capstone on a real product you use. If the explanation still feels fuzzy, revisit the weak concepts in your review queue.",
+    builder: "Turn one capstone scenario into a real prototype spec: data, eval metrics, failure tests, and system layers.",
+    educator: "Use the capstone as a teaching prompt. Ask learners to defend their model and oversight choices in plain language."
+  }}
+/>
