@@ -1,4 +1,11 @@
-import { type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
+
+type PlotRenderProps = {
+  toX: (x: number) => number;
+  toY: (y: number) => number;
+  xMin: number;
+  xMax: number;
+};
 
 interface GraphProps {
   xMin?: number;
@@ -7,7 +14,7 @@ interface GraphProps {
   yMax?: number;
   width?: number;
   height?: number;
-  children?: ReactNode;
+  children?: ReactNode | ((props: PlotRenderProps) => ReactNode);
 }
 
 const PAD = { top: 20, right: 20, bottom: 35, left: 45 };
@@ -21,6 +28,7 @@ export function Graph({
   height = 300,
   children,
 }: GraphProps) {
+  const clipPathId = useId();
   const w = width - PAD.left - PAD.right;
   const h = height - PAD.top - PAD.bottom;
 
@@ -65,13 +73,13 @@ export function Graph({
       <line x1={toX(0)} y1={PAD.top} x2={toX(0)} y2={PAD.top + h} className="stroke-gray-400 dark:stroke-gray-500" strokeWidth={1} />
       {/* Clip area */}
       <defs>
-        <clipPath id="plot-area">
+        <clipPath id={clipPathId}>
           <rect x={PAD.left} y={PAD.top} width={w} height={h} />
         </clipPath>
       </defs>
-      <g clipPath="url(#plot-area)">
+      <g clipPath={`url(#${clipPathId})`}>
         {typeof children === "function"
-          ? (children as (fns: { toX: (x: number) => number; toY: (y: number) => number; xMin: number; xMax: number }) => ReactNode)({ toX, toY, xMin, xMax })
+          ? children({ toX, toY, xMin, xMax })
           : children}
       </g>
     </svg>

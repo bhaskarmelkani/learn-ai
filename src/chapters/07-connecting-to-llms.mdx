@@ -12,10 +12,10 @@ Everything we've learned builds directly to Large Language Models.
 
 An LLM is a neural network trained on one task:
 
-> Given a sequence of words, predict the **next word** (token).
+> Given a sequence of tokens, predict the **next token**.
 
 Input: `"The cat sat on the"`
-Output: probability distribution over all possible next words.
+Output: probability distribution over all possible next tokens.
 
 | Next Token | Probability |
 |-----------|------------|
@@ -26,17 +26,49 @@ Output: probability distribution over all possible next words.
 | dog | 0.02 |
 | ... | ... |
 
-That's it. The entire power of ChatGPT and Claude comes from training a massive neural network to be really, really good at this one task.
+That is the core pretraining task. A base model learns broad language patterns from next-token prediction, and then chat assistants are usually further shaped with instruction tuning and preference training so they behave helpfully in conversation.
+
+## Tokens, Not Words
+
+A token is not always a whole word. Depending on the tokenizer, a token might be:
+
+- A whole word like `cat`
+- Part of a word like `ing`
+- Punctuation like `.`
+- Whitespace or formatting
+
+This matters because LLMs do not literally think in words. They operate on token sequences, which is why code, punctuation, and spacing patterns matter during generation.
 
 ## Try It: Next Token Prediction
 
-See how an LLM chooses the next word. Click on tokens to generate text one token at a time.
+See how an LLM chooses the next token. Try both greedy decoding and sampling, then click specific tokens to steer the sequence manually.
 
 <TokenPredictionDemo />
+
+<Exercise title="Greedy vs Sampling">
+Run the demo twice on the same prompt:
+
+- Once by always picking the **top token**
+- Once by using **sample token**
+
+The important lesson is not just that models predict probabilities. It is that text generation depends on a **decoding strategy** applied to those probabilities.
+</Exercise>
 
 <Callout type="idea">
 An LLM is a classification model over a vocabulary. The input is a sequence of tokens. The output is a probability distribution over ~100,000 possible next tokens. It's the same sigmoid/softmax idea from Chapter 4 — just at enormous scale.
 </Callout>
+
+## Why Chat Models Feel Helpful
+
+If next-token prediction is the core task, why does a chatbot answer questions, follow instructions, and write code?
+
+Because the model has seen huge numbers of language patterns where a prompt is followed by a useful continuation. After pretraining, additional tuning teaches the model to continue text in the style of a helpful assistant.
+
+| Stage | What it teaches |
+|-------|-----------------|
+| Pretraining | General language, facts, patterns, code structure |
+| Instruction tuning | Follow requests in a chat-like format |
+| Preference / safety tuning | Be more useful, safer, and better aligned with human expectations |
 
 ## The Journey We've Taken
 
@@ -46,8 +78,8 @@ An LLM is a classification model over a vocabulary. The input is a sequence of t
 | 2 | $y = wx + b$, gradient descent | Same training loop, same math |
 | 3 | Non-linearity | Deep Transformer layers with GELU activation |
 | 4 | Classification + softmax | Softmax over vocabulary for next token |
-| 5 | Neural network layers | 96+ Transformer layers |
-| 6 | Backpropagation + training | Trained on trillions of tokens from the internet |
+| 5 | Neural network layers | Many stacked Transformer layers |
+| 6 | Backpropagation + training | Trained over vast corpora with the same optimization loop |
 
 ## What Makes LLMs Special?
 
@@ -73,15 +105,15 @@ This lets the model capture long-range relationships in text.
 
 | Component | Typical LLM |
 |-----------|------------|
-| Parameters | 7B to 1T+ |
-| Training data | Trillions of tokens |
-| Training cost | 10M - 100M+ USD |
+| Parameters | Billions to hundreds of billions+ |
+| Training data | Billions to trillions of tokens |
+| Training cost | Very large, often millions of dollars or more |
 | Vocabulary | ~100,000 tokens |
-| Context window | 4K - 200K tokens |
+| Context window | Thousands to hundreds of thousands of tokens |
 
 ### 3. Emergent Abilities
 
-As models get larger, they develop capabilities that weren't explicitly trained:
+As models get larger and training improves, some capabilities become much more reliable even though they were not programmed as explicit hand-written rules:
 - Reasoning and chain-of-thought
 - Code generation
 - Translation between languages
@@ -121,7 +153,11 @@ Each step is an incremental addition, not a revolution:
 1. **Linear regression**: $y = wx + b$ → learns straight lines
 2. **Add non-linearity**: stack layers with activations → learns complex functions
 3. **Add attention**: tokens look at each other → learns language structure
-4. **Scale**: billions of parameters + trillions of tokens → emergent intelligence
+4. **Scale**: billions of parameters + vast data → broader and more reliable capabilities
+
+<Checkpoint prompt="If an LLM is 'just next-token prediction', why can it answer questions?">
+Because answering a question is also a text continuation pattern. The model has learned that after a question, some continuations are much more likely to look like useful answers than others. Chat tuning then reinforces those helpful continuations even more.
+</Checkpoint>
 
 <Callout type="idea" title="The Big Picture">
 There is no magic. LLMs are functions with parameters, trained with gradient descent, on the task of next-token prediction. The same $w \leftarrow w - \alpha \frac{\partial L}{\partial w}$ from Chapter 2 trains every model from linear regression to Claude.
@@ -137,6 +173,6 @@ After this session, you can explain:
 - How models learn (gradient descent on a loss function)
 - Why neural networks work (stacked non-linear transformations)
 - How LLMs generate text (next-token prediction with Transformers)
-- Why scale matters (emergent abilities from more parameters + data)
+- Why scale matters (larger models and more data can make capabilities more reliable)
 
 > The best way to build intuition from here: experiment. Train a small model. Break things. The math is the same at every scale.

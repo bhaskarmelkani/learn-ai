@@ -1,5 +1,7 @@
 import type { MDXComponents as MDXComponentsType } from "mdx/types";
 import { Callout } from "./Callout";
+import { Exercise } from "./Exercise";
+import { Checkpoint } from "./Checkpoint";
 import { LinearRegressionDemo } from "../interactive/LinearRegressionDemo";
 import { NonlinearDemo } from "../interactive/NonlinearDemo";
 import { SigmoidDemo } from "../interactive/SigmoidDemo";
@@ -10,54 +12,56 @@ import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
 export const mdxComponents: MDXComponentsType = {
   h1: (props) => (
     <h1
-      className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
+      className="mb-2 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
       {...props}
     />
   ),
   h2: (props) => (
     <h2
-      className="text-2xl md:text-3xl font-bold mt-12 mb-4 text-blue-600 dark:text-blue-300 border-b border-gray-200 dark:border-gray-700 pb-2"
+      className="mt-12 mb-4 border-b border-stone-200 pb-2 text-2xl font-bold text-cyan-700 dark:border-gray-800 dark:text-cyan-300 md:text-3xl"
       {...props}
     />
   ),
   h3: (props) => (
-    <h3 className="text-xl font-semibold mt-8 mb-3 text-gray-800 dark:text-gray-200" {...props} />
+    <h3 className="mt-8 mb-3 text-xl font-semibold text-stone-800 dark:text-gray-200" {...props} />
   ),
   p: (props) => (
-    <p className="my-4 text-gray-700 dark:text-gray-300 leading-relaxed text-lg" {...props} />
+    <p className="my-4 text-lg leading-relaxed text-stone-700 dark:text-gray-300" {...props} />
   ),
   ul: (props) => (
-    <ul className="my-4 ml-6 list-disc text-gray-700 dark:text-gray-300 space-y-2 text-lg" {...props} />
+    <ul className="my-4 ml-6 list-disc space-y-2 text-lg text-stone-700 dark:text-gray-300" {...props} />
   ),
   ol: (props) => (
-    <ol className="my-4 ml-6 list-decimal text-gray-700 dark:text-gray-300 space-y-2 text-lg" {...props} />
+    <ol className="my-4 ml-6 list-decimal space-y-2 text-lg text-stone-700 dark:text-gray-300" {...props} />
   ),
   li: (props) => <li className="leading-relaxed" {...props} />,
   table: (props) => (
-    <div className="my-6 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+    <div className="my-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <table className="w-full text-left" {...props} />
     </div>
   ),
-  thead: (props) => <thead className="bg-gray-50 dark:bg-gray-800" {...props} />,
+  thead: (props) => <thead className="bg-stone-50 dark:bg-gray-800" {...props} />,
   th: (props) => (
-    <th className="px-4 py-3 text-sm font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700" {...props} />
+    <th className="border-b border-stone-200 px-4 py-3 text-sm font-semibold text-stone-800 dark:border-gray-700 dark:text-gray-200" {...props} />
   ),
   td: (props) => (
-    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-800" {...props} />
+    <td className="border-b border-stone-100 px-4 py-3 text-sm text-stone-700 dark:border-gray-800 dark:text-gray-300" {...props} />
   ),
   tr: (props) => (
-    <tr className="even:bg-gray-50 dark:even:bg-gray-800/50 hover:bg-gray-100 dark:hover:bg-gray-800/80 transition-colors" {...props} />
+    <tr className="transition-colors even:bg-stone-50 dark:even:bg-gray-800/50 hover:bg-stone-100 dark:hover:bg-gray-800/80" {...props} />
   ),
   blockquote: (props) => (
     <blockquote
-      className="my-6 border-l-4 border-blue-500 bg-blue-50 dark:bg-blue-500/10 rounded-r-lg px-4 py-3 text-gray-700 dark:text-gray-300 italic [&>p]:my-1"
+      className="my-6 rounded-r-xl border-l-4 border-cyan-500 bg-cyan-50 px-4 py-3 italic text-stone-700 dark:bg-cyan-500/10 dark:text-gray-300 [&>p]:my-1"
       {...props}
     />
   ),
-  hr: () => <hr className="my-8 border-gray-200 dark:border-gray-700" />,
-  strong: (props) => <strong className="text-gray-900 dark:text-gray-100 font-semibold" {...props} />,
-  a: (props) => <a className="text-blue-600 dark:text-blue-400 underline hover:text-blue-500 dark:hover:text-blue-300" {...props} />,
+  hr: () => <hr className="my-8 border-stone-200 dark:border-gray-800" />,
+  strong: (props) => <strong className="font-semibold text-stone-950 dark:text-gray-100" {...props} />,
+  a: (props) => <a className="text-cyan-700 underline decoration-cyan-300 underline-offset-4 hover:text-cyan-600 dark:text-cyan-400 dark:decoration-cyan-500 dark:hover:text-cyan-300" {...props} />,
   Callout,
+  Exercise,
+  Checkpoint,
   LinearRegressionDemo,
   NonlinearDemo,
   SigmoidDemo,

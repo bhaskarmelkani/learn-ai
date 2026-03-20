@@ -10,7 +10,24 @@ export function useKeyboardNav({
   onToggleSidebar: () => void;
 }) {
   useEffect(() => {
+    function isInteractiveTarget(target: EventTarget | null) {
+      if (!(target instanceof HTMLElement)) return false;
+
+      const tag = target.tagName;
+      return (
+        target.isContentEditable ||
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        tag === "BUTTON"
+      );
+    }
+
     function handle(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey || isInteractiveTarget(e.target)) {
+        return;
+      }
+
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         onNext();

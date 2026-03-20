@@ -8,10 +8,14 @@ const DATA: [number, number][] = [
   [2, 3.8], [2.5, 6.1], [3, 8.8],
 ];
 
+const INITIAL_A = 1.0;
+const INITIAL_B = 0.0;
+const INITIAL_C = 0.0;
+
 export function NonlinearDemo() {
-  const [a, setA] = useState(1.0);
-  const [b, setB] = useState(0.0);
-  const [c, setC] = useState(0.0);
+  const [a, setA] = useState(INITIAL_A);
+  const [b, setB] = useState(INITIAL_B);
+  const [c, setC] = useState(INITIAL_C);
 
   const fn = (x: number) => a * x * x + b * x + c;
 
@@ -32,6 +36,18 @@ export function NonlinearDemo() {
             <span className={`font-mono font-bold ${mse < 1 ? "text-green-600 dark:text-green-400" : mse < 5 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"}`}>
               {mse.toFixed(3)}
             </span>
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => {
+                setA(INITIAL_A);
+                setB(INITIAL_B);
+                setC(INITIAL_C);
+              }}
+              className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-stone-400 hover:bg-white dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              Reset sliders
+            </button>
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
             Fit the parabola to the data. Notice how a linear model (set a=0) can't capture this shape!

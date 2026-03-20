@@ -7,9 +7,12 @@ const DATA: [number, number][] = [
   [3.5, 5.1], [4, 6.2], [4.5, 6.5], [5, 7.1], [5.5, 7.8],
 ];
 
+const INITIAL_W = 1.0;
+const INITIAL_B = 1.0;
+
 export function LinearRegressionDemo() {
-  const [w, setW] = useState(1.0);
-  const [b, setB] = useState(1.0);
+  const [w, setW] = useState(INITIAL_W);
+  const [b, setB] = useState(INITIAL_B);
 
   const fn = (x: number) => w * x + b;
 
@@ -30,6 +33,17 @@ export function LinearRegressionDemo() {
             <span className={`font-mono font-bold ${mse < 0.5 ? "text-green-600 dark:text-green-400" : mse < 2 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"}`}>
               {mse.toFixed(3)}
             </span>
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => {
+                setW(INITIAL_W);
+                setB(INITIAL_B);
+              }}
+              className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-stone-400 hover:bg-white dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              Reset sliders
+            </button>
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
             Drag the sliders to fit the line to the red data points. Try to minimize the loss!

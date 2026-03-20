@@ -90,6 +90,10 @@ for epoch in range(200):
 Notice `loss.backward()` — this one line computes ALL gradients for ALL parameters in the entire network using backpropagation. PyTorch's autograd tracks every operation and applies the chain rule automatically.
 </Callout>
 
+<Checkpoint prompt="Why does `loss.backward()` matter so much?">
+Because it means we do **not** manually derive every gradient for every layer. The framework records the computation graph during the forward pass, then automatically applies the chain rule in reverse.
+</Checkpoint>
+
 ## Key Concepts in Practice
 
 ### Overfitting vs Underfitting
@@ -117,4 +121,4 @@ Matrix multiplication is the core operation. GPUs are designed for this:
 | GPU (NVIDIA) | 10-100x | Training |
 | TPU (Google) | 100x+ | Massive scale training |
 
-> Training GPT-4 reportedly used ~25,000 GPUs for months. The algorithm is the same as our 200-line example — just scaled up.
+> Frontier models are trained on massive accelerator clusters for weeks or months. The core loop is still the same one you see above — just scaled up dramatically.

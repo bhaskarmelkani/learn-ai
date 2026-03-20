@@ -8,11 +8,15 @@ const DATA: [number, number][] = [
   [-0.5, 0], [0.5, 1],
 ];
 
+const INITIAL_W = 1.0;
+const INITIAL_B = 0.0;
+
 export function SigmoidDemo() {
-  const [w, setW] = useState(1.0);
-  const [b, setB] = useState(0.0);
+  const [w, setW] = useState(INITIAL_W);
+  const [b, setB] = useState(INITIAL_B);
 
   const sigmoid = (x: number) => 1 / (1 + Math.exp(-(w * x + b)));
+  const boundary = Math.abs(w) < 1e-9 ? null : -b / w;
 
   // Compute accuracy
   const correct = DATA.filter(([x, y]) => {
@@ -36,6 +40,20 @@ export function SigmoidDemo() {
               {(accuracy * 100).toFixed(0)}%
             </span>
             <span className="text-gray-400 dark:text-gray-500 ml-1">({correct}/{DATA.length})</span>
+          </div>
+          <div className="text-center text-xs text-gray-500 dark:text-gray-400">
+            Decision boundary: {boundary === null ? "undefined (w = 0)" : `x = ${boundary.toFixed(2)}`}
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => {
+                setW(INITIAL_W);
+                setB(INITIAL_B);
+              }}
+              className="rounded-full border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-stone-400 hover:bg-white dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+            >
+              Reset sliders
+            </button>
           </div>
           <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
             Adjust the sigmoid to separate the two classes (red = 0, blue = 1). The decision boundary is at 0.5.

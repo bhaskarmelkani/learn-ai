@@ -55,6 +55,15 @@ Adjust w and b to separate the red (class 0) and blue (class 1) points. The dash
 
 <SigmoidDemo />
 
+<Exercise title="Boundary Intuition">
+Try changing only one parameter at a time:
+
+- Change **b** while keeping **w** fixed. Watch the boundary slide left and right.
+- Change **w** while keeping **b** fixed. Watch how sharply the probabilities switch from 0 to 1.
+
+This is the classification version of the same intuition from linear regression: one number controls the baseline, another controls sensitivity.
+</Exercise>
+
 This gives us **logistic regression** — a classification model:
 
 $$P(\text{spam}) = \sigma(wx + b)$$
@@ -122,4 +131,8 @@ $$P(y = k) = \frac{e^{z_k}}{\sum_{j} e^{z_j}}$$
 
 This converts a vector of raw scores into probabilities that sum to 1.
 
-> Softmax is how LLMs produce probability distributions over the entire vocabulary for the next word.
+> Softmax is how LLMs produce probability distributions over the entire vocabulary for the next token.
+
+<Checkpoint prompt="Why not just threshold the raw score wx + b directly?">
+Because classification is easier to reason about when the output behaves like a **probability**. The sigmoid maps any raw score into the 0 to 1 range, which makes both the interpretation and the loss function much cleaner.
+</Checkpoint>

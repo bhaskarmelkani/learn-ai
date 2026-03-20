@@ -3,30 +3,44 @@ export function NavigationBar({
   total,
   onPrev,
   onNext,
+  previousTitle,
+  nextTitle,
+  isDesktop,
+  sidebarVisible,
 }: {
   current: number;
   total: number;
   onPrev: () => void;
   onNext: () => void;
+  previousTitle?: string;
+  nextTitle?: string;
+  isDesktop: boolean;
+  sidebarVisible: boolean;
 }) {
   return (
-    <div className="fixed bottom-0 right-0 left-0 h-14 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-t border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 z-10">
+    <div
+      className={`fixed bottom-0 right-0 z-10 flex h-16 items-center justify-between border-t border-stone-200 bg-stone-100/92 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-950/92 md:px-8 ${
+        isDesktop && sidebarVisible ? "left-80" : "left-0"
+      }`}
+    >
       <button
         onClick={onPrev}
         disabled={current === 0}
-        className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="min-w-0 text-left text-sm text-stone-500 transition-colors hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:text-gray-100"
       >
-        ← Previous
+        <span className="block font-medium">← Previous</span>
+        {previousTitle && <span className="block truncate text-xs text-stone-400 dark:text-gray-500">{previousTitle}</span>}
       </button>
-      <span className="text-sm text-gray-400 dark:text-gray-500">
+      <span className="text-sm text-stone-500 dark:text-gray-500">
         Chapter {current + 1} of {total}
       </span>
       <button
         onClick={onNext}
         disabled={current === total - 1}
-        className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="min-w-0 text-right text-sm text-stone-500 transition-colors hover:text-stone-900 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:text-gray-100"
       >
-        Next →
+        <span className="block font-medium">Next →</span>
+        {nextTitle && <span className="block truncate text-xs text-stone-400 dark:text-gray-500">{nextTitle}</span>}
       </button>
     </div>
   );

@@ -8,12 +8,12 @@ subtitle: "Stacking simple models into powerful ones"
 
 Here's the key insight: **a neural network is just many small models connected together**.
 
-Each "neuron" computes:
+Each neuron computes a weighted sum and then applies an activation:
 
 $$z = w_1 x_1 + w_2 x_2 + \cdots + w_n x_n + b$$
 $$a = \sigma(z)$$
 
-Sound familiar? It's logistic regression! A single neuron IS the sigmoid classifier from the last chapter.
+Sound familiar? A **sigmoid neuron** looks exactly like logistic regression. In modern networks, hidden layers often use activations like ReLU instead of sigmoid, but the core pattern is the same: linear transform, then non-linearity.
 
 <Callout type="idea">
 A neural network is not magic. It's layers of simple functions (linear transform + non-linearity) composed together. Each layer learns to extract increasingly abstract features.
@@ -66,6 +66,10 @@ $$\mathbf{W}_2(\mathbf{W}_1 \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2 = \mathbf{
 
 Two linear layers = one linear layer. The non-linearity is what gives depth its power.
 
+<Checkpoint prompt="Why can't we just stack many linear layers and call it deep learning?">
+Because the composition of linear functions is still just another linear function. Without a non-linearity, depth adds complexity in implementation but not in expressive power.
+</Checkpoint>
+
 ## Common Activation Functions
 
 | Function | Formula | Used For |
@@ -89,7 +93,7 @@ Designing a neural network means choosing:
 |-------------|----------|-------------|
 | MLP (fully connected) | Tabular data | Every neuron connects to every neuron |
 | CNN (convolutional) | Images | Learns spatial filters |
-| RNN / LSTM | Sequences | Has memory of previous inputs |
+| RNN / LSTM | Sequences (older approach) | Carries state over time |
 | **Transformer** | **Language, everything** | **Attention mechanism** |
 
 <Callout type="idea">
@@ -118,7 +122,7 @@ That's it. Just 21 numbers to tune. But modern networks...
 | LeNet (1998) | 60,000 |
 | ResNet-50 (2015) | 25 million |
 | GPT-2 (2019) | 1.5 billion |
-| GPT-4 (2023) | ~1.8 trillion (rumored) |
-| Claude / Llama 3 | Billions to hundreds of billions |
+| Modern open-weight LLMs | 7 billion to 70+ billion |
+| Frontier LLMs | Tens to hundreds of billions+ (architecture-dependent) |
 
 Same idea — just more parameters, more data, and more compute.
