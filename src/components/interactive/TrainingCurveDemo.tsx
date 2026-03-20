@@ -20,10 +20,26 @@ function predict(weights: number[], x: number) {
   return weights.reduce((sum, weight, i) => sum + weight * x ** i, 0);
 }
 
-function trainModel(degree: number, validationSplit: number, epochs: number, learningRate: number, regularization: number) {
-  const splitIndex = Math.max(4, Math.min(DATA.length - 4, Math.round(DATA.length * (1 - validationSplit))));
-  const train = DATA.slice(0, splitIndex);
-  const validation = DATA.slice(splitIndex);
+function shuffledIndices(length: number) {
+  return Array.from({ length }, (_, index) => index).sort((a, b) => {
+    const scoreA = Math.sin((a + 1) * 12.9898) * 43758.5453;
+    const scoreB = Math.sin((b + 1) * 12.9898) * 43758.5453;
+    return (scoreA - Math.floor(scoreA)) - (scoreB - Math.floor(scoreB));
+  });
+}
+
+function trainModel(
+  degree: number,
+  validationSplit: number,
+  epochs: number,
+  learningRate: number,
+  regularization: number
+) {
+  const shuffled = shuffledIndices(DATA.length);
+  const validationCount = Math.max(4, Math.min(DATA.length - 4, Math.round(DATA.length * validationSplit)));
+  const validationIndices = new Set(shuffled.slice(0, validationCount));
+  const train = DATA.filter((_, index) => !validationIndices.has(index));
+  const validation = DATA.filter((_, index) => validationIndices.has(index));
   const weights = Array.from({ length: degree + 1 }, () => 0);
   const trainLossHistory: number[] = [];
   const valLossHistory: number[] = [];
@@ -62,11 +78,11 @@ function trainModel(degree: number, validationSplit: number, epochs: number, lea
 export function TrainingCurveDemo() {
   const [mode, setMode] = useState<Mode>("balanced");
   const [validationSplit, setValidationSplit] = useState(0.3);
-  const [regularization, setRegularization] = useState(0.0);
+  const [regularization, setRegularization] = useState(0.02);
 
   const degree = mode === "underfit" ? 1 : mode === "balanced" ? 3 : 8;
   const { weights, train, validation, trainLossHistory, valLossHistory } = useMemo(
-    () => trainModel(degree, validationSplit, 200, 0.04, regularization),
+    () => trainModel(degree, validationSplit, 220, 0.04, regularization),
     [degree, validationSplit, regularization]
   );
 
@@ -75,7 +91,12 @@ export function TrainingCurveDemo() {
   const finalVal = valLossHistory[valLossHistory.length - 1] ?? 0;
 
   const lossPoints = (history: number[]) =>
-    history.map((loss, epoch) => `${40 + (epoch / (history.length - 1)) * 480},${220 - (loss / maxLoss) * 170}`).join(" ");
+    history
+      .map(
+        (loss, epoch) =>
+          `${40 + (epoch / (history.length - 1)) * 480},${220 - (loss / maxLoss) * 170}`
+      )
+      .join(" ");
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -86,10 +107,10 @@ export function TrainingCurveDemo() {
               Training Curve Lab
             </p>
             <h3 className="mt-2 text-xl font-semibold text-stone-900 dark:text-white">
-              Watch underfitting and overfitting separate
+              Compare fit quality on training data and unseen validation data
             </h3>
             <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">
-              Change capacity, regularization, and validation split. The curves tell the story better than a paragraph does.
+              The model trains on one set of examples and is checked on a different set. That comparison tells us whether it learned a useful pattern or just memorized the training points.
             </p>
           </div>
 
@@ -107,6 +128,10 @@ export function TrainingCurveDemo() {
                 {item}
               </button>
             ))}
+          </div>
+
+          <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+            What to notice: underfitting keeps both curves high. Overfitting pushes training loss down while validation loss stays worse.
           </div>
 
           <Slider
@@ -128,17 +153,21 @@ export function TrainingCurveDemo() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Train loss</p>
-              <p className="mt-1 font-mono text-lg font-semibold text-stone-900 dark:text-white">{finalTrain.toFixed(3)}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
+                Train loss
+              </p>
+              <p className="mt-1 font-mono text-sm font-semibold text-stone-900 dark:text-white">
+                {finalTrain.toFixed(3)}
+              </p>
             </div>
             <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Val loss</p>
-              <p className="mt-1 font-mono text-lg font-semibold text-stone-900 dark:text-white">{finalVal.toFixed(3)}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
+                Validation loss
+              </p>
+              <p className="mt-1 font-mono text-sm font-semibold text-stone-900 dark:text-white">
+                {finalVal.toFixed(3)}
+              </p>
             </div>
-          </div>
-
-          <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
-            Underfitting keeps both losses high. Overfitting drives train loss down while validation loss stays worse. Balanced capacity sits in the middle.
           </div>
         </div>
 
@@ -157,39 +186,27 @@ export function TrainingCurveDemo() {
             </svg>
           </div>
 
-          <div className="rounded-2xl border border-stone-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-950/60">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
-              Data split
-            </p>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <div>
-                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Training points</p>
-                <div className="h-20 rounded-2xl border border-dashed border-cyan-300 bg-cyan-50 p-2 dark:border-cyan-500/20 dark:bg-cyan-500/10">
-                  {train.map(([x]) => (
-                    <span key={x} className="mr-1 inline-block rounded-full bg-cyan-600 px-2 py-0.5 text-[10px] text-white">
-                      {x.toFixed(1)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Validation points</p>
-                <div className="h-20 rounded-2xl border border-dashed border-amber-300 bg-amber-50 p-2 dark:border-amber-500/20 dark:bg-amber-500/10">
-                  {validation.map(([x]) => (
-                    <span key={x} className="mr-1 inline-block rounded-full bg-amber-600 px-2 py-0.5 text-[10px] text-white">
-                      {x.toFixed(1)}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Graph xMin={-1.1} xMax={1.1} yMin={-1.6} yMax={1.6}>
+          <Graph
+            xMin={-1.1}
+            xMax={1.1}
+            yMin={-1.6}
+            yMax={1.6}
+            xLabel="Input feature"
+            yLabel="Target / prediction"
+            caption="Blue points were seen during training. Amber points were held out for validation."
+          >
             {({ toX, toY, xMin, xMax }) => (
               <>
-                <PlotLine fn={(x) => predict(weights, x)} toX={toX} toY={toY} xMin={xMin} xMax={xMax} color="rgb(6,182,212)" />
-                <PlotPoints data={DATA} toX={toX} toY={toY} color="rgb(245,158,11)" />
+                <PlotLine
+                  fn={(x) => predict(weights, x)}
+                  toX={toX}
+                  toY={toY}
+                  xMin={xMin}
+                  xMax={xMax}
+                  color="rgb(6, 182, 212)"
+                />
+                <PlotPoints data={train} toX={toX} toY={toY} color="rgb(6, 182, 212)" />
+                <PlotPoints data={validation} toX={toX} toY={toY} color="rgb(245, 158, 11)" />
               </>
             )}
           </Graph>

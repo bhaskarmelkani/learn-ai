@@ -14,6 +14,23 @@ type Scenario = {
 
 const SCENARIOS: Scenario[] = [
   {
+    name: "Mortgage approval",
+    description: "Higher affordability scores make approval more likely.",
+    xLabel: "Affordability score",
+    positiveLabel: "approve",
+    negativeLabel: "reject",
+    center: 55,
+    scale: 11,
+    cases: [
+      { x: 18, label: 0, note: "low income" },
+      { x: 28, label: 0, note: "high debt" },
+      { x: 44, label: 0, note: "borderline file" },
+      { x: 62, label: 1, note: "stable job" },
+      { x: 76, label: 1, note: "strong savings" },
+      { x: 88, label: 1, note: "very safe profile" },
+    ],
+  },
+  {
     name: "Spam filter",
     description: "Higher feature values mean a more spam-like email.",
     xLabel: "Spam score",
@@ -164,15 +181,15 @@ export function ClassificationLab() {
               Confusion matrix
             </p>
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
+            <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
                 <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Predicted positive</p>
-                <p className="mt-2 text-stone-700 dark:text-gray-300">TP {tp}</p>
-                <p className="text-stone-700 dark:text-gray-300">FP {fp}</p>
+                <p className="mt-2 text-stone-700 dark:text-gray-300">True positive (TP) {tp}</p>
+                <p className="text-stone-700 dark:text-gray-300">False positive (FP) {fp}</p>
               </div>
               <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
                 <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Predicted negative</p>
-                <p className="mt-2 text-stone-700 dark:text-gray-300">FN {fn}</p>
-                <p className="text-stone-700 dark:text-gray-300">TN {tn}</p>
+                <p className="mt-2 text-stone-700 dark:text-gray-300">False negative (FN) {fn}</p>
+                <p className="text-stone-700 dark:text-gray-300">True negative (TN) {tn}</p>
               </div>
             </div>
           </div>

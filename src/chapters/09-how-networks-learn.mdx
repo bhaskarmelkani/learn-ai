@@ -1,0 +1,54 @@
+---
+title: "How Networks Learn"
+chapter: 9
+subtitle: "Forward pass, backward pass, validation, and the training loop"
+---
+
+# How Networks Learn
+
+The training loop for neural networks is the same loop we already saw with a line:
+
+1. make predictions
+2. measure error
+3. adjust parameters
+4. repeat
+
+The new challenge is scale. There are many more parameters, across many more layers.
+
+## Forward Pass and Backward Pass
+
+- **forward pass**: compute the prediction
+- **loss**: measure how wrong it was
+- **backward pass**: figure out how each parameter contributed to that error
+- **update**: nudge the parameters
+
+The formal name for that backward credit assignment is **backpropagation**.
+
+<Callout type="idea">
+Backpropagation is best understood as “how blame and credit move backward through the network,” not as a wall of calculus symbols.
+</Callout>
+
+## Runnable Notebook
+
+The notebook below trains a tiny neural network directly in the browser.
+
+<NeuralNetworkNotebook />
+
+## Training vs Validation
+
+A model can look good on training examples and still fail on new ones.
+
+That is why we separate:
+
+- **training data**: used to update the model
+- **validation data**: used to check whether the model generalizes
+
+<TrainingCurveDemo />
+
+<Exercise title="Tiny Challenge">
+Switch between underfit, balanced, and overfit. Which setting looks best on training data? Which one gives the best validation story?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Training a neural network is still the same prediction-measure-update loop. The difference is that we are now adjusting many layers of learned detectors.
+</Callout>

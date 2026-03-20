@@ -1,0 +1,46 @@
+---
+title: "Why One Boundary Is Not Enough"
+chapter: 7
+subtitle: "The bridge from classification to neural networks"
+---
+
+# Why One Boundary Is Not Enough
+
+One score can create one boundary.
+
+That is powerful, but it has a clear limit: some decision problems do not look like one clean split.
+
+Imagine applicants who should be approved if they have either:
+
+- very strong income
+- or very strong savings
+
+That creates two good regions, not one simple dividing line.
+
+<DecisionBoundaryBridgeDemo />
+
+## The Missing Idea
+
+If one boundary is too simple, we need more than one useful signal.
+
+Instead of asking the model for one final score immediately, we can first ask it to build smaller internal signals like:
+
+- "does this look like high income?"
+- "does this look like strong savings?"
+- "does this look like low risk?"
+
+Those intermediate signals are often called **features**, **detectors**, or **representations**.
+
+## Why This Matters
+
+This is the real bridge to neural networks.
+
+Neural networks are not powerful because they are mysterious. They are powerful because they can learn several useful internal signals and then combine them.
+
+<Exercise title="Describe the Need">
+Explain the bridge in plain language: why is one final boundary sometimes too weak, and why do multiple internal detectors help?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+The jump to neural networks is really a jump from one score to many learned internal signals.
+</Callout>

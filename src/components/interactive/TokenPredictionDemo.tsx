@@ -148,7 +148,7 @@ function applyTemperature(preds: [string, number][], temperature: number) {
   return scaled.map(([token, prob]) => [token, prob / total] as [string, number]).sort((a, b) => b[1] - a[1]);
 }
 
-function attentionWeights(length: number, focusIndex: number) {
+function toyContextWeights(length: number, focusIndex: number) {
   const raw = Array.from({ length }, (_, index) => 1 / (1 + Math.abs(index - focusIndex)));
   const total = raw.reduce((sum, value) => sum + value, 0) || 1;
   return raw.map((value) => value / total);
@@ -179,7 +179,7 @@ export function TokenPredictionDemo() {
 
   const sampleablePreds = preds.filter(([token]) => token !== "other");
   const maxProb = preds[0]?.[1] ?? 1;
-  const attention = attentionWeights(visibleTokens.length, focusedIndex);
+  const attention = toyContextWeights(visibleTokens.length, focusedIndex);
 
   const selectToken = (token: string) => {
     if (!node) return;
@@ -258,14 +258,14 @@ export function TokenPredictionDemo() {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500 dark:text-gray-500">
-              Attention
+              Toy Context Relevance
             </p>
             <p className="mt-1 text-sm text-stone-600 dark:text-gray-400">
-              Click a token to change what the model is "looking at". Recent tokens usually matter more.
+              Click a token to inspect one simplified way a language model might weight context. This is a teaching aid, not a literal visualization of transformer attention heads.
             </p>
           </div>
           <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-stone-600 shadow-sm dark:bg-gray-800 dark:text-gray-400">
-            Focus: {formatToken(visibleTokens[focusedIndex] ?? "")}
+            Inspecting: {formatToken(visibleTokens[focusedIndex] ?? "")}
           </span>
         </div>
         <div className="mt-4 space-y-2">

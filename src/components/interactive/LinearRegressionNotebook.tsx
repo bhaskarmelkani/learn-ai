@@ -3,11 +3,11 @@ import { PythonNotebook } from "./PythonNotebook";
 const cells = [
   {
     title: "Set up the data",
-    description: "A tiny dataset of house size to price. Feel free to change the numbers and rerun the later cells.",
+    description: "A tiny house-price dataset using the same units as the slider demo: x is thousand sqft, y is price in $100k.",
     code: `import numpy as np
 
-X = np.array([1.0, 1.5, 2.0, 2.5, 3.0])
-Y = np.array([200.0, 280.0, 350.0, 420.0, 500.0])
+X = np.array([1.0, 1.4, 1.8, 2.2, 2.6, 3.0, 3.4, 3.8, 4.2, 4.6])
+Y = np.array([1.9, 2.4, 2.9, 3.3, 3.8, 4.3, 4.9, 5.4, 6.0, 6.5])
 
 print("samples:", len(X))
 print("X:", X)
@@ -41,10 +41,10 @@ print("\\nfinal line: y = {:.2f}x + {:.2f}".format(w, b))`,
   {
     title: "Make a prediction",
     description: "Once the model is trained, try predicting a new example.",
-    code: `new_x = 2.2
+    code: `new_x = 3.2
 prediction = w * new_x + b
 
-print(f"predicted price for x={new_x}: {prediction:.2f}")`,
+print(f"predicted price for x={new_x}: $\{prediction * 100:.0f}k")`,
   },
 ];
 

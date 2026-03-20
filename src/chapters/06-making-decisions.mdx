@@ -1,0 +1,68 @@
+---
+title: "Making Decisions"
+chapter: 6
+subtitle: "From raw scores to probabilities to yes/no and many-way choices"
+---
+
+# Making Decisions
+
+So far the model predicted numbers.
+
+Now imagine a different kind of question:
+
+- approve or reject a mortgage
+- spam or not spam
+- cat, dog, or bird
+
+These are not number-prediction problems. They are **decision** problems.
+
+## Start with a Score
+
+A model can still begin by producing one raw score.
+
+For example:
+
+- low score -> reject
+- high score -> approve
+
+The simplest first decision rule is a **threshold**.
+
+<ClassificationLab />
+
+## Smooth the Decision
+
+Hard thresholds are useful, but probabilities are easier to reason about than raw scores.
+
+So we take the raw score and squash it into the 0-to-1 range.
+
+That squashing curve is called **sigmoid**, and the resulting model is called **logistic regression**.
+
+<SigmoidDemo />
+
+## More Than Two Classes
+
+Now imagine the model must choose between several answers instead of just yes or no.
+
+The same idea extends: turn several raw scores into a probability distribution.
+
+That function is called **softmax**.
+
+<SoftmaxDemo />
+
+## Notebook Lab
+
+The notebook below lets you see the same idea in code: one model, one raw score, one probability, one decision.
+
+<ClassificationNotebook />
+
+<Checkpoint prompt="What is the difference between the 0.5 line and the decision boundary?">
+The 0.5 line is a probability threshold. The decision boundary is the input value where the model's probability curve crosses that threshold.
+</Checkpoint>
+
+<Callout type="idea">
+Classification starts with a score, then turns that score into a decision. Sigmoid handles two classes. Softmax handles many.
+</Callout>
+
+<Callout type="idea" title="Bridge">
+One score gives one decision boundary. The next question is natural: what if one boundary is not enough?
+</Callout>

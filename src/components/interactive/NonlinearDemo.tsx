@@ -1,16 +1,11 @@
 import { useState } from "react";
 import { Graph, PlotLine, PlotPoints } from "./Graph";
 import { Slider } from "./Slider";
+import { HOUSE_CURVED_DATA, HOUSE_X_LABEL, HOUSE_Y_LABEL } from "./data";
 
-const DATA: [number, number][] = [
-  [-3, 9.2], [-2.5, 6.5], [-2, 4.3], [-1.5, 2.5], [-1, 1.2],
-  [-0.5, 0.4], [0, 0.1], [0.5, 0.3], [1, 0.9], [1.5, 2.1],
-  [2, 3.8], [2.5, 6.1], [3, 8.8],
-];
-
-const INITIAL_A = 1.0;
-const INITIAL_B = 0.0;
-const INITIAL_C = 0.0;
+const INITIAL_A = 0.2;
+const INITIAL_B = 0.3;
+const INITIAL_C = 1.2;
 
 export function NonlinearDemo() {
   const [a, setA] = useState(INITIAL_A);
@@ -19,24 +14,43 @@ export function NonlinearDemo() {
 
   const fn = (x: number) => a * x * x + b * x + c;
 
-  const mse = DATA.reduce((sum, [x, y]) => sum + (y - fn(x)) ** 2, 0) / DATA.length;
+  const mse =
+    HOUSE_CURVED_DATA.reduce((sum, [x, y]) => sum + (y - fn(x)) ** 2, 0) /
+    HOUSE_CURVED_DATA.length;
 
   return (
-    <div className="my-8 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-6">
-      <div className="flex flex-col lg:flex-row gap-6">
+    <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className="flex flex-col gap-6 lg:flex-row">
         <div className="flex-1 space-y-5">
-          <div className="text-center text-lg font-mono text-gray-700 dark:text-gray-300">
-            y = <span className="text-blue-600 dark:text-blue-400 font-bold">{a.toFixed(1)}</span>x&sup2; + <span className="text-blue-600 dark:text-blue-400 font-bold">{b.toFixed(1)}</span>x + <span className="text-blue-600 dark:text-blue-400 font-bold">{c.toFixed(1)}</span>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
+              Curves, Not Just Lines
+            </p>
+            <h3 className="mt-2 text-xl font-semibold text-stone-900 dark:text-white">
+              Fit a curved price pattern
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">
+              On very expensive homes, price can rise faster than square footage alone would suggest. A straight line starts to miss the bend.
+            </p>
           </div>
-          <Slider label="a" value={a} min={-3} max={3} step={0.1} onChange={setA} />
-          <Slider label="b" value={b} min={-5} max={5} step={0.1} onChange={setB} />
-          <Slider label="c" value={c} min={-5} max={5} step={0.1} onChange={setC} />
-          <div className="text-center text-sm">
-            <span className="text-gray-500 dark:text-gray-400">MSE Loss: </span>
-            <span className={`font-mono font-bold ${mse < 1 ? "text-green-600 dark:text-green-400" : mse < 5 ? "text-amber-600 dark:text-amber-400" : "text-red-600 dark:text-red-400"}`}>
-              {mse.toFixed(3)}
-            </span>
+
+          <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+            What to notice: the new curved term lets the line bend upward instead of forcing one straight trend through every point.
           </div>
+
+          <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
+            <p className="font-mono text-sm text-stone-800 dark:text-gray-200">
+              y = {a.toFixed(2)}x² + {b.toFixed(2)}x + {c.toFixed(2)}
+            </p>
+            <p className="mt-2 text-xs text-stone-500 dark:text-gray-500">
+              Mean squared error: {mse.toFixed(3)}
+            </p>
+          </div>
+
+          <Slider label="a" value={a} min={-0.1} max={0.6} step={0.02} onChange={setA} />
+          <Slider label="b" value={b} min={-0.4} max={1.0} step={0.05} onChange={setB} />
+          <Slider label="c" value={c} min={0} max={2.2} step={0.05} onChange={setC} />
+
           <div className="flex justify-center">
             <button
               onClick={() => {
@@ -49,16 +63,24 @@ export function NonlinearDemo() {
               Reset sliders
             </button>
           </div>
-          <p className="text-xs text-gray-400 dark:text-gray-500 text-center">
-            Fit the parabola to the data. Notice how a linear model (set a=0) can't capture this shape!
+          <p className="text-center text-xs text-stone-500 dark:text-gray-500">
+            Set <span className="font-mono">a = 0</span> first to feel the straight-line limit, then add the curve back in.
           </p>
         </div>
         <div className="flex-1">
-          <Graph xMin={-4} xMax={4} yMin={-2} yMax={12}>
+          <Graph
+            xMin={0.8}
+            xMax={4.9}
+            yMin={1.4}
+            yMax={10.2}
+            xLabel={HOUSE_X_LABEL}
+            yLabel={HOUSE_Y_LABEL}
+            caption="Same house-price story, but now the premium end bends upward."
+          >
             {({ toX, toY, xMin, xMax }: { toX: (x: number) => number; toY: (y: number) => number; xMin: number; xMax: number }) => (
               <>
                 <PlotLine fn={fn} toX={toX} toY={toY} xMin={xMin} xMax={xMax} />
-                <PlotPoints data={DATA} toX={toX} toY={toY} />
+                <PlotPoints data={HOUSE_CURVED_DATA} toX={toX} toY={toY} />
               </>
             )}
           </Graph>

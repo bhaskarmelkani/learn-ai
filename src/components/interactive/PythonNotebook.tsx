@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { python } from "@codemirror/lang-python";
 
@@ -45,7 +45,12 @@ async function ensurePyodideScript() {
     script.src = `${PYODIDE_INDEX_URL}pyodide.js`;
     script.async = true;
     script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Unable to load the Pyodide runtime."));
+    script.onerror = () =>
+      reject(
+        new Error(
+          "Unable to load the browser Python runtime. Check your network connection or company firewall and try again."
+        )
+      );
     document.head.appendChild(script);
   });
 
@@ -62,11 +67,33 @@ export function PythonNotebook({
   const [codes, setCodes] = useState(cells.map((cell) => cell.code));
   const [outputs, setOutputs] = useState<string[]>(() => cells.map(() => ""));
   const [runningIndex, setRunningIndex] = useState<number | null>(null);
-  const [kernelStatus, setKernelStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
-  const [kernelMessage, setKernelMessage] = useState("Python kernel is idle.");
+  const [kernelStatus, setKernelStatus] = useState<
+    "idle" | "loading" | "ready" | "offline" | "error"
+  >("idle");
+  const [kernelMessage, setKernelMessage] = useState(
+    "Notebook runtime is idle. The browser Python runtime downloads the first time you run a cell."
+  );
   const kernelRef = useRef<PyodideApi | null>(null);
   const kernelPromiseRef = useRef<Promise<PyodideApi> | null>(null);
   const loadedPackagesRef = useRef<Set<string>>(new Set());
+  const [prefersDark, setPrefersDark] = useState(() =>
+    typeof document === "undefined"
+      ? true
+      : document.documentElement.classList.contains("dark")
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const syncTheme = () => {
+      setPrefersDark(document.documentElement.classList.contains("dark"));
+    };
+
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
 
   const updateOutput = (index: number, value: string) => {
     setOutputs((current) =>
@@ -77,6 +104,15 @@ export function PythonNotebook({
   const getKernel = async () => {
     if (kernelRef.current) return kernelRef.current;
     if (kernelPromiseRef.current) return kernelPromiseRef.current;
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      setKernelStatus("offline");
+      setKernelMessage(
+        "Browser appears offline. These notebooks need a one-time runtime download before they can run."
+      );
+      throw new Error(
+        "Browser is offline. Reconnect to the internet so the Python runtime can load."
+      );
+    }
 
     kernelPromiseRef.current = (async () => {
       setKernelStatus("loading");
@@ -145,8 +181,15 @@ export function PythonNotebook({
         index,
         error instanceof Error ? error.message : "This cell failed to execute."
       );
-      setKernelStatus("error");
-      setKernelMessage("Kernel hit an error. You can restart it and try again.");
+      if (typeof navigator !== "undefined" && !navigator.onLine && !kernelRef.current) {
+        setKernelStatus("offline");
+        setKernelMessage(
+          "Browser appears offline. Reconnect, then rerun a cell to download the runtime."
+        );
+      } else {
+        setKernelStatus("error");
+        setKernelMessage("Kernel hit an error. You can restart it and try again.");
+      }
     } finally {
       setRunningIndex(null);
     }
@@ -164,7 +207,9 @@ export function PythonNotebook({
     kernelPromiseRef.current = null;
     loadedPackagesRef.current = new Set();
     setKernelStatus("idle");
-    setKernelMessage("Kernel restarted. Run a cell to start a fresh Python session.");
+    setKernelMessage(
+      "Kernel restarted. Run a cell to start a fresh Python session."
+    );
     setOutputs(cells.map(() => ""));
   };
 
@@ -203,6 +248,8 @@ export function PythonNotebook({
             className={`rounded-full px-3 py-1 font-medium ${
               kernelStatus === "ready"
                 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300"
+                : kernelStatus === "offline"
+                  ? "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300"
                 : kernelStatus === "error"
                   ? "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-300"
                   : "bg-stone-200 text-stone-700 dark:bg-gray-800 dark:text-gray-300"
@@ -212,6 +259,9 @@ export function PythonNotebook({
           </span>
           <span>{kernelMessage}</span>
         </div>
+        <p className="mt-3 text-xs leading-6 text-stone-500 dark:text-gray-500">
+          These labs run entirely in the browser. If your company network blocks the Python runtime download, the chapter content and non-code demos still teach the core idea.
+        </p>
       </div>
 
       <div className="space-y-6 px-5 py-5">
@@ -244,7 +294,7 @@ export function PythonNotebook({
               <CodeMirror
                 value={codes[index]}
                 height="260px"
-                theme="dark"
+                theme={prefersDark ? "dark" : "light"}
                 extensions={extensions}
                 basicSetup={{ foldGutter: false, autocompletion: false }}
                 onChange={(value) =>

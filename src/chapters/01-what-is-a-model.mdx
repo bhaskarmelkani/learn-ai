@@ -1,43 +1,43 @@
 ---
 title: "What Is a Model?"
 chapter: 1
-subtitle: "The foundation of everything in AI"
+subtitle: "Inputs, outputs, learned numbers, and why that idea keeps showing up"
 ---
 
 # What Is a Model?
 
-A **model** is just a function that maps inputs to outputs.
+Imagine three products:
+
+- a weather app that predicts tomorrow's rain chance
+- a spam filter that decides whether an email is junk
+- a house-pricing tool that estimates a sale price
+
+All three do the same high-level thing: they take some **input** and produce some **output**.
+
+That is the core idea of a model.
 
 $$y = f(x)$$
 
-That's it. Every AI system — from a spam filter to ChatGPT — is a function that takes some input and produces a prediction.
+A model is just a function that maps inputs to outputs.
 
-<Path
-  current="This chapter is the starting point: we define what a model is and why the idea of inputs, outputs, and parameters matters."
-  next={{
-    title: "Linear Regression",
-    hint: "We turn the abstract idea of a model into the simplest trainable function: a line.",
-  }}
-/>
+That sounds small, but it is the foundation of everything from the simplest regression model to a large language model.
 
 ## Everyday Examples
 
 | Input $x$ | Output $y$ | Model |
 |-----------|-----------|-------|
-| House features (sqft, beds, location) | Price ($) | Real estate pricing |
+| House features (size, rooms, location) | Price | House-pricing model |
 | Email text | Spam or Not Spam | Spam filter |
 | Photo pixels | "Cat" or "Dog" | Image classifier |
-| Sequence of words | Next word | Language model (GPT) |
+| Sequence of tokens | Next token | Language model |
 
 <ConceptMatcher />
 
 ## Why "Model"?
 
-The word "model" means the same thing it does in everyday life — a **simplified representation** of something real.
+A model does **not** recreate the whole world. It captures enough of a pattern to be useful.
 
-A weather model doesn't recreate the atmosphere. It captures enough patterns to make useful predictions.
-
-> An AI model captures patterns in data to make predictions about new, unseen inputs.
+> A model is a simplified pattern-finder that helps us make a prediction for a new example.
 
 ## The Two Key Questions
 
@@ -46,32 +46,29 @@ Every model is defined by two questions:
 1. **What is the function's shape?** (architecture)
 2. **What are the function's numbers?** (parameters)
 
-The rest of this session is about answering those two questions — starting simple and building up to neural networks and LLMs.
+Those two questions will stay with us all the way through this course.
 
 <Callout type="idea">
-If you understand that a model is a function with tunable numbers, you already have the core intuition for all of AI.
+If you understand that a model is a function with learned numbers, you already have the basic mental model for all of AI.
 </Callout>
 
-## What Does "Learning" Mean?
+## What Comes Next
 
-**Learning = finding the right numbers (parameters) for your function.**
+There are two broad kinds of problems we will keep returning to:
 
-We don't hand-code the answer. Instead:
+1. predict a **number**
+2. make a **decision** between categories
 
-1. Start with a function shape (e.g., $y = wx + b$)
-2. Show it many examples of input → output
-3. Let an algorithm adjust $w$ and $b$ until the function fits the data
+We will start with number prediction, because it gives us the clearest first picture of how models learn.
 
-This process is called **training**. The data drives the learning.
-
-<Callout type="analogy">
-Think of it like tuning a guitar. The shape of the guitar is fixed (architecture), but you adjust the tuning pegs (parameters) until it sounds right (fits the data).
+<Callout type="idea">
+The next chapter is not a random math jump. It answers a very concrete question: if we know a few house prices already, how should a model make a good guess for the next one?
 </Callout>
 
 <Exercise title="Mental Habit">
-When you look at any AI product, pause and ask two questions before anything else: **what are the inputs and outputs?** and **which numbers are being learned?**
+When you look at any AI product, ask two questions before anything else: **what goes in and what comes out?** and **which numbers inside the model are being learned?**
 
-That habit is the whole session in miniature. If learners leave with only one instinct, it should be this one.
+If learners leave with only one instinct, it should be that one.
 </Exercise>
 
 <Checkpoint prompt="During training, what usually changes: the function shape or the numbers inside it?">
@@ -83,5 +80,5 @@ Pick one AI product you know and describe its input, output, parameters, and arc
 </Exercise>
 
 <Callout type="idea" title="Takeaway">
-A model is a function with learned numbers, and that idea will keep showing up all the way to LLMs.
+A model is a function with learned numbers, and that idea keeps showing up all the way to LLMs.
 </Callout>

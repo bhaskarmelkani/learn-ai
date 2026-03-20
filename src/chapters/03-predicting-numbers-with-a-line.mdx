@@ -1,0 +1,67 @@
+---
+title: "Predicting Numbers with a Line"
+chapter: 3
+subtitle: "The simplest useful model for number prediction"
+---
+
+# Predicting Numbers with a Line
+
+Return to the house-price question.
+
+If we know a few past sales and want to guess the next one, the simplest instinct is to draw a line through the pattern.
+
+That idea has a name: **linear regression**.
+
+## The Line Story
+
+The line has a very small job description:
+
+- one number controls the **tilt**
+- one number controls the **baseline**
+
+Later we will call them **weight** and **bias**, but first just feel what they do.
+
+<LinearRegressionDemo />
+
+<Exercise title="Predict First">
+Before you optimize anything, change only one slider at a time.
+
+- Which number changes the tilt?
+- Which number lifts the whole line up or down?
+
+That physical feel matters more than memorizing names.
+</Exercise>
+
+## Naming the Parts
+
+Once the line feels natural, we can finally name it:
+
+$$y = wx + b$$
+
+- $x$ = input
+- $y$ = predicted output
+- $w$ = weight
+- $b$ = bias
+
+So linear regression is just a model that uses a straight line to predict a number.
+
+## Why Start Here?
+
+Because this is the clearest first example of a trainable model:
+
+- it makes a prediction
+- it has parameters
+- we can see the effect of changing them
+- we can later learn how those parameters get adjusted automatically
+
+<Callout type="idea">
+The important intuition is not "memorize the line equation." It is "a model can be a very simple shape with a few learned numbers."
+</Callout>
+
+<Checkpoint prompt="What does the weight do to the line?">
+It changes the tilt. Larger weight means the prediction changes more strongly as the input changes.
+</Checkpoint>
+
+<Callout type="idea" title="Takeaway">
+Linear regression is the first concrete example of a model learning to predict a number from data.
+</Callout>

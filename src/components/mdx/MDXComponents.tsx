@@ -3,7 +3,6 @@ import type { MDXComponents as MDXComponentsType } from "mdx/types";
 import { Callout } from "./Callout";
 import { Exercise } from "./Exercise";
 import { Checkpoint } from "./Checkpoint";
-import { Path } from "./Path";
 import { ConceptMatcher } from "../interactive/ConceptMatcher";
 import { LinearRegressionDemo } from "../interactive/LinearRegressionDemo";
 import { LinearRegressionOutlierDemo } from "../interactive/LinearRegressionOutlierDemo";
@@ -11,7 +10,9 @@ import { NonlinearDemo } from "../interactive/NonlinearDemo";
 import { NonlinearComparisonDemo } from "../interactive/NonlinearComparisonDemo";
 import { SigmoidDemo } from "../interactive/SigmoidDemo";
 import { ClassificationLab } from "../interactive/ClassificationLab";
+import { SoftmaxDemo } from "../interactive/SoftmaxDemo";
 import { GradientDescentDemo } from "../interactive/GradientDescentDemo";
+import { DecisionBoundaryBridgeDemo } from "../interactive/DecisionBoundaryBridgeDemo";
 import { NeuralNetworkDemo } from "../interactive/NeuralNetworkDemo";
 import { XorDemo } from "../interactive/XorDemo";
 import { TrainingCurveDemo } from "../interactive/TrainingCurveDemo";
@@ -97,7 +98,6 @@ export const mdxComponents: MDXComponentsType = {
   Callout,
   Exercise,
   Checkpoint,
-  Path,
   ConceptMatcher,
   LinearRegressionDemo,
   LinearRegressionOutlierDemo,
@@ -105,7 +105,9 @@ export const mdxComponents: MDXComponentsType = {
   NonlinearComparisonDemo,
   SigmoidDemo,
   ClassificationLab,
+  SoftmaxDemo,
   GradientDescentDemo,
+  DecisionBoundaryBridgeDemo,
   NeuralNetworkDemo,
   XorDemo,
   TrainingCurveDemo,

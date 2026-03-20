@@ -14,10 +14,13 @@ interface GraphProps {
   yMax?: number;
   width?: number;
   height?: number;
+  xLabel?: string;
+  yLabel?: string;
+  caption?: string;
   children?: ReactNode | ((props: PlotRenderProps) => ReactNode);
 }
 
-export const GRAPH_PAD = { top: 20, right: 20, bottom: 35, left: 45 };
+export const GRAPH_PAD = { top: 20, right: 20, bottom: 58, left: 58 };
 
 export const Graph = forwardRef<SVGSVGElement, GraphProps>(function Graph(
   {
@@ -27,6 +30,9 @@ export const Graph = forwardRef<SVGSVGElement, GraphProps>(function Graph(
     yMax = 10,
     width = 400,
     height = 300,
+    xLabel,
+    yLabel,
+    caption,
     children,
   }: GraphProps,
   ref
@@ -72,8 +78,26 @@ export const Graph = forwardRef<SVGSVGElement, GraphProps>(function Graph(
       {gridLines}
       {labels}
       {/* Axes */}
-      <line x1={GRAPH_PAD.left} y1={toY(0)} x2={GRAPH_PAD.left + w} y2={toY(0)} className="stroke-gray-400 dark:stroke-gray-500" strokeWidth={1} />
-      <line x1={toX(0)} y1={GRAPH_PAD.top} x2={toX(0)} y2={GRAPH_PAD.top + h} className="stroke-gray-400 dark:stroke-gray-500" strokeWidth={1} />
+      {yMin <= 0 && yMax >= 0 && (
+        <line
+          x1={GRAPH_PAD.left}
+          y1={toY(0)}
+          x2={GRAPH_PAD.left + w}
+          y2={toY(0)}
+          className="stroke-gray-400 dark:stroke-gray-500"
+          strokeWidth={1}
+        />
+      )}
+      {xMin <= 0 && xMax >= 0 && (
+        <line
+          x1={toX(0)}
+          y1={GRAPH_PAD.top}
+          x2={toX(0)}
+          y2={GRAPH_PAD.top + h}
+          className="stroke-gray-400 dark:stroke-gray-500"
+          strokeWidth={1}
+        />
+      )}
       {/* Clip area */}
       <defs>
         <clipPath id={clipPathId}>
@@ -85,6 +109,37 @@ export const Graph = forwardRef<SVGSVGElement, GraphProps>(function Graph(
           ? children({ toX, toY, xMin, xMax })
           : children}
       </g>
+      {xLabel && (
+        <text
+          x={GRAPH_PAD.left + w / 2}
+          y={height - (caption ? 22 : 14)}
+          textAnchor="middle"
+          className="fill-gray-500 dark:fill-gray-400 text-[11px] font-medium"
+        >
+          {xLabel}
+        </text>
+      )}
+      {yLabel && (
+        <text
+          x={18}
+          y={GRAPH_PAD.top + h / 2}
+          textAnchor="middle"
+          transform={`rotate(-90 18 ${GRAPH_PAD.top + h / 2})`}
+          className="fill-gray-500 dark:fill-gray-400 text-[11px] font-medium"
+        >
+          {yLabel}
+        </text>
+      )}
+      {caption && (
+        <text
+          x={GRAPH_PAD.left + w / 2}
+          y={height - 8}
+          textAnchor="middle"
+          className="fill-gray-400 dark:fill-gray-500 text-[10px]"
+        >
+          {caption}
+        </text>
+      )}
     </svg>
   );
 });

@@ -1,0 +1,55 @@
+---
+title: "When Straight Lines Fail"
+chapter: 5
+subtitle: "Why some patterns need curves instead of lines"
+---
+
+# When Straight Lines Fail
+
+The same house-price story that made lines feel natural also shows where lines break.
+
+For smaller and mid-sized homes, price may rise steadily. But premium homes can rise faster because location, scarcity, and luxury effects start to matter more.
+
+That creates a bend.
+
+## The Need Comes First
+
+Before naming anything, just look at the problem:
+
+- the trend is still upward
+- but the shape is no longer straight
+- so one line now feels too rigid
+
+That means we need a model with more shape.
+
+<NonlinearDemo />
+
+## Naming the Idea
+
+Once we allow the model to bend, we are in the world of **non-linear models**.
+
+One simple version is a curved equation like:
+
+$$y = ax^2 + bx + c$$
+
+That specific family is often called **polynomial regression**.
+
+## Same Data, Different Shapes
+
+The important intuition is not the name. It is seeing how different model shapes behave on the same data.
+
+<NonlinearComparisonDemo />
+
+## The Bigger Lesson
+
+A line is great when the world looks roughly linear.
+
+But if the pattern bends, the model needs more expressive shape. That is the first hint that simple models may not be enough for all problems.
+
+<Exercise title="Tiny Challenge">
+Set the curve term to zero in the demo. What gets worse immediately?
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+When reality bends, the model must gain more shape. That is the intuition behind non-linear models.
+</Callout>

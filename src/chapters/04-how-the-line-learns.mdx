@@ -1,0 +1,64 @@
+---
+title: "How the Line Learns"
+chapter: 4
+subtitle: "Error, loss, gradient descent, and why outliers matter"
+---
+
+# How the Line Learns
+
+Drawing a good line by hand is helpful for intuition.
+
+But once we have many houses, we want the model to improve its own line from data.
+
+That requires two ideas:
+
+1. a way to measure how wrong the line is
+2. a way to update the line so it becomes less wrong
+
+## Measuring Error
+
+For one example, the error is simple:
+
+$$\text{error} = \text{actual} - \text{prediction}$$
+
+For many examples, we need one summary number. A common choice is **mean squared error (MSE)**:
+
+$$\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
+
+The name is less important than the intuition: lower MSE means the line fits the data better.
+
+## Improving the Line
+
+Once we can measure badness, we can ask a new question:
+
+how should we change the line so that badness goes down?
+
+That update process is called **gradient descent**.
+
+<GradientDescentDemo />
+
+<Checkpoint prompt="What happens if the learning rate is too high?">
+The updates can overshoot the good region and bounce around instead of settling down.
+</Checkpoint>
+
+## One Weird Point Can Move the Whole Story
+
+Not all data points have the same effect on the fitted line.
+
+If one house sale looks very unusual, it can pull the line away from the main cluster.
+
+<LinearRegressionOutlierDemo />
+
+## Notebook Lab
+
+Now that the idea is clear, edit the training loop directly and watch the line improve.
+
+<LinearRegressionNotebook />
+
+<Exercise title="Describe the Loop">
+Say the training loop in plain language without math symbols: prediction, measurement, update, repeat.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Learning a line means measuring error and repeatedly updating the parameters until the fit improves.
+</Callout>

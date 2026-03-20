@@ -1,0 +1,49 @@
+---
+title: "Neural Networks: Many Detectors Working Together"
+chapter: 8
+subtitle: "Layers, neurons, and the idea of learned internal features"
+---
+
+# Neural Networks: Many Detectors Working Together
+
+Once we accept that one score is not always enough, the next step is natural:
+
+let the model learn several internal detectors, then combine them.
+
+That system is called a **neural network**.
+
+## One Neuron
+
+A neuron is still doing a familiar job:
+
+1. compute a score
+2. apply a non-linearity
+3. pass the result forward
+
+So a neuron is not magic. It is a small detector.
+
+## Several Neurons in Parallel
+
+When we place many neurons in a layer, each one can specialize in a different pattern.
+
+One neuron might respond to one feature. Another might respond to a different one. The next layer can combine them into richer patterns.
+
+<NeuralNetworkDemo />
+
+## XOR as the Proof Case
+
+XOR is the clean demonstration that one detector can fail while a tiny network can succeed.
+
+<XorDemo />
+
+## The Big Intuition
+
+Neural networks matter because they can build internal representations automatically instead of forcing us to hand-design every useful feature ourselves.
+
+<Checkpoint prompt="Why does adding a hidden layer help?">
+Because the model is no longer forced to make the final decision from one raw score. It can first build intermediate signals and combine them.
+</Checkpoint>
+
+<Callout type="idea" title="Takeaway">
+Neural networks are just many small detectors arranged in layers so later layers can use what earlier layers discovered.
+</Callout>

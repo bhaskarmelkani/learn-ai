@@ -1,0 +1,72 @@
+---
+title: "What Does Learning Mean?"
+chapter: 2
+subtitle: "Training is just adjusting numbers until predictions improve"
+---
+
+# What Does Learning Mean?
+
+Suppose we want a model that helps estimate house prices.
+
+At first, the model's guesses will be rough. The whole point of learning is to make those guesses better.
+
+That is all training really is:
+
+1. make a prediction
+2. compare it with reality
+3. adjust the model's numbers
+4. try again
+
+## The Intuition
+
+When people first hear "machine learning," it can sound mysterious.
+
+But the core idea is ordinary:
+
+- start with a model shape
+- show it examples
+- nudge its numbers until its predictions improve
+
+<Callout type="analogy">
+Think of tuning a guitar. The guitar shape stays the same, but you keep adjusting the tuning pegs until the sound gets better. Training does the same thing with parameters.
+</Callout>
+
+## Two Common Kinds of Prediction
+
+The predictions we will study in this course mostly fall into two families:
+
+| Problem | Output | Example |
+|---------|--------|---------|
+| Predict a number | continuous value | house price |
+| Make a decision | category | approve / reject |
+
+The names for those families come later. First we want to feel the need for them.
+
+## A Concrete Question
+
+Imagine we know these two house sales:
+
+| Size (sqft) | Price |
+|-------------|-------|
+| 1000 | $190k |
+| 2000 | $290k |
+
+Now a third house appears at 1500 sqft.
+
+What is the most obvious first way to guess its price?
+
+Most people do the same thing: they imagine a line between the known examples and place the new house somewhere along that trend.
+
+That is where we will start next.
+
+<Exercise title="Prediction First">
+Before going to the next chapter, make a quick guess for the 1500 sqft house. You do not need a formula yet. Just use the trend you see.
+</Exercise>
+
+<Checkpoint prompt="What changes during learning: the examples, or the model's numbers?">
+The examples stay fixed. The model's numbers change so its predictions line up better with those examples.
+</Checkpoint>
+
+<Callout type="idea" title="Takeaway">
+Learning is not magic. It is repeated improvement: predict, compare, adjust, repeat.
+</Callout>
