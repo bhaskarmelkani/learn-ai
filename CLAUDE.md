@@ -1,6 +1,15 @@
 # CLAUDE.md
 
-This is a shadcn-friendly AI learning product built with Vite, React, Tailwind, MDX, and TypeScript.
+This is a multi-course AI learning platform built with Vite, React, React Router, Tailwind, MDX, and TypeScript.
+
+## Multi-Course Architecture
+
+- Courses live in `src/courses/{slug}/` — each has a `course.ts` manifest and a `chapters/` folder of MDX files.
+- The registry at `src/courses/registry.ts` auto-discovers courses via `import.meta.glob`.
+- Routes: `/` (catalog), `/courses/:slug` (resume), `/courses/:slug/:chapter` (reader).
+- Learning state is v3 (`learn-ai-learning-state-v3`) with course-scoped progress under `courseProgress[slug]`.
+- `track` and `guidedMode` are global; checkpoints and reviewed chapters are per-course.
+- To add a course, use the `create-course` skill. To add a chapter, use `add-chapter`.
 
 ## How To Work Here
 

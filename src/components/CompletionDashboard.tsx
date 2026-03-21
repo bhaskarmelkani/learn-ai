@@ -19,9 +19,13 @@ const CONCEPTS_COVERED = [
 export function CompletionDashboard() {
   const {
     state: { track },
-    masterySummary,
-    reviewQueue,
+    masterySummary: getMastery,
+    reviewQueue: getReviewQueue,
+    activeCourseSlug,
   } = useLearning();
+
+  const masterySummary = getMastery(activeCourseSlug);
+  const reviewQueue = getReviewQueue(activeCourseSlug);
 
   return (
     <div className="my-8 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">

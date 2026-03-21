@@ -20,7 +20,8 @@ export function Checkpoint({
 }) {
   const {
     recordCheckpoint,
-    state: { checkpoints },
+    checkpoints,
+    activeCourseSlug,
   } = useLearning();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const stored = checkpoints[id];
@@ -67,6 +68,7 @@ export function Checkpoint({
                 setSelectedIndex(index);
                 recordCheckpoint({
                   id,
+                  courseSlug: activeCourseSlug,
                   chapter,
                   prompt,
                   concepts,
