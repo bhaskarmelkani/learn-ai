@@ -65,7 +65,7 @@ export function CatalogPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-12 md:px-8">
+      <main className="mx-auto max-w-5xl px-4 py-14 md:px-8">
         <section className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
             Beginner-first AI courses
@@ -83,7 +83,7 @@ export function CatalogPage() {
           </p>
         </section>
 
-        <section className="mt-10 rounded-[1.75rem] border border-stone-200/80 bg-white/82 p-4 shadow-sm backdrop-blur dark:border-gray-800/80 dark:bg-gray-900/78">
+        <section className="mt-12 rounded-[1.9rem] border border-stone-200/80 bg-white/82 p-5 shadow-sm backdrop-blur dark:border-gray-800/80 dark:bg-gray-900/78">
           <div className="flex flex-wrap items-center gap-2">
             <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
               Audience
@@ -130,7 +130,7 @@ export function CatalogPage() {
           </div>
         </section>
 
-        <section className="mt-12">
+        <section className="mt-16">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500 dark:text-gray-500">
@@ -155,7 +155,7 @@ export function CatalogPage() {
             </div>
           ) : (
             <div
-              className={`mt-8 grid gap-6 ${
+              className={`mt-10 grid gap-7 ${
                 filtered.length === 1 ? "max-w-3xl" : "md:grid-cols-2"
               }`}
             >
@@ -200,7 +200,7 @@ function CourseCard({
   const hasStarted = progress.lastChapter > 1 || reviewed > 0;
 
   return (
-    <article className="flex min-h-[20rem] flex-col rounded-[1.75rem] border border-stone-200/80 bg-white/88 p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800/80 dark:bg-gray-900/84">
+    <article className="flex min-h-[21.5rem] flex-col rounded-[1.85rem] border border-stone-200/80 bg-white/88 p-7 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800/80 dark:bg-gray-900/84 md:p-8">
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-medium text-stone-600 dark:bg-gray-800 dark:text-gray-400">
           {PROFESSION_LABELS[course.profession]}
@@ -219,7 +219,7 @@ function CourseCard({
         {course.subtitle}
       </p>
 
-      <div className="mt-6 flex flex-wrap items-center gap-4 text-xs font-medium uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
+      <div className="mt-7 flex flex-wrap items-center gap-4 text-xs font-medium uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
         <span>{course.chapterCount} chapters</span>
         {course.estimatedMinutes && <span>~{course.estimatedMinutes} min</span>}
       </div>
@@ -228,30 +228,36 @@ function CourseCard({
         Available in Conceptual and Builder tracks.
       </p>
 
-      {hasStarted && (
-        <div className="mt-6">
-          <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
-            <span>Progress</span>
-            <span>{percent}%</span>
+      <div className="mt-auto space-y-5 pt-8">
+        {hasStarted && (
+          <div className="rounded-[1.35rem] border border-stone-200/70 bg-stone-50/80 px-4 py-4 dark:border-gray-800 dark:bg-gray-950/60">
+            <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
+              <span>Progress</span>
+              <span>{percent}%</span>
+            </div>
+            <div className="mt-3 h-1.5 rounded-full bg-stone-200 dark:bg-gray-800">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500"
+                style={{ width: `${percent}%` }}
+              />
+            </div>
           </div>
-          <div className="mt-2 h-1.5 rounded-full bg-stone-200 dark:bg-gray-800">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500"
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-        </div>
-      )}
+        )}
 
-      <button
-        type="button"
-        onClick={() =>
-          onNavigate(course.slug, hasStarted ? progress.lastChapter : undefined)
-        }
-        className="mt-auto inline-flex w-fit items-center justify-center rounded-full bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-cyan-500"
-      >
-        {hasStarted ? "Continue learning" : "Start course"}
-      </button>
+        <button
+          type="button"
+          onClick={() =>
+            onNavigate(
+              course.slug,
+              hasStarted ? progress.lastChapter : undefined
+            )
+          }
+          aria-label={`${hasStarted ? "Continue learning" : "Start course"}: ${course.title}`}
+          className="inline-flex w-fit items-center justify-center rounded-full bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-24px_rgba(8,145,178,0.75)] transition-colors hover:bg-cyan-500"
+        >
+          {hasStarted ? "Continue learning" : "Start course"}
+        </button>
+      </div>
     </article>
   );
 }

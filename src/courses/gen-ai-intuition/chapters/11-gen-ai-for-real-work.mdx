@@ -1,0 +1,159 @@
+---
+title: "Gen AI for Real Work"
+chapter: 11
+subtitle: "Durable workflows for writing, research, extraction, planning, and collaboration"
+---
+
+# Gen AI for Real Work
+
+<ChapterBridge
+  why="The course only matters if the concepts transfer into real workflows. This chapter turns the mental models into durable patterns that beginners can actually use."
+  buildsOn="Everything so far: prompting, grounding, multimodality, tool choice, responsibility, and right-sized workflow design."
+  unlocks="A practical repertoire of repeatable Gen AI patterns that stay useful even as products change."
+  map={["Task pattern", "Right workflow", "Review habit", "Repeatable use"]}
+  trackFocus={{
+    conceptual: "Focus on recognizing the recurring shapes of useful work rather than memorizing product features.",
+    builder: "Focus on turning a one-off success into a repeatable workflow with review built in."
+  }}
+/>
+
+The most durable Gen AI advantage is not one flashy prompt.
+
+It is a small set of workflow patterns you can reuse:
+
+- draft from rough notes
+- summarize for a specific audience
+- extract structure from messy text
+- compare options against criteria
+- brainstorm variations
+- turn long material into a next-step plan
+
+## Five Reliable Work Patterns
+
+| Pattern | Good for | Core review question |
+|-----------|-------|-------|
+| Drafting | emails, first-pass memos, outlines | did it preserve the real facts and tone? |
+| Summarizing | meetings, reports, articles | what important nuance was lost? |
+| Extraction | action items, fields, claims, risks | did it miss or invent any key item? |
+| Comparison | vendors, plans, approaches | are the criteria explicit and evidence-based? |
+| Planning | project next steps, study plans, workflows | are the steps realistic and properly prioritized? |
+
+A useful beginner upgrade is to stop asking:
+
+> "What can Gen AI do?"
+
+and start asking:
+
+> "Which workflow pattern am I in, and what check does that pattern need?"
+
+<CaseCards
+  title="Work patterns that transfer across roles"
+  cards={[
+    {
+      title: "Knowledge worker",
+      product: "Summarize a long report for a time-constrained stakeholder and surface open questions.",
+      modelIdea: "This is summarization plus prioritization for a named audience.",
+      failureMode: "The answer can sound clean while dropping the most important caveat."
+    },
+    {
+      title: "Team coordinator",
+      product: "Turn meeting notes into owners, deadlines, and unresolved blockers.",
+      modelIdea: "This is extraction and structuring, not just generic summarization.",
+      failureMode: "If the model invents an owner or date, the workflow quietly creates confusion."
+    },
+    {
+      title: "Learner or teacher",
+      product: "Convert source material into practice questions, explanations, and a review plan.",
+      modelIdea: "This is a learning workflow, where usefulness depends on checking whether the content stays faithful to the source.",
+      failureMode: "A smooth explanation can hide shallow understanding or missed nuance."
+    }
+  ]}
+/>
+
+<Exercise title="Design Your Repeatable Pattern" hint="A strong answer might say: 'I often compare vendors. I would ask for a table with criteria, evidence, tradeoffs, and missing info, then check every evidence row against the source before sharing it.'">
+Choose one repeating task from your own work or learning life. Name the workflow pattern it belongs to, describe the output format you want, and say what review step makes it trustworthy enough to reuse.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch11-patterns"
+  chapter={11}
+  prompt="Why are workflow patterns more durable than tool tricks?"
+  concepts={["workflow patterns", "durability", "tooling"]}
+  options={[
+    {
+      label: "Because the jobs of drafting, summarizing, extracting, comparing, and planning persist even as tools change.",
+      correct: true,
+      explanation: "Yes. Workflow patterns outlast specific interfaces and model names."
+    },
+    {
+      label: "Because tools do not matter at all.",
+      explanation: "Tools do matter, but they should serve the workflow rather than define it."
+    },
+    {
+      label: "Because every task uses exactly the same prompt.",
+      explanation: "The underlying pattern may repeat, but the prompt and review needs still vary by task."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch11-extraction"
+  chapter={11}
+  prompt="What makes extraction a different pattern from generic summarization?"
+  concepts={["extraction", "summarization", "structure"]}
+  options={[
+    {
+      label: "Extraction asks for specific fields, claims, or items in a predictable structure rather than a broad narrative summary.",
+      correct: true,
+      explanation: "Exactly. Extraction is usually narrower, more structured, and easier to review."
+    },
+    {
+      label: "Extraction only works on spreadsheets, while summarization only works on text.",
+      explanation: "Both patterns can apply to text, documents, forms, or multimodal inputs."
+    },
+    {
+      label: "Extraction removes the need for human review.",
+      explanation: "Structured output helps review. It does not replace it."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch11-review"
+  chapter={11}
+  prompt="What is the right question to add before reusing Gen AI output in real work?"
+  concepts={["review", "reuse", "workflow"]}
+  options={[
+    {
+      label: "What review step belongs to this workflow pattern before I trust or share the output?",
+      correct: true,
+      explanation: "Right. The review step is part of the workflow, not an optional afterthought."
+    },
+    {
+      label: "How can I avoid reading the output at all?",
+      explanation: "Automation can help, but ignoring the output removes the feedback loop you need."
+    },
+    {
+      label: "Which prompt phrase sounds the most intelligent?",
+      explanation: "Tone is secondary to whether the workflow is trustworthy."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={11}
+  summary={[
+    "Useful Gen AI work often falls into a handful of repeatable workflow patterns.",
+    "Pattern recognition helps you choose better prompts, formats, and review steps.",
+    "A workflow becomes durable when its review habit is built in."
+  ]}
+  checks={[
+    "Can you name the pattern behind one real task you repeat often?",
+    "Can you explain what review step belongs to that pattern?"
+  ]}
+  nextStep="Now the capstone asks you to design one complete workflow of your own."
+  trackActions={{
+    conceptual: "Translate one recurring task from your life into a workflow pattern and a review question.",
+    builder: "Define one repeatable prompt-plus-review system you could hand to another person."
+  }}
+/>

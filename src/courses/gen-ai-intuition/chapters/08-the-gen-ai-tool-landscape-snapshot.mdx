@@ -1,0 +1,160 @@
+---
+title: "The Gen AI Tool Landscape Snapshot"
+chapter: 8
+subtitle: "A March 2026 map of categories, representative tools, and how to choose sanely"
+---
+
+# The Gen AI Tool Landscape Snapshot
+
+<ChapterBridge
+  why="Tool names change faster than the core concepts. This chapter keeps the time-sensitive material in one place so the rest of the course can stay durable."
+  buildsOn="The stable ideas from the earlier chapters: generation, prompting, grounding, multimodality, and review."
+  unlocks="A practical way to choose a tool category without turning the whole course into a product tour."
+  map={["Task type", "Tool category", "Representative tools", "Selection criteria"]}
+  trackFocus={{
+    conceptual: "Use this chapter as orientation, not doctrine. Categories matter more than brand loyalty.",
+    builder: "Use this chapter to map jobs to tool categories, not to memorize product checklists."
+  }}
+/>
+
+This chapter is intentionally **dated**.
+
+The snapshot below is framed for **March 2026**. Specific products, plans, and model names will keep changing.
+
+The durable part is the selection logic:
+
+- what job are you trying to do?
+- what context does the tool need?
+- how much structure, retrieval, or collaboration do you need?
+- what human review is still required?
+
+## Category Map
+
+| Category | Good for | Representative tools as of March 2026 |
+|-----------|-------|-------|
+| General chat assistants | drafting, brainstorming, explanation, everyday work | ChatGPT, Claude, Gemini |
+| Research and source-heavy tools | web-backed answers, synthesis with sources | Perplexity, ChatGPT Deep Research, Microsoft 365 Copilot Researcher |
+| Notebook and source-grounded study tools | asking questions over provided source material | NotebookLM, project-based chat workspaces in ChatGPT and Claude |
+| Coding assistants | code generation, explanation, refactors, IDE help | GitHub Copilot, Cursor, Claude in coding environments, OpenAI Codex-style agents |
+| Multimodal creation tools | image, audio, video, and design drafts | Midjourney, Runway, Adobe Firefly, ElevenLabs |
+| Workflow and automation tools | connecting prompts to repeatable steps and business systems | Microsoft Copilot agents, Zapier AI-style workflows, no-code automation stacks |
+
+<Callout type="tip" title="How to read this snapshot">
+Do not ask "Which tool is best?" first. Ask "Which category fits the job, and what evidence would tell me it is working?"
+</Callout>
+
+## Practical Selection Criteria
+
+When comparing tools in the same category, look for:
+
+1. how well the tool handles your actual task
+2. whether it can use the right sources or documents
+3. how easy it is to review, export, and reuse the output
+4. what privacy or admin controls matter in your environment
+5. whether the workflow is individual, team-based, or integrated into another system
+
+<CaseCards
+  title="How good teams choose tools"
+  cards={[
+    {
+      title: "The simple drafting job",
+      product: "A solo user needs fast brainstorming and polished first drafts.",
+      modelIdea: "A general chat assistant is often enough. The workflow does not need heavy retrieval or integration.",
+      failureMode: "Teams overbuy complexity for a job that mostly needs a decent chat interface and review habit."
+    },
+    {
+      title: "The policy-answering job",
+      product: "A team needs answers grounded in internal docs with traceable evidence.",
+      modelIdea: "The crucial differentiator is source grounding and team controls, not just model fluency.",
+      failureMode: "A flashy general chat tool may still be the wrong fit if document grounding is weak."
+    }
+  ]}
+/>
+
+<Exercise title="Choose the Category First" hint="A strong answer might say: 'For comparing vendors with citations, I would start in the research/source-heavy category. The most important requirement is source visibility, not image generation or team automation.'">
+Pick a real Gen AI task you care about. Name the best tool category for it, the top two selection criteria, and one thing you would refuse to compromise on.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch8-categories"
+  chapter={8}
+  prompt="Why does this chapter separate categories from named products?"
+  concepts={["tool landscape", "categories", "durability"]}
+  options={[
+    {
+      label: "Because products change quickly, while the underlying jobs and tool categories are more stable.",
+      correct: true,
+      explanation: "Yes. That keeps the course useful even as the market shifts."
+    },
+    {
+      label: "Because all Gen AI tools are basically identical once you log in.",
+      explanation: "They overlap, but the differences in grounding, collaboration, modality, and integration can matter a lot."
+    },
+    {
+      label: "Because named products never matter in practice.",
+      explanation: "They do matter. The key is to keep them in the time-sensitive part of the course."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch8-selection"
+  chapter={8}
+  prompt="What is the best first question when choosing between tools?"
+  concepts={["tool choice", "workflow", "selection"]}
+  options={[
+    {
+      label: "What exact job am I trying to do, and what evidence would show this tool can do it well?",
+      correct: true,
+      explanation: "Exactly. Start from the job and the evaluation criteria, not from brand hype."
+    },
+    {
+      label: "Which tool has the most viral screenshots this week?",
+      explanation: "Popularity is not the same as fit for your task."
+    },
+    {
+      label: "Which tool has the longest marketing page?",
+      explanation: "Marketing detail is not a substitute for workflow fit."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch8-grounding-tools"
+  chapter={8}
+  prompt="What often matters most in a document-heavy team workflow?"
+  concepts={["grounding", "documents", "team tools"]}
+  options={[
+    {
+      label: "How well the tool can use the right sources, show evidence, and fit team controls.",
+      correct: true,
+      explanation: "Right. In many team workflows, grounding and governance matter more than generic eloquence."
+    },
+    {
+      label: "Whether the home page uses the word 'agent.'",
+      explanation: "Brand language does not tell you whether the workflow is trustworthy."
+    },
+    {
+      label: "Whether the tool can make images, even if the job is policy Q&A.",
+      explanation: "Extra modalities do not replace fit for the actual task."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={8}
+  summary={[
+    "The March 2026 snapshot belongs in one updateable chapter, not scattered through the whole course.",
+    "Tool categories are more durable than product names.",
+    "Selection should start from the task, context, and review requirements."
+  ]}
+  checks={[
+    "Can you explain why category fit matters more than hype when choosing a tool?",
+    "Can you name one task where source visibility would matter more than model personality?"
+  ]}
+  nextStep="Next we tackle one of the most overloaded words in the space: agents."
+  trackActions={{
+    conceptual: "Choose one tool you know and describe its category before its brand.",
+    builder: "Write three evaluation criteria you would use before rolling out a new AI tool to a team."
+  }}
+/>

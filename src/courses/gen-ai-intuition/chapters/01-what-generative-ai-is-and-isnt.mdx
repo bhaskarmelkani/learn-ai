@@ -1,0 +1,188 @@
+---
+title: "What Generative AI Is and Isn't"
+chapter: 1
+subtitle: "Generation, transformation, prediction, and the first useful boundaries"
+---
+
+# What Generative AI Is and Isn't
+
+<ChapterBridge
+  why="Beginners often lump together search, automation, predictive models, and generative AI as one blurry category. This chapter makes the boundaries useful instead of fuzzy."
+  buildsOn="No prior course required. Just everyday experience with software that answers questions, writes text, or makes recommendations."
+  unlocks="A cleaner mental model for prompts, workflows, grounding, and tool choice in the rest of the course."
+  map={["Input", "Pattern completion", "Generated output", "Human review"]}
+  trackFocus={{
+    conceptual: "Leave this chapter knowing what kind of tool generative AI is and what it is not.",
+    builder: "Leave this chapter able to classify a workflow as generation, prediction, retrieval, or plain software."
+  }}
+/>
+
+Generative AI is software that produces **new content** by extending patterns it learned from large amounts of data.
+
+That content can be:
+
+- text
+- images
+- audio
+- video
+- code
+- structured drafts like summaries, outlines, or extracted fields
+
+The key word is **generate**.
+
+A generative system does not just look up a stored answer. It creates a response token by token, pixel by pixel, or frame by frame based on patterns it learned before you arrived.
+
+## Four Useful Distinctions
+
+| Tool pattern | Main job | Example output |
+|-----------|-----------|-------|
+| Search | Find existing information | links, passages, sources |
+| Predictive AI | Choose a label or number | spam/not spam, fraud score |
+| Rules-based software | Follow fixed instructions | "if status is late, send reminder" |
+| Generative AI | Create a new artifact | a draft, answer, image, or plan |
+
+Generative AI can be combined with the other three, but it is not identical to any of them.
+
+That matters because people often expect the wrong thing:
+
+- they expect a chatbot to be a search engine
+- they expect a creative model to behave like a calculator
+- they expect a workflow assistant to know private company facts without being given them
+
+<Callout type="idea" title="First durable habit">
+When you see an AI product, ask: is it mainly generating, retrieving, classifying, or following rules? Many product mistakes come from confusing those jobs.
+</Callout>
+
+<CaseCards
+  title="Three products that look similar but do different jobs"
+  cards={[
+    {
+      title: "Web search assistant",
+      product: "A tool that browses the web, cites sources, and gives a short answer.",
+      modelIdea: "The useful part is not just generation. It is retrieval plus generation, which is why source links matter.",
+      failureMode: "If the learner treats it like pure generation, they miss why evidence and freshness change the answer quality."
+    },
+    {
+      title: "Invoice classifier",
+      product: "A back-office tool that labels incoming documents as paid, unpaid, or needs review.",
+      modelIdea: "That is mostly prediction, not open-ended generation, even if a language model appears somewhere in the stack.",
+      failureMode: "Teams call everything 'Gen AI' and then choose the wrong success metric."
+    },
+    {
+      title: "Draft-writing assistant",
+      product: "A tool that turns rough notes into a customer email or project summary.",
+      modelIdea: "This is a genuine generation workflow because the output is a new artifact shaped by the prompt and context.",
+      failureMode: "If users forget it is pattern-based generation, they may over-trust tone and fluency."
+    }
+  ]}
+/>
+
+## What Generative AI Is Good At
+
+Generative systems are often strong at:
+
+- drafting
+- rewriting
+- summarizing
+- extracting structure from messy text
+- translating between formats
+- brainstorming variations
+
+They are often weaker at:
+
+- guaranteeing truth
+- knowing your private documents without being given them
+- making high-stakes decisions without review
+- handling ambiguous instructions that humans think are "obvious"
+
+<Exercise title="Classify the Job" hint="A chatbot that answers from your company handbook is retrieval plus generation. A model that scores a loan application is mostly prediction. An email auto-responder with fixed templates is mostly rules plus generation.">
+Pick three AI tools you know or have seen. For each one, write whether its main job is **generation**, **retrieval**, **prediction**, or **rules**. If it mixes several jobs, say which one dominates the user experience.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch1-definition"
+  chapter={1}
+  prompt="Which description best fits generative AI?"
+  concepts={["generative ai", "generation", "pattern completion"]}
+  options={[
+    {
+      label: "Software that creates new content by extending learned patterns from prior data.",
+      correct: true,
+      explanation: "Yes. The core idea is generation from learned patterns, not simple lookup."
+    },
+    {
+      label: "Software that always searches the internet and returns the most recent document.",
+      explanation: "Some AI products do search, but generative AI as a category is not defined by web retrieval."
+    },
+    {
+      label: "Software that follows fixed rules and never produces novel outputs.",
+      explanation: "Rules-based systems are useful, but they are a different tool pattern."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch1-search"
+  chapter={1}
+  prompt="Why is it helpful to separate generation from retrieval?"
+  concepts={["retrieval", "grounding", "tool choice"]}
+  options={[
+    {
+      label: "Because a fluent answer is not the same as an evidenced answer, and the system design changes when sources matter.",
+      correct: true,
+      explanation: "Exactly. Retrieval matters when freshness or evidence matters. Generation alone does not guarantee either."
+    },
+    {
+      label: "Because retrieval is only useful for programmers, while generation is for everyone else.",
+      explanation: "Retrieval is useful whenever answers depend on real documents or current facts, not just for technical users."
+    },
+    {
+      label: "Because retrieval always makes the output correct.",
+      explanation: "Retrieval can improve grounding, but it can still retrieve the wrong thing or be used badly."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch1-fluency"
+  chapter={1}
+  prompt="What is the safest beginner mental model for a polished AI response?"
+  concepts={["fluency", "trust", "verification"]}
+  options={[
+    {
+      label: "Treat fluency as style, not proof, and ask what evidence or context the answer came from.",
+      correct: true,
+      explanation: "Right. Smooth language can be helpful, but it is not the same as truth or reliability."
+    },
+    {
+      label: "Assume polished wording means the model understood the situation deeply.",
+      explanation: "That assumption causes many avoidable mistakes. Style is easier to generate than reliable reasoning."
+    },
+    {
+      label: "Avoid Gen AI completely, because fluency makes it unusable.",
+      explanation: "The goal is calibrated use, not blanket avoidance."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Takeaway">
+Generative AI is best treated as a content-generation tool that often needs retrieval, constraints, or human review around it.
+</Callout>
+
+<ChapterRecap
+  chapter={1}
+  summary={[
+    "Generative AI creates new content by extending learned patterns.",
+    "Search, prediction, rules, and generation are different jobs even when one product blends them.",
+    "Fluent output can be useful without being fully reliable."
+  ]}
+  checks={[
+    "Can you describe one AI tool you know in terms of its main job rather than its marketing label?",
+    "Can you explain why retrieval and generation should not be collapsed into the same concept?"
+  ]}
+  nextStep="Next we make the core LLM loop feel ordinary instead of magical."
+  trackActions={{
+    conceptual: "Explain generative AI to a friend without using the words 'magic' or 'intelligence.'",
+    builder: "List one workflow that should stay rules-based and one that benefits from generation."
+  }}
+/>

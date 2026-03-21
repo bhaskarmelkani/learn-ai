@@ -1,0 +1,150 @@
+---
+title: "Prompting for Better Results"
+chapter: 4
+subtitle: "Clarity, examples, constraints, and the iteration habit that actually lasts"
+---
+
+# Prompting for Better Results
+
+<ChapterBridge
+  why="Once the first prompt works at all, the next job is making it reliably useful. This chapter teaches durable prompt improvements instead of fragile hacks."
+  buildsOn="The idea that prompting is task design and the model only sees the text you actually provide."
+  unlocks="Better everyday workflows for extraction, drafting, analysis, and review."
+  map={["Clear task", "Examples", "Constraints", "Iteration"]}
+  trackFocus={{
+    conceptual: "Notice how small prompt changes often improve usefulness by reducing ambiguity and forcing clearer output expectations.",
+    builder: "Notice how examples, schemas, and review instructions create repeatable workflows without writing code."
+  }}
+/>
+
+The best prompt upgrades are usually not fancy.
+
+They are practical:
+
+- make the task narrower
+- show one example
+- define the format
+- set boundaries
+- ask the model to reveal uncertainty
+
+## Four Reliable Upgrades
+
+### 1. Add examples when the task is easy to misunderstand
+
+If you want a particular style or answer shape, one example often teaches faster than another paragraph of explanation.
+
+### 2. Add constraints when "good" is too vague
+
+Useful constraints include:
+
+- word limits
+- required sections
+- things to avoid
+- what to do when the evidence is weak
+
+### 3. Ask for structure when the output needs review
+
+A structured answer is easier to scan, compare, verify, or reuse in another step.
+
+### 4. Iterate like a collaborator, not a gambler
+
+Good prompting often looks like:
+
+1. try a first version
+2. inspect what was weak
+3. tighten the task or format
+4. run again
+
+<PromptComparison />
+
+<Callout type="warning" title="Avoid brittle prompt mythology">
+Do not overfit to internet folklore about one magic phrase that always unlocks hidden intelligence. Durable prompting is clearer workflow design, not superstition.
+</Callout>
+
+<Exercise title="Upgrade the Prompt" hint="A strong revision might add audience, output structure, and uncertainty handling: 'Extract the risks from this proposal for an operations lead. Return a table with risk, impact, and missing information. If evidence is weak, mark it unclear.'">
+Take the prompt you wrote in the last chapter. Improve it in three ways: add one useful constraint, add a better output structure, and add one instruction about uncertainty, missing information, or evidence.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch4-examples"
+  chapter={4}
+  prompt="When are examples especially useful in a prompt?"
+  concepts={["examples", "few-shot", "prompting"]}
+  options={[
+    {
+      label: "When the task or preferred output style is easy to misunderstand from description alone.",
+      correct: true,
+      explanation: "Yes. Examples are often the fastest way to show the pattern you want."
+    },
+    {
+      label: "Only when the model is bad at language and needs training data.",
+      explanation: "Examples can help even strong models because they reduce ambiguity about the requested pattern."
+    },
+    {
+      label: "Never, because examples always make prompts too long.",
+      explanation: "Examples can be extremely helpful when they teach the format or judgment you want."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch4-constraints"
+  chapter={4}
+  prompt="What is the main value of adding constraints to a prompt?"
+  concepts={["constraints", "quality", "prompt design"]}
+  options={[
+    {
+      label: "They narrow the space of acceptable answers so the output is easier to use and review.",
+      correct: true,
+      explanation: "Right. Constraints help the model aim at a narrower definition of success."
+    },
+    {
+      label: "They guarantee the model will never hallucinate.",
+      explanation: "Constraints can reduce drift, but they do not guarantee factual accuracy."
+    },
+    {
+      label: "They only matter for creative writing.",
+      explanation: "Constraints are just as useful for summaries, extractions, and planning tasks."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch4-iteration"
+  chapter={4}
+  prompt="What is the healthiest beginner habit for improving prompts?"
+  concepts={["iteration", "workflow", "prompting"]}
+  options={[
+    {
+      label: "Run a first draft, inspect what failed, then revise the prompt to fix the specific weakness.",
+      correct: true,
+      explanation: "Exactly. Prompting improves fastest when you treat it like an iterative workflow."
+    },
+    {
+      label: "Start from the longest prompt template you can find online and never change it.",
+      explanation: "Templates can help, but blind reuse usually creates bloated or mismatched prompts."
+    },
+    {
+      label: "Keep changing random phrases until the model sounds smarter.",
+      explanation: "Random tweaking is slower than identifying the real failure mode and addressing it directly."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={4}
+  summary={[
+    "Prompt quality improves when you add examples, constraints, and structure where they are genuinely needed.",
+    "Iteration works better than superstition.",
+    "The strongest prompt habit is to fix a specific failure mode, not to chase magic wording."
+  ]}
+  checks={[
+    "Can you name one prompt weakness that is really a workflow-spec problem?",
+    "Can you explain when an example teaches faster than extra instructions?"
+  ]}
+  nextStep="Next we turn from improvement tactics to the more important question: where do these systems still break?"
+  trackActions={{
+    conceptual: "Rewrite one sloppy prompt so that success is easier to judge.",
+    builder: "Define one repeatable prompt pattern you could hand to a teammate without extra explanation."
+  }}
+/>
