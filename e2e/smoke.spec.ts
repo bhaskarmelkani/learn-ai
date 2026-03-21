@@ -15,7 +15,9 @@ test("first-run onboarding lands on the catalog", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: /course catalog/i }),
   ).toBeVisible();
-  await expect(page.getByText(/ai in-tuition/i)).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /^AI In-tuition$/i }).first(),
+  ).toBeVisible();
 });
 
 test("catalog start opens the first chapter", async ({ page }) => {

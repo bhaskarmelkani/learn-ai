@@ -16,9 +16,7 @@ const STORAGE_KEYS = {
 
 function getInitialSidebarCollapsed() {
   if (typeof window === "undefined") return false;
-  return (
-    window.localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "true"
-  );
+  return window.localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "true";
 }
 
 export function CourseReader() {
@@ -33,7 +31,9 @@ export function CourseReader() {
     return <Navigate to="/" replace />;
   }
 
-  return <CourseReaderInner manifest={manifest} chapterNumber={chapterNumber} />;
+  return (
+    <CourseReaderInner manifest={manifest} chapterNumber={chapterNumber} />
+  );
 }
 
 function CourseReaderInner({
@@ -99,7 +99,7 @@ function CourseReaderInner({
             : null,
         resumeChapter: courseProgress.lastChapter,
       }),
-    [chapters, requestedChapter, courseProgress.lastChapter],
+    [chapters, requestedChapter, courseProgress.lastChapter]
   );
   const currentIndex = useMemo(() => {
     if (resolvedChapterNumber === null) return -1;
@@ -125,13 +125,13 @@ function CourseReaderInner({
   // Theme + sidebar state
   const { dark, setDark } = useThemePreference();
   const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window === "undefined" ? true : window.innerWidth >= 1024,
+    typeof window === "undefined" ? true : window.innerWidth >= 1024
   );
   const [sidebarVisible, setSidebarVisible] = useState(() =>
-    typeof window === "undefined" ? true : window.innerWidth >= 1024,
+    typeof window === "undefined" ? true : window.innerWidth >= 1024
   );
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
-    getInitialSidebarCollapsed,
+    getInitialSidebarCollapsed
   );
   const contentRef = useRef<HTMLDivElement>(null);
   const prevIsDesktop = useRef(isDesktop);
@@ -152,7 +152,7 @@ function CourseReaderInner({
   useEffect(() => {
     window.localStorage.setItem(
       STORAGE_KEYS.sidebarCollapsed,
-      String(sidebarCollapsed),
+      String(sidebarCollapsed)
     );
   }, [sidebarCollapsed]);
 
@@ -165,16 +165,16 @@ function CourseReaderInner({
         if (!isDesktop) setSidebarVisible(false);
       }
     },
-    [chapters, courseSlug, isDesktop, navigate],
+    [chapters, courseSlug, isDesktop, navigate]
   );
 
   const onNext = useCallback(
     () => goTo(currentIndex + 1),
-    [currentIndex, goTo],
+    [currentIndex, goTo]
   );
   const onPrev = useCallback(
     () => goTo(currentIndex - 1),
-    [currentIndex, goTo],
+    [currentIndex, goTo]
   );
   const onToggleSidebar = useCallback(() => {
     if (isDesktop) {
@@ -204,13 +204,12 @@ function CourseReaderInner({
   }
 
   const progress = ((currentIndex + 1) / chapters.length) * 100;
-  const previousChapter =
-    currentIndex > 0 ? chapters[currentIndex - 1] : null;
+  const previousChapter = currentIndex > 0 ? chapters[currentIndex - 1] : null;
   const nextChapter =
     currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
   return (
-    <div className="h-screen flex overflow-hidden bg-stone-100 text-stone-900 dark:bg-gray-950 dark:text-gray-50">
+    <div className="flex h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.14),_transparent_24%),linear-gradient(180deg,#f7f4ee_0%,#f2eee6_100%)] text-stone-900 dark:bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_24%),linear-gradient(180deg,#0b1220_0%,#111827_100%)] dark:text-gray-50">
       <Sidebar
         chapters={chapters}
         current={currentIndex}
@@ -228,7 +227,6 @@ function CourseReaderInner({
         onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
         completedChapters={reviewedChapters}
         courseTitle={manifest.title}
-        courseSubtitle={manifest.subtitle}
         onBackToCatalog={() => navigate("/")}
       />
       {sidebarVisible && !isDesktop && (
@@ -244,25 +242,28 @@ function CourseReaderInner({
         className={`relative flex-1 overflow-y-auto transition-[margin] duration-200 ${
           sidebarVisible && isDesktop
             ? sidebarCollapsed
-              ? "lg:ml-20"
-              : "lg:ml-80"
+              ? "lg:ml-[4.5rem]"
+              : "lg:ml-72"
             : "lg:ml-0"
         }`}
       >
-        <div className="sticky top-0 z-10 border-b border-stone-200/80 bg-stone-100/95 backdrop-blur dark:border-gray-800/80 dark:bg-gray-950/95">
-          <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3 md:px-8">
+        <div className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-100/82 backdrop-blur-xl dark:border-gray-800/70 dark:bg-gray-950/84">
+          <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4 md:px-8">
             {!isDesktop && (
               <button
                 type="button"
                 onClick={onToggleSidebar}
-                className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
+                className="inline-flex items-center gap-2 rounded-full border border-stone-300/80 bg-white/90 px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
               >
                 <span className="text-base leading-none">&#8801;</span>
                 Chapters
               </button>
             )}
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-stone-800 dark:text-gray-100">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-stone-500 dark:text-gray-500">
+                {manifest.title}
+              </p>
+              <p className="mt-1 truncate text-sm font-semibold text-stone-800 dark:text-gray-100">
                 {chapter.chapter}. {chapter.title}
               </p>
               <p className="truncate text-xs text-stone-500 dark:text-gray-400">
@@ -271,14 +272,14 @@ function CourseReaderInner({
               </p>
             </div>
             <div className="hidden items-center gap-2 md:flex">
-              <div className="rounded-full bg-white px-3 py-1 text-xs font-medium text-stone-700 shadow-sm dark:bg-gray-900 dark:text-gray-200">
+              <div className="rounded-full border border-stone-200/80 bg-white/90 px-3 py-1 text-xs font-medium text-stone-700 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200">
                 {getTrackLabel(track)}
               </div>
               <div
-                className={`rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
+                className={`rounded-full border px-3 py-1 text-xs font-medium shadow-sm ${
                   guidedMode
-                    ? "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-200"
-                    : "bg-white text-stone-700 dark:bg-gray-900 dark:text-gray-200"
+                    ? "border-amber-200 bg-amber-100 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200"
+                    : "border-stone-200/80 bg-white/90 text-stone-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200"
                 }`}
               >
                 {guidedMode ? "Guided" : "Open Mode"}
@@ -293,11 +294,13 @@ function CourseReaderInner({
               </p>
             </div>
           </div>
-          <div className="h-1 w-full bg-stone-200 dark:bg-gray-900">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 transition-[width] duration-300"
-              style={{ width: `${progress}%` }}
-            />
+          <div className="mx-auto max-w-6xl px-4 pb-3 md:px-8">
+            <div className="h-1 w-full rounded-full bg-stone-200/80 dark:bg-gray-900">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 transition-[width] duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </div>
         <SlideView key={`${courseSlug}-${currentIndex}`} chapter={chapter} />

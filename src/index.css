@@ -51,6 +51,10 @@ body,
 
 body {
   @apply bg-stone-100 text-stone-900 antialiased dark:bg-gray-950 dark:text-gray-50;
+  font-feature-settings:
+    "liga" 1,
+    "kern" 1,
+    "ss01" 1;
 }
 
 .katex {
@@ -69,8 +73,14 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Code block styling */
@@ -104,6 +114,14 @@ body {
 
 .chapter-content {
   text-wrap: pretty;
+}
+
+.chapter-content article {
+  text-wrap: pretty;
+}
+
+.chapter-content :is(h1, h2, h3, blockquote, p, ul, ol, table, hr) {
+  scroll-margin-top: 8rem;
 }
 
 /* Scrollbar */
