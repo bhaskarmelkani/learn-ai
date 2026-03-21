@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Graph, PlotLine, PlotPoints } from "./Graph";
 import { Slider } from "./Slider";
 import { GuidedPrediction } from "./GuidedPrediction";
@@ -44,13 +44,9 @@ export function SigmoidDemo() {
   const boundary = Math.abs(w) < 1e-9 ? null : -b / w;
   const controlsDisabled = guidedMode && guidedLocked;
 
-  const { accuracy, midpointScore } = useMemo(() => {
-    const correct = DATA.filter(([x, y]) => (probability(x) >= THRESHOLD ? 1 : 0) === y).length;
-    return {
-      accuracy: correct / DATA.length,
-      midpointScore: rawScore(0),
-    };
-  }, [w, b]);
+  const correct = DATA.filter(([x, y]) => (probability(x) >= THRESHOLD ? 1 : 0) === y).length;
+  const accuracy = correct / DATA.length;
+  const midpointScore = rawScore(0);
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">

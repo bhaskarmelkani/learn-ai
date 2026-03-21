@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Slider } from "./Slider";
 import { GuidedPrediction } from "./GuidedPrediction";
 import { useLearning } from "../../learning/LearningContext";
@@ -26,7 +26,7 @@ export function SoftmaxDemo() {
   }, [guidedMode]);
 
   const logits = [cat, dog, bird];
-  const probs = useMemo(() => softmax(logits), [cat, dog, bird]);
+  const probs = softmax(logits);
   const winnerIndex = probs.indexOf(Math.max(...probs));
   const controlsDisabled = guidedMode && guidedLocked;
 

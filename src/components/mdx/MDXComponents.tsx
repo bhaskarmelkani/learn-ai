@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Suspense, lazy } from "react";
 import type { MDXComponents as MDXComponentsType } from "mdx/types";
 import { Callout } from "./Callout";

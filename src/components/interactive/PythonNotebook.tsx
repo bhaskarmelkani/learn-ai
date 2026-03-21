@@ -202,7 +202,6 @@ export function PythonNotebook({
 
   const runAllCells = async () => {
     for (let index = 0; index < cells.length; index += 1) {
-      // eslint-disable-next-line no-await-in-loop
       await executeCell(index);
     }
   };

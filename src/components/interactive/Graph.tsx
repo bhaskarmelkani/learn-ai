@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { forwardRef, useId, type ReactNode } from "react";
 
 type PlotRenderProps = {

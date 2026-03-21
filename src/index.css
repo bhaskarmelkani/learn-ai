@@ -7,6 +7,40 @@
 :root {
   --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-content: "Source Serif 4", ui-serif, Georgia, serif;
+  --radius: 1rem;
+  --background: 36 33% 98%;
+  --foreground: 24 10% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 24 10% 14%;
+  --primary: 191 91% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 195 40% 96%;
+  --secondary-foreground: 191 50% 20%;
+  --muted: 36 20% 94%;
+  --muted-foreground: 24 8% 42%;
+  --border: 30 16% 86%;
+  --input: 30 16% 86%;
+  --ring: 191 91% 36%;
+  --destructive: 0 72% 52%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 228 20% 8%;
+  --foreground: 210 20% 96%;
+  --card: 222 22% 11%;
+  --card-foreground: 210 20% 96%;
+  --primary: 191 95% 58%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 16% 18%;
+  --secondary-foreground: 210 20% 96%;
+  --muted: 222 16% 18%;
+  --muted-foreground: 215 16% 70%;
+  --border: 222 16% 20%;
+  --input: 222 16% 20%;
+  --ring: 191 95% 58%;
+  --destructive: 0 72% 58%;
+  --destructive-foreground: 0 0% 100%;
 }
 
 html,

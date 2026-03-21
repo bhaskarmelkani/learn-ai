@@ -30,13 +30,16 @@ This project is designed for short training sessions and self-study. It mixes co
 - Vite
 - MDX
 - Tailwind CSS
+- shadcn/ui
+- react-hook-form
+- zod
 - Pyodide for in-browser Python notebooks
 
 ## Run Locally
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 Then open the local Vite URL shown in the terminal.
@@ -44,14 +47,31 @@ Then open the local Vite URL shown in the terminal.
 ## Build For Production
 
 ```bash
-npm run build
+pnpm build
 ```
 
 To preview the production build locally:
 
 ```bash
-npm run preview
+pnpm preview
 ```
+
+## Validation
+
+```bash
+pnpm lint
+pnpm test
+pnpm build
+pnpm e2e
+```
+
+## Agent-Ready Repo Conventions
+
+- Project instructions live in `AGENTS.md` and `CLAUDE.md`.
+- shadcn is configured through `.mcp.json` and `components.json`.
+- Canonical examples for agents live in `src/features/agent-ready/`.
+- Shared UI primitives live in `src/components/ui/`.
+- The project playbook lives in `docs/agent-ready-playbook.md`.
 
 ## Notes
 
