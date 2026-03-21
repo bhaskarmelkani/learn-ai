@@ -1,24 +1,66 @@
-# Learn AI
+# Learn AI Studio
 
-An interactive, local-first learning app for building intuition around AI.
+An interactive, local-first learning platform for agent-augmented course creation.
 
-This project is designed for short training sessions and self-study. It mixes concise slide-style explanations with hands-on demos so people can explore concepts by trying them, not just reading about them.
+The goal is no longer just a single AI intuition course. This repo is evolving into a reusable course studio where contributors can add profession-based learning tracks, deepen them across levels, and rely on coding agents plus in-repo skills to generate and refine high-quality material.
 
-## What It Covers
+## Platform Model
 
-- What a model is
-- Linear regression and gradient descent
-- Classification and sigmoid
-- Non-linear models and neural networks
-- Training loops and backpropagation
-- How neural nets connect to LLMs
+Each learning track targets a profession and supports two levels:
 
-## What Makes It Different
+- `conceptual`: intuition, mental models, vocabulary, and guided understanding
+- `builder`: detailed delivery patterns, implementation choices, evaluation, and execution
 
-- Short, readable chapters instead of long articles
-- Interactive demos for each core concept
-- Runnable notebook-style Python labs in the browser
-- A course flow designed to build intuition step by step
+The app now supports:
+
+- `AI Foundations`
+- `AI for Engineering`
+- `AI for Product`
+- `AI for Business`
+
+Some levels are already published and some are intentionally scaffolded as blueprints so contributors can expand them with agents over time.
+
+## Current Content State
+
+- `AI Foundations / Conceptual` is the existing full chapter flow
+- `AI Foundations / Builder` is now live as the first builder-level example
+- Engineering, Product, and Business tracks are scaffolded in the catalog with planned module arcs
+
+## Source Of Truth
+
+- `src/content/catalog.ts`
+  Defines track metadata, audiences, outcomes, and planned modules.
+- `src/content/tracks/<track-id>/<level>/`
+  Preferred home for new MDX course content.
+- `src/chapters/`
+  Legacy location for the original conceptual AI Foundations material. New work should go in `src/content/tracks`.
+- `skills/course-authoring/`
+  In-repo skill for coding agents to scaffold and update learning tracks.
+
+## Contributor Workflow
+
+1. Open the repo inside a coding agent.
+2. Use `$course-authoring` when creating or revising course material.
+3. Scaffold a new track or level if needed:
+
+```bash
+npm run scaffold:track -- --track-id ai-for-design --title "AI for Design" --profession product
+```
+
+4. Update `src/content/catalog.ts` with the track metadata and planned outcomes.
+5. Author or refine chapters in `src/content/tracks/<track-id>/<level>/`.
+6. Validate with:
+
+```bash
+npm run build
+```
+
+## What Makes This Repo Different
+
+- The learning experience is local-first and front-end only
+- Content is authored in MDX and paired with interactive demos
+- Published chapters and blueprint tracks can coexist in the UI
+- Contribution is designed around coding-agent workflows, not manual CMS work
 
 ## Tech Stack
 
@@ -36,9 +78,7 @@ npm install
 npm run dev
 ```
 
-Then open the local Vite URL shown in the terminal.
-
-## Build For Production
+## Build
 
 ```bash
 npm run build
@@ -50,18 +90,7 @@ To preview the production build locally:
 npm run preview
 ```
 
-## Notes
+## More Detail
 
-- The browser notebooks use Pyodide, so they run without a backend.
-- The layout is optimized for reading, presenting, and live training sessions.
-- You can navigate chapters with the sidebar or keyboard shortcuts.
-
-## Contributing
-
-Contributions are welcome. Good places to help are:
-
-- More interactive exercises
-- Better explanations and examples
-- Accessibility and mobile UX improvements
-- Additional chapters on AI topics
-
+- Human-facing platform overview: `docs/course-platform.md`
+- Agent authoring workflow: `skills/course-authoring/SKILL.md`

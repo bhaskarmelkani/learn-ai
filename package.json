@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "scaffold:track": "node skills/course-authoring/scripts/scaffold-track.mjs"
   },
   "dependencies": {
     "@codemirror/lang-python": "^6.2.1",

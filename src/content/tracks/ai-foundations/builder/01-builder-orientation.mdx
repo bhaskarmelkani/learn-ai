@@ -1,0 +1,72 @@
+---
+title: "From Intuition to Delivery"
+chapter: 1
+subtitle: "Translate core AI ideas into the first real decisions teams make when they try to ship something."
+summary: "A builder-level bridge from foundational intuition to product and implementation choices."
+estimatedMinutes: 14
+---
+
+# From Intuition to Delivery
+
+The conceptual track answers, "What is happening?"
+
+The builder track starts answering, "What should we build, how should it work, and how will we know it is good enough?"
+
+<Path
+  current="This chapter is the bridge from intuition to execution. It turns model knowledge into a simple delivery lens."
+  next={{
+    title: "Context and evaluation",
+    hint: "The next builder chapters should focus on inputs, retrieval, review loops, and quality checks.",
+  }}
+/>
+
+## The Four Questions Builders Need
+
+Before a team ships any AI feature, it should be able to answer four questions clearly:
+
+1. **What task are we trying to help with?**
+2. **What context will the system need?**
+3. **How will we review whether the output is good?**
+4. **What happens when it is wrong?**
+
+Those questions matter more than whether the demo feels magical.
+
+<Callout type="idea" title="Builder mindset">
+The goal of a builder track is not to memorize model trivia. It is to make better system decisions under ambiguity.
+</Callout>
+
+## A Weak Prototype vs a Strong One
+
+A weak prototype usually starts with the model:
+
+- "Let's call an LLM and see what happens."
+
+A strong prototype starts with the workflow:
+
+- "A support agent needs to draft a response from the right context, then a human approves it."
+
+That shift changes everything. It defines the context, the evaluation, and the failure mode.
+
+## The Minimum Delivery Loop
+
+Here is the smallest healthy loop for an early AI feature:
+
+1. Pick one narrow task.
+2. Define the inputs and required context.
+3. Draft the prompt or system behavior.
+4. Review several outputs against real examples.
+5. Adjust the workflow, not just the wording.
+
+That last point matters. When outputs are poor, the fix is often better context, tighter scope, or clearer review criteria rather than a clever prompt tweak.
+
+<Exercise title="First builder brief">
+Pick one AI feature idea and write a four-line brief: task, context, quality bar, and failure fallback.
+</Exercise>
+
+<Checkpoint prompt="What is the difference between starting with the model and starting with the workflow?">
+Starting with the model leads to vague demos. Starting with the workflow makes the task, context, review loop, and risks explicit before implementation grows.
+</Checkpoint>
+
+<Callout type="analogy">
+Think of the model as an engine, not the whole vehicle. Builders still need the steering, brakes, dashboard, and safety checks.
+</Callout>

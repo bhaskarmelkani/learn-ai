@@ -7,6 +7,9 @@ export function NavigationBar({
   nextTitle,
   isDesktop,
   sidebarVisible,
+  hasPublishedContent,
+  trackTitle,
+  levelLabel,
 }: {
   current: number;
   total: number;
@@ -16,7 +19,29 @@ export function NavigationBar({
   nextTitle?: string;
   isDesktop: boolean;
   sidebarVisible: boolean;
+  hasPublishedContent: boolean;
+  trackTitle: string;
+  levelLabel: string;
 }) {
+  if (!hasPublishedContent) {
+    return (
+      <div
+        className={`fixed bottom-0 right-0 z-10 flex h-16 items-center border-t border-stone-200 bg-stone-100/92 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-950/92 md:px-8 ${
+          isDesktop && sidebarVisible ? "left-80" : "left-0"
+        }`}
+      >
+        <div className="min-w-0">
+          <p className="text-sm font-medium text-stone-700 dark:text-gray-200">
+            Blueprint mode
+          </p>
+          <p className="truncate text-xs text-stone-500 dark:text-gray-500">
+            {trackTitle} • {levelLabel} is scaffolded and ready for authored MDX chapters.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`fixed bottom-0 right-0 z-10 flex h-16 items-center justify-between border-t border-stone-200 bg-stone-100/92 px-4 backdrop-blur dark:border-gray-800 dark:bg-gray-950/92 md:px-8 ${

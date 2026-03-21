@@ -1,29 +1,28 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { chapters } from "./chapters";
+import {
+  COURSE_LEVEL_LABELS,
+  type Chapter,
+  type CourseLevel,
+  getDefaultTrackId,
+  getTrackById,
+  getTrackLevelContent,
+  learningTracks,
+} from "./content";
 import { Sidebar } from "./components/Sidebar";
 import { SlideView } from "./components/SlideView";
 import { NavigationBar } from "./components/NavigationBar";
+import { TrackBlueprintView } from "./components/TrackBlueprintView";
 import { useKeyboardNav } from "./hooks/useKeyboardNav";
 
 const STORAGE_KEYS = {
-  chapter: "learn-ai-current-chapter",
+  chapterMap: "learn-ai-current-chapters",
+  track: "learn-ai-current-track",
+  level: "learn-ai-current-level",
   theme: "learn-ai-theme",
 };
 
-function getInitialChapter() {
-  if (typeof window === "undefined") return 0;
-
-  const hash = window.location.hash.replace(/^#/, "");
-  const hashMatch = hash.match(/^chapter-(\d+)/);
-  if (hashMatch) {
-    const chapterNumber = Number(hashMatch[1]);
-    const chapterIndex = chapters.findIndex((chapter) => chapter.chapter === chapterNumber);
-    if (chapterIndex >= 0) return chapterIndex;
-  }
-
-  const saved = window.localStorage.getItem(STORAGE_KEYS.chapter);
-  const parsed = saved ? Number(saved) : Number.NaN;
-  return Number.isInteger(parsed) && parsed >= 0 && parsed < chapters.length ? parsed : 0;
+function isCourseLevel(value: string | null): value is CourseLevel {
+  return value === "conceptual" || value === "builder";
 }
 
 function getInitialTheme() {
@@ -35,20 +34,106 @@ function getInitialTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function getChapterHash(index: number) {
-  const chapter = chapters[index];
-  if (!chapter) return "";
+function getChapterHash(chapter: Chapter) {
+  return `chapter-${chapter.chapter}-${chapter.slug}`;
+}
 
-  const slug = chapter.title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+function createTrackLevelKey(trackId: string, level: CourseLevel) {
+  return `${trackId}:${level}`;
+}
 
-  return `chapter-${chapter.chapter}-${slug}`;
+function readStoredChapterMap() {
+  if (typeof window === "undefined") return {} as Record<string, number>;
+
+  const raw = window.localStorage.getItem(STORAGE_KEYS.chapterMap);
+  if (!raw) return {};
+
+  try {
+    const parsed = JSON.parse(raw);
+    return typeof parsed === "object" && parsed ? (parsed as Record<string, number>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function getStoredChapterIndex(trackId: string, level: CourseLevel) {
+  const chapterMap = readStoredChapterMap();
+  const stored = chapterMap[createTrackLevelKey(trackId, level)];
+  return Number.isInteger(stored) ? stored : 0;
+}
+
+function clampChapterIndex(chapterCount: number, desired: number) {
+  if (chapterCount <= 0) return 0;
+  return Math.min(Math.max(desired, 0), chapterCount - 1);
+}
+
+function parseHash() {
+  if (typeof window === "undefined") return {};
+
+  const hash = window.location.hash.replace(/^#/, "");
+  if (!hash) return {};
+
+  const [trackId, level, chapterHash] = hash.split("/");
+  return {
+    trackId: trackId || undefined,
+    level: level || undefined,
+    chapterHash: chapterHash || undefined,
+  };
+}
+
+function resolveInitialChapterIndex(
+  chapters: Chapter[],
+  storedIndex: number,
+  chapterHash?: string
+) {
+  if (chapters.length === 0) return 0;
+
+  if (chapterHash) {
+    const hashIndex = chapters.findIndex((chapter) => getChapterHash(chapter) === chapterHash);
+    if (hashIndex >= 0) return hashIndex;
+  }
+
+  return clampChapterIndex(chapters.length, storedIndex);
+}
+
+function getInitialSelection() {
+  const trackIdFromHash = parseHash().trackId;
+  const levelFromHash = parseHash().level;
+  const chapterHash = parseHash().chapterHash;
+
+  if (typeof window === "undefined") {
+    return {
+      trackId: getDefaultTrackId(),
+      level: "conceptual" as CourseLevel,
+      current: 0,
+    };
+  }
+
+  const savedTrackId = window.localStorage.getItem(STORAGE_KEYS.track);
+  const resolvedTrackId = getTrackById(trackIdFromHash ?? savedTrackId ?? getDefaultTrackId())?.id ?? getDefaultTrackId();
+
+  const savedLevel = window.localStorage.getItem(STORAGE_KEYS.level);
+  const level = isCourseLevel(levelFromHash ?? savedLevel) ? (levelFromHash ?? savedLevel) : "conceptual";
+  const content = getTrackLevelContent(resolvedTrackId, level);
+  const current = resolveInitialChapterIndex(
+    content.chapters,
+    getStoredChapterIndex(resolvedTrackId, level),
+    chapterHash
+  );
+
+  return {
+    trackId: resolvedTrackId,
+    level,
+    current,
+  };
+}
+
+function buildHash(trackId: string, level: CourseLevel, chapter?: Chapter) {
+  return `#${trackId}/${level}${chapter ? `/${getChapterHash(chapter)}` : ""}`;
 }
 
 export default function App() {
-  const [current, setCurrent] = useState(getInitialChapter);
+  const [selection, setSelection] = useState(getInitialSelection);
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window === "undefined" ? true : window.innerWidth >= 1024
   );
@@ -58,6 +143,10 @@ export default function App() {
   const [dark, setDark] = useState(getInitialTheme);
   const contentRef = useRef<HTMLDivElement>(null);
   const prevIsDesktop = useRef(isDesktop);
+  const content = getTrackLevelContent(selection.trackId, selection.level);
+  const track = content.track;
+  const chapters = content.chapters;
+  const currentChapter = chapters[selection.current];
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -79,47 +168,114 @@ export default function App() {
     window.localStorage.setItem(STORAGE_KEYS.theme, dark ? "dark" : "light");
   }, [dark]);
 
-  const goTo = useCallback(
+  useEffect(() => {
+    const maxIndex = clampChapterIndex(chapters.length, selection.current);
+    if (maxIndex !== selection.current) {
+      setSelection((previous) => ({ ...previous, current: maxIndex }));
+    }
+  }, [chapters.length, selection.current]);
+
+  const goToChapter = useCallback(
     (i: number) => {
       if (i >= 0 && i < chapters.length) {
-        setCurrent(i);
+        setSelection((previous) => ({ ...previous, current: i }));
         if (!isDesktop) setSidebarVisible(false);
       }
     },
-    [isDesktop]
+    [chapters.length, isDesktop]
   );
 
-  const onNext = useCallback(() => goTo(current + 1), [current, goTo]);
-  const onPrev = useCallback(() => goTo(current - 1), [current, goTo]);
+  const switchTrackLevel = useCallback(
+    (trackId: string, level: CourseLevel) => {
+      const nextTrackId = getTrackById(trackId)?.id ?? selection.trackId;
+      const nextContent = getTrackLevelContent(nextTrackId, level);
+      const nextIndex = resolveInitialChapterIndex(
+        nextContent.chapters,
+        getStoredChapterIndex(nextTrackId, level)
+      );
+
+      setSelection({
+        trackId: nextTrackId,
+        level,
+        current: nextIndex,
+      });
+
+      if (!isDesktop) setSidebarVisible(false);
+    },
+    [isDesktop, selection.trackId]
+  );
+
+  const onNext = useCallback(() => goToChapter(selection.current + 1), [selection.current, goToChapter]);
+  const onPrev = useCallback(() => goToChapter(selection.current - 1), [selection.current, goToChapter]);
   const onToggleSidebar = useCallback(() => setSidebarVisible((v) => !v), []);
+  const onSelectTrack = useCallback(
+    (trackId: string) => switchTrackLevel(trackId, selection.level),
+    [selection.level, switchTrackLevel]
+  );
+  const onSelectLevel = useCallback(
+    (level: CourseLevel) => switchTrackLevel(selection.trackId, level),
+    [selection.trackId, switchTrackLevel]
+  );
 
   useKeyboardNav({ onNext, onPrev, onToggleSidebar });
 
-  // Scroll to top on chapter change
   useEffect(() => {
-    contentRef.current?.scrollTo(0, 0);
-    window.localStorage.setItem(STORAGE_KEYS.chapter, String(current));
-    const hash = getChapterHash(current);
-    if (hash) {
-      window.history.replaceState(null, "", `#${hash}`);
-    }
-  }, [current]);
+    if (typeof window === "undefined") return;
 
-  const chapter = chapters[current];
-  const progress = ((current + 1) / chapters.length) * 100;
-  const previousChapter = current > 0 ? chapters[current - 1] : null;
-  const nextChapter = current < chapters.length - 1 ? chapters[current + 1] : null;
+    contentRef.current?.scrollTo(0, 0);
+
+    window.localStorage.setItem(STORAGE_KEYS.track, selection.trackId);
+    window.localStorage.setItem(STORAGE_KEYS.level, selection.level);
+
+    if (chapters.length > 0) {
+      const chapterMap = readStoredChapterMap();
+      chapterMap[createTrackLevelKey(selection.trackId, selection.level)] = selection.current;
+      window.localStorage.setItem(STORAGE_KEYS.chapterMap, JSON.stringify(chapterMap));
+    }
+
+    window.history.replaceState(
+      null,
+      "",
+      buildHash(selection.trackId, selection.level, currentChapter)
+    );
+  }, [
+    chapters.length,
+    currentChapter,
+    selection.current,
+    selection.level,
+    selection.trackId,
+  ]);
+
+  const progress = chapters.length ? ((selection.current + 1) / chapters.length) * 100 : 0;
+  const previousChapter = selection.current > 0 ? chapters[selection.current - 1] : null;
+  const nextChapter =
+    selection.current < chapters.length - 1 ? chapters[selection.current + 1] : null;
+  const trackSummaries = learningTracks.map((entry) => ({
+    track: entry,
+    publishedLevels: {
+      conceptual: getTrackLevelContent(entry.id, "conceptual").chapters.length > 0,
+      builder: getTrackLevelContent(entry.id, "builder").chapters.length > 0,
+    },
+  }));
+  const levelBlueprint = track.levels[selection.level];
 
   return (
     <div className="h-screen flex overflow-hidden bg-stone-100 text-stone-900 dark:bg-gray-950 dark:text-gray-50">
       <Sidebar
+        track={track}
+        trackSummaries={trackSummaries}
+        level={selection.level}
         chapters={chapters}
-        current={current}
-        onSelect={goTo}
+        current={selection.current}
+        onSelectChapter={goToChapter}
+        onSelectTrack={onSelectTrack}
+        onSelectLevel={onSelectLevel}
         visible={sidebarVisible}
         dark={dark}
         isDesktop={isDesktop}
         progress={progress}
+        hasPublishedContent={content.hasPublishedContent}
+        blueprintModules={levelBlueprint.plannedModules}
         onToggleSidebar={onToggleSidebar}
         onToggleTheme={() => setDark((d) => !d)}
       />
@@ -149,18 +305,18 @@ export default function App() {
             </button>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-stone-800 dark:text-gray-100">
-                {chapter.chapter}. {chapter.title}
+                {track.title} • {COURSE_LEVEL_LABELS[selection.level]}
               </p>
               <p className="truncate text-xs text-stone-500 dark:text-gray-400">
-                {chapter.subtitle ?? "Build intuition step by step through concise explanations and live demos."}
+                {currentChapter?.subtitle ?? levelBlueprint.description}
               </p>
             </div>
             <div className="hidden text-right md:block">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
-                Progress
+                {content.hasPublishedContent ? "Progress" : "Status"}
               </p>
               <p className="text-sm font-semibold text-stone-700 dark:text-gray-200">
-                {current + 1} / {chapters.length}
+                {content.hasPublishedContent ? `${selection.current + 1} / ${chapters.length}` : "Blueprint"}
               </p>
             </div>
           </div>
@@ -171,16 +327,20 @@ export default function App() {
             />
           </div>
         </div>
-        {chapter ? (
-          <SlideView key={current} chapter={chapter} />
+        {currentChapter ? (
+          <SlideView
+            key={`${selection.trackId}:${selection.level}:${selection.current}`}
+            chapter={currentChapter}
+            trackTitle={track.title}
+            level={selection.level}
+            profession={track.profession}
+          />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            No chapters found
-          </div>
+          <TrackBlueprintView track={track} level={selection.level} />
         )}
       </main>
       <NavigationBar
-        current={current}
+        current={selection.current}
         total={chapters.length}
         onPrev={onPrev}
         onNext={onNext}
@@ -188,6 +348,9 @@ export default function App() {
         nextTitle={nextChapter?.title}
         isDesktop={isDesktop}
         sidebarVisible={sidebarVisible}
+        hasPublishedContent={content.hasPublishedContent}
+        trackTitle={track.title}
+        levelLabel={COURSE_LEVEL_LABELS[selection.level]}
       />
     </div>
   );

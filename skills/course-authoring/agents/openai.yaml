@@ -1,0 +1,4 @@
+interface:
+  display_name: "Course Authoring"
+  short_description: "Scaffold and update learning tracks"
+  default_prompt: "Use $course-authoring to add or revise a profession-based course in this repo."
