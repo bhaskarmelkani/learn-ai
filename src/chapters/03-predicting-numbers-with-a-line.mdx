@@ -13,8 +13,7 @@ subtitle: "The simplest useful model for number prediction"
   map={["Input x", "Weight w", "Bias b", "Predicted y"]}
   trackFocus={{
     conceptual: "This chapter is about physical intuition. Tilt and lift matter more than memorizing notation.",
-    builder: "Notice how little machinery is needed before a model already feels useful.",
-    educator: "The line works because learners can see cause and effect immediately when the parameters change."
+    builder: "Notice how little machinery is needed before a model already feels useful."
   }}
 />
 
@@ -34,31 +33,6 @@ The line has a very small job description:
 Later we call them **weight** and **bias**, but first just feel what they do.
 
 <LinearRegressionDemo />
-
-<CaseCards
-  title="Where a simple line helps and where it fails"
-  cards={[
-    {
-      title: "Delivery-time estimator",
-      product: "Distance, package size, and traffic signals become a predicted delivery time.",
-      modelIdea: "A simple linear model can be a strong baseline when the relationship is mostly steady and additive.",
-      failureMode: "A line can miss threshold effects like severe traffic, storms, or route batching.",
-      trackPrompt: {
-        builder: "Think of this as the baseline model you would beat before reaching for something fancier."
-      }
-    },
-    {
-      title: "Budget planner",
-      product: "Hours worked become predicted weekly pay.",
-      modelIdea: "The line feels natural because the slope has an intuitive meaning: pay changes by a fixed amount per hour.",
-      failureMode: "Overtime rules and bonuses break the straight-line assumption.",
-      trackPrompt: {
-        conceptual: "This is a good example because the slope already feels like a real-world rate.",
-        educator: "Learners often grasp slope faster when it describes money per hour or distance per minute."
-      }
-    }
-  ]}
-/>
 
 ## Naming the Parts
 
@@ -111,22 +85,3 @@ The important intuition is not "memorize the line equation." It is "a model can 
 <Callout type="idea" title="Takeaway">
 Linear regression is the first concrete example of a model learning to predict a number from data.
 </Callout>
-
-<ChapterRecap
-  chapter={3}
-  summary={[
-    "A line can already be a useful model.",
-    "Weight changes tilt and bias changes baseline.",
-    "Simple models are valuable because their behavior is easy to inspect."
-  ]}
-  checks={[
-    "If a line is consistently too low but has the right tilt, which parameter would you adjust first?",
-    "Why is linear regression such a good first model for teaching?"
-  ]}
-  nextStep="Next we stop fitting the line by hand and let the model learn it automatically."
-  trackActions={{
-    conceptual: "Describe weight and bias without symbols. Use words like tilt and lift.",
-    builder: "Think about why simple baselines matter before adding complexity.",
-    educator: "Make sure learners can separate slope from intercept before introducing optimization."
-  }}
-/>

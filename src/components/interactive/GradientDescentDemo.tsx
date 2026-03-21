@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Graph, PlotLine } from "./Graph";
+import { Slider } from "./Slider";
 import { HOUSE_LINEAR_DATA } from "./data";
 import { GuidedPrediction } from "./GuidedPrediction";
 import { useLearning } from "../../learning/LearningContext";
 
 const FIXED_BIAS = 0.6;
-const START_W = 1.8;
+const START_W = 1.5;
+const TARGET_W = 1.26;
 
 function lossForWeight(w: number) {
   return (
@@ -29,7 +31,7 @@ export function GradientDescentDemo() {
   } = useLearning();
   const [w, setW] = useState(START_W);
   const [running, setRunning] = useState(false);
-  const [lr, setLr] = useState(0.08);
+  const [lr, setLr] = useState(0.06);
   const [history, setHistory] = useState<number[]>([START_W]);
   const [guidedLocked, setGuidedLocked] = useState(guidedMode);
   const rafRef = useRef<number>(0);
@@ -72,7 +74,16 @@ export function GradientDescentDemo() {
     wRef.current = START_W;
     setHistory([START_W]);
   };
+
+  const setWeightManually = (nextW: number) => {
+    setRunning(false);
+    setW(nextW);
+    wRef.current = nextW;
+    setHistory([nextW]);
+  };
+
   const controlsDisabled = guidedMode && guidedLocked;
+  const valleyCoach = getValleyCoach(w);
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -120,9 +131,17 @@ export function GradientDescentDemo() {
             What to notice: the gradient tells us which way makes the house-price fit worse. Gradient descent walks in the opposite direction.
           </div>
 
+          <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${valleyCoach.className}`}>
+            <p className="font-semibold">{valleyCoach.title}</p>
+            <p className="mt-1">{valleyCoach.detail}</p>
+          </div>
+
           <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
             <p className="font-mono text-sm text-stone-800 dark:text-gray-200">
               Loss(w) = MSE of <span className="font-semibold">y = wx + {FIXED_BIAS.toFixed(1)}</span>
+            </p>
+            <p className="mt-2 text-xs text-stone-500 dark:text-gray-500">
+              Start slightly away from the valley, move <span className="font-mono">w</span> yourself, then press run to watch gradient descent take over.
             </p>
           </div>
 
@@ -145,6 +164,16 @@ export function GradientDescentDemo() {
             </div>
           </div>
 
+          <Slider
+            label="w"
+            value={w}
+            min={0.8}
+            max={1.8}
+            step={0.02}
+            onChange={setWeightManually}
+            disabled={controlsDisabled || running}
+          />
+
           <div className="flex items-center gap-3">
             <span className="w-10 text-right font-mono text-sm text-stone-500 dark:text-gray-400 italic">
               lr
@@ -155,7 +184,7 @@ export function GradientDescentDemo() {
             <input
               type="range"
               min={0.01}
-              max={0.2}
+              max={0.1}
               step={0.01}
               value={lr}
               disabled={controlsDisabled}
@@ -191,10 +220,10 @@ export function GradientDescentDemo() {
 
         <div className="flex-1">
           <Graph
-            xMin={0.4}
-            xMax={2.0}
+            xMin={0.8}
+            xMax={1.8}
             yMin={0}
-            yMax={1.8}
+            yMax={2.8}
             xLabel="Weight"
             yLabel="Mean squared error"
             caption="Each blue dot shows where gradient descent visited this one-parameter loss curve."
@@ -234,4 +263,39 @@ export function GradientDescentDemo() {
       </div>
     </div>
   );
+}
+
+function getValleyCoach(w: number) {
+  const distance = Math.abs(w - TARGET_W);
+
+  if (distance < 0.03) {
+    return {
+      title: "At the bottom.",
+      detail: "You’re basically in the valley now. If the learning rate is gentle, the next steps should barely move.",
+      className:
+        "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100",
+    };
+  }
+
+  if (distance < 0.12) {
+    return {
+      title: "Very close.",
+      detail:
+        w > TARGET_W
+          ? "You’re just to the right of the valley. A couple of leftward steps should settle it."
+          : "You’re just to the left of the valley. A couple of rightward steps should settle it.",
+      className:
+        "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100",
+    };
+  }
+
+  return {
+    title: "Still descending.",
+    detail:
+      w > TARGET_W
+        ? "You’re well to the right of the valley, so the good direction is left."
+        : "You’re well to the left of the valley, so the good direction is right.",
+    className:
+      "border-cyan-200 bg-cyan-50 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100",
+  };
 }

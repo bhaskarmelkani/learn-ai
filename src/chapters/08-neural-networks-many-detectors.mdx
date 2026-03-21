@@ -13,8 +13,7 @@ subtitle: "Layers, neurons, and the idea of learned internal features"
   map={["Neuron", "Layer", "Hidden representation", "Final output"]}
   trackFocus={{
     conceptual: "A neuron is just a small pattern detector. Keep that sentence close.",
-    builder: "Think less about neuron mythology and more about representation flow between layers.",
-    educator: "The phrase 'many detectors working together' is more useful than anthropomorphic language about brains."
+    builder: "Think less about neuron mythology and more about representation flow between layers."
   }}
 />
 
@@ -48,31 +47,6 @@ XOR is the clean demonstration that one detector can fail while a tiny network c
 
 <XorDemo />
 
-<CaseCards
-  title="Why networks matter in real systems"
-  cards={[
-    {
-      title: "Vision model for quality inspection",
-      product: "Factory images become pass / fail decisions on product quality.",
-      modelIdea: "Early layers can detect edges and textures; later layers can combine them into defects or object-part patterns.",
-      failureMode: "If the network learns shortcuts like lighting artifacts instead of real defects, performance can collapse on new conditions.",
-      trackPrompt: {
-        builder: "This is representation learning in practice: later layers depend on what earlier layers found useful."
-      }
-    },
-    {
-      title: "Speech transcription system",
-      product: "Audio features become text tokens.",
-      modelIdea: "Different hidden units can respond to phonetic, timing, or contextual cues before later layers assemble a final output.",
-      failureMode: "If one dominant accent or microphone condition overwhelms training, learned detectors may fail on new speakers.",
-      trackPrompt: {
-        conceptual: "Layers help because they can stack small cues into richer patterns.",
-        educator: "This is a strong example of why 'features' can be learned instead of hand-coded."
-      }
-    }
-  ]}
-/>
-
 ## The Big Intuition
 
 Neural networks matter because they can build internal representations automatically instead of forcing us to hand-design every useful feature ourselves.
@@ -102,22 +76,3 @@ Neural networks matter because they can build internal representations automatic
 <Callout type="idea" title="Takeaway">
 Neural networks are many small detectors arranged in layers so later layers can use what earlier layers discovered.
 </Callout>
-
-<ChapterRecap
-  chapter={8}
-  summary={[
-    "A neuron is a small detector, not a magical unit.",
-    "Layers let the model stack simple signals into richer internal representations.",
-    "Networks matter because they learn useful features instead of requiring us to hand-design all of them."
-  ]}
-  checks={[
-    "What is a hidden layer doing conceptually, not mathematically?",
-    "Why is XOR such a useful proof case for networks?"
-  ]}
-  nextStep="Next we explain how credit and blame move backward through those layers during training."
-  trackActions={{
-    conceptual: "Hold onto the 'detectors in layers' story. It will carry the backprop chapter.",
-    builder: "When you think about architecture now, think about what intermediate representation each layer might be discovering.",
-    educator: "Ask learners to explain networks without using brain metaphors. It sharpens understanding."
-  }}
-/>

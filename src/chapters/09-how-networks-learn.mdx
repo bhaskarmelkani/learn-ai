@@ -13,8 +13,7 @@ subtitle: "Forward pass, backward pass, validation, and the training loop"
   map={["Forward pass", "Loss", "Backward pass", "Validation"]}
   trackFocus={{
     conceptual: "Backpropagation is best learned as credit assignment before it is learned as calculus.",
-    builder: "This is the chapter where optimization and generalization finally meet.",
-    educator: "Use plain-language blame-and-credit language first. Symbols can come later."
+    builder: "This is the chapter where optimization and generalization finally meet."
   }}
 />
 
@@ -75,7 +74,7 @@ That is why we separate:
       modelIdea: "The model's value depends on whether it generalizes to future cohorts, not whether it memorizes last semester.",
       failureMode: "An overfit model can look brilliant on old data and useless on the next term's students.",
       trackPrompt: {
-        educator: "This is the right chapter to connect overfitting with real decision harm."
+        conceptual: "Notice the trap: good-looking training performance can still hide a weak model."
       }
     }
   ]}
@@ -110,22 +109,3 @@ Switch between underfit, balanced, and overfit. Which setting looks best on trai
 <Callout type="idea" title="Takeaway">
 Training a neural network is still the same prediction-measure-update loop. The difference is that we are now adjusting many layers of learned detectors.
 </Callout>
-
-<ChapterRecap
-  chapter={9}
-  summary={[
-    "Forward pass computes predictions; backward pass sends credit and blame backward.",
-    "Training loss alone is not enough to trust a model.",
-    "Validation checks whether the model generalizes beyond the examples it optimized on."
-  ]}
-  checks={[
-    "Can you explain backpropagation without using calculus?",
-    "Why can a low training loss still be bad news?"
-  ]}
-  nextStep="Next we turn from general neural-network ideas to the specific choices that make language models work."
-  trackActions={{
-    conceptual: "Keep 'credit assignment' as the main intuition for backpropagation.",
-    builder: "Start treating validation as a product-safety habit, not just a training metric.",
-    educator: "This chapter is a good place to reinforce that apparent performance can be misleading."
-  }}
-/>

@@ -13,8 +13,7 @@ subtitle: "Base models, assistant behavior, and the practical failure modes team
   map={["Pretraining", "Base LLM", "Instruction tuning", "Aligned assistant"]}
   trackFocus={{
     conceptual: "The key distinction is base model vs assistant behavior.",
-    builder: "Treat an LLM product as a system layer stack: base model, alignment, retrieval, tool use, and UX guardrails.",
-    educator: "This chapter is where learners need nuance. Helpful behavior is an added training and product layer, not the whole definition of an LLM."
+    builder: "Treat an LLM product as a system layer stack: base model, alignment, retrieval, tool use, and UX guardrails."
   }}
 />
 
@@ -71,11 +70,8 @@ That can make the product much more useful, but it also means the visible behavi
     {
       title: "Teacher-facing lesson generator",
       product: "A classroom tool turns prompts and standards into lesson drafts and quizzes.",
-      modelIdea: "Instruction tuning makes the model more assistant-like, but quality also depends on prompt structure, templates, review flows, and educator trust.",
-      failureMode: "A fluent draft can hide shallow pedagogy or factual slips if the surrounding workflow has no review checkpoints.",
-      trackPrompt: {
-        educator: "This is the clearest example of why polished language is not the same as verified instructional quality."
-      }
+      modelIdea: "Instruction tuning makes the model more assistant-like, but quality also depends on prompt structure, templates, review flows, and user trust.",
+      failureMode: "A fluent draft can hide shallow pedagogy or factual slips if the surrounding workflow has no review checkpoints."
     }
   ]}
 />
@@ -105,22 +101,3 @@ That can make the product much more useful, but it also means the visible behavi
 <Callout type="warning" title="Modern Product Reality">
 An LLM product is usually not just "one model." It is a model plus prompts, retrieval, tool access, guardrails, UX, evaluation, and human oversight.
 </Callout>
-
-<ChapterRecap
-  chapter={12}
-  summary={[
-    "A pretrained transformer language model is already an LLM.",
-    "Instruction tuning and preference optimization shape assistant-like behavior on top of that base.",
-    "Real AI products often depend on retrieval, tools, and workflow design around the model."
-  ]}
-  checks={[
-    "Can you explain the difference between a base model and an assistant-style system?",
-    "Why is fluent output not enough to trust an LLM product?"
-  ]}
-  nextStep="The final chapter turns these ideas into a capstone teardown of an AI product."
-  trackActions={{
-    conceptual: "Use 'base model vs aligned assistant' as your clean mental split.",
-    builder: "Start thinking like a systems designer, not just a model selector.",
-    educator: "Center trust, review, and failure handling as part of the AI lesson rather than an appendix."
-  }}
-/>

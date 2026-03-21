@@ -37,11 +37,6 @@ function getInitialTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function getInitialSidebarCollapsed() {
-  if (typeof window === "undefined") return false;
-  return window.localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "true";
-}
-
 function getChapterHash(index: number) {
   const chapter = chapters[index];
   if (!chapter) return "";
@@ -52,6 +47,11 @@ function getChapterHash(index: number) {
     .replace(/^-|-$/g, "");
 
   return `chapter-${chapter.chapter}-${slug}`;
+}
+
+function getInitialSidebarCollapsed() {
+  if (typeof window === "undefined") return false;
+  return window.localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "true";
 }
 
 export default function App() {
@@ -111,7 +111,7 @@ export default function App() {
   const onPrev = useCallback(() => goTo(current - 1), [current, goTo]);
   const onToggleSidebar = useCallback(() => {
     if (isDesktop) {
-      setSidebarCollapsed((current) => !current);
+      setSidebarCollapsed((currentValue) => !currentValue);
       return;
     }
     setSidebarVisible((v) => !v);
@@ -176,8 +176,9 @@ export default function App() {
               <button
                 type="button"
                 onClick={onToggleSidebar}
-                className="inline-flex items-center rounded-full border border-stone-300 bg-white px-4 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
+                className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
               >
+                <span className="text-base leading-none">≡</span>
                 Chapters
               </button>
             )}

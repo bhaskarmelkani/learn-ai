@@ -13,8 +13,7 @@ subtitle: "Training is just adjusting numbers until predictions improve"
   map={["Prediction", "Comparison", "Update", "Repeat"]}
   trackFocus={{
     conceptual: "Focus on the loop, not the formulas. The loop is the portable mental model.",
-    builder: "Think like a debugger: what information does the model need so an update can happen at all?",
-    educator: "This is where learners either calm down or panic. Keep 'learning' grounded in repeated correction."
+    builder: "Think like a debugger: what information does the model need so an update can happen at all?"
   }}
 />
 
@@ -42,32 +41,6 @@ But the core idea is ordinary:
 <Callout type="analogy">
 Think of tuning a guitar. The guitar shape stays the same, but you keep adjusting the tuning pegs until the sound gets better. Training does the same thing with parameters.
 </Callout>
-
-<CaseCards
-  title="Where this loop shows up in products"
-  cards={[
-    {
-      title: "Recommendation system",
-      product: "Clicks, watch time, skips, and likes become a ranking of what to show next.",
-      modelIdea: "The system predicts which items are worth showing, then updates its internal numbers based on how users actually respond.",
-      failureMode: "If the feedback signal is shallow, the system can optimize for short-term clicks while making the product worse.",
-      trackPrompt: {
-        builder: "Ask what the true training signal is: clicks, watch time, conversions, or something else.",
-        educator: "Use this to show that improving a metric is not the same as improving the user experience."
-      }
-    },
-    {
-      title: "Resume screening tool",
-      product: "Resume text and candidate signals become a shortlist recommendation.",
-      modelIdea: "The model learns patterns from past labeled decisions or outcomes.",
-      failureMode: "If the historical labels reflect biased hiring patterns, training can preserve that bias instead of fixing it.",
-      trackPrompt: {
-        conceptual: "Learning is only as good as the examples and targets it is given.",
-        educator: "This is a strong case for explaining why 'better fit to history' can still be socially harmful."
-      }
-    }
-  ]}
-/>
 
 ## Two Common Kinds of Prediction
 
@@ -126,22 +99,3 @@ Before going to the next chapter, make a quick guess for the 1500 sqft house. Yo
 <Callout type="idea" title="Takeaway">
 Learning is not magic. It is repeated improvement: predict, compare, adjust, repeat.
 </Callout>
-
-<ChapterRecap
-  chapter={2}
-  summary={[
-    "Training is a loop, not a single moment.",
-    "Examples stay fixed while parameters move.",
-    "The same learning loop later drives regression, classification, and neural networks."
-  ]}
-  checks={[
-    "Why is 'predict, compare, adjust, repeat' a better explanation of machine learning than 'the model teaches itself'?",
-    "What information must exist before any supervised update can happen?"
-  ]}
-  nextStep="Next we put this loop inside the simplest possible predictive shape: a line."
-  trackActions={{
-    conceptual: "Say the training loop out loud until it feels boring. Boring is good here.",
-    builder: "Identify the target signal in one real system you know. What counts as 'reality' for the comparison step?",
-    educator: "Pressure-test whether the loop is intuitive before adding equations. If not, slow down."
-  }}
-/>

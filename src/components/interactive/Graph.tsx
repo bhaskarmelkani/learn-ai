@@ -44,31 +44,48 @@ export const Graph = forwardRef<SVGSVGElement, GraphProps>(function Graph(
   const toX = (x: number) => GRAPH_PAD.left + ((x - xMin) / (xMax - xMin)) * w;
   const toY = (y: number) => GRAPH_PAD.top + ((yMax - y) / (yMax - yMin)) * h;
 
-  // Grid lines
   const xStep = niceStep(xMin, xMax);
   const yStep = niceStep(yMin, yMax);
+  const xTicks = buildTicks(xMin, xMax, xStep);
+  const yTicks = buildTicks(yMin, yMax, yStep);
   const gridLines: ReactNode[] = [];
   const labels: ReactNode[] = [];
 
-  for (let x = Math.ceil(xMin / xStep) * xStep; x <= xMax; x += xStep) {
+  for (const x of xTicks) {
     const px = toX(x);
     gridLines.push(
-      <line key={`gx${x}`} x1={px} y1={GRAPH_PAD.top} x2={px} y2={GRAPH_PAD.top + h} className="stroke-gray-200 dark:stroke-gray-700" strokeWidth={x === 0 ? 1.5 : 0.5} />
+      <line
+        key={`gx${x}`}
+        x1={px}
+        y1={GRAPH_PAD.top}
+        x2={px}
+        y2={GRAPH_PAD.top + h}
+        className="stroke-gray-200 dark:stroke-gray-700"
+        strokeWidth={Math.abs(x) < xStep / 100 ? 1.5 : 0.5}
+      />
     );
     labels.push(
       <text key={`lx${x}`} x={px} y={GRAPH_PAD.top + h + 16} textAnchor="middle" className="fill-gray-400 dark:fill-gray-500 text-[10px]">
-        {x}
+        {formatTick(x, xStep)}
       </text>
     );
   }
-  for (let y = Math.ceil(yMin / yStep) * yStep; y <= yMax; y += yStep) {
+  for (const y of yTicks) {
     const py = toY(y);
     gridLines.push(
-      <line key={`gy${y}`} x1={GRAPH_PAD.left} y1={py} x2={GRAPH_PAD.left + w} y2={py} className="stroke-gray-200 dark:stroke-gray-700" strokeWidth={y === 0 ? 1.5 : 0.5} />
+      <line
+        key={`gy${y}`}
+        x1={GRAPH_PAD.left}
+        y1={py}
+        x2={GRAPH_PAD.left + w}
+        y2={py}
+        className="stroke-gray-200 dark:stroke-gray-700"
+        strokeWidth={Math.abs(y) < yStep / 100 ? 1.5 : 0.5}
+      />
     );
     labels.push(
       <text key={`ly${y}`} x={GRAPH_PAD.left - 8} y={py + 3} textAnchor="end" className="fill-gray-400 dark:fill-gray-500 text-[10px]">
-        {y}
+        {formatTick(y, yStep)}
       </text>
     );
   }
@@ -153,6 +170,37 @@ function niceStep(min: number, max: number): number {
   if (norm < 3.5) return 2 * pow;
   if (norm < 7.5) return 5 * pow;
   return 10 * pow;
+}
+
+function buildTicks(min: number, max: number, step: number) {
+  const first = Math.ceil(min / step) * step;
+  const epsilon = step / 1000;
+  const ticks: number[] = [];
+
+  for (let value = first; value <= max + epsilon; value += step) {
+    ticks.push(roundToStep(value, step));
+  }
+
+  return ticks;
+}
+
+function roundToStep(value: number, step: number) {
+  const precision = getPrecision(step) + 1;
+  return Number(value.toFixed(precision));
+}
+
+function formatTick(value: number, step: number) {
+  const rounded = roundToStep(value, step);
+  if (Math.abs(rounded) < step / 1000) return "0";
+
+  const precision = getPrecision(step);
+  return precision === 0 ? String(Math.round(rounded)) : rounded.toFixed(precision);
+}
+
+function getPrecision(step: number) {
+  const stepString = step.toString();
+  const fractional = stepString.split(".")[1];
+  return fractional ? fractional.length : 0;
 }
 
 export function PlotLine({

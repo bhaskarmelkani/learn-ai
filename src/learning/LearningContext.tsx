@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 
-export type AudienceTrack = "conceptual" | "builder" | "educator";
+export type AudienceTrack = "conceptual" | "builder";
 
 type CheckpointState = {
   chapter: number;
@@ -66,7 +66,6 @@ const DEFAULT_STATE: LearningState = {
 const TRACK_LABELS: Record<AudienceTrack, string> = {
   conceptual: "Conceptual",
   builder: "Builder",
-  educator: "Educator / PM",
 };
 
 const LearningContext = createContext<LearningContextValue | null>(null);
@@ -79,10 +78,8 @@ function loadInitialState(): LearningState {
     if (!raw) return DEFAULT_STATE;
     const parsed = JSON.parse(raw) as Partial<LearningState>;
     return {
-      track:
-        parsed.track === "builder" || parsed.track === "educator" || parsed.track === "conceptual"
-          ? parsed.track
-          : DEFAULT_STATE.track,
+      // Old saved "educator" sessions now fall back to the simpler conceptual path.
+      track: parsed.track === "builder" ? "builder" : DEFAULT_STATE.track,
       guidedMode:
         typeof parsed.guidedMode === "boolean" ? parsed.guidedMode : DEFAULT_STATE.guidedMode,
       checkpoints: parsed.checkpoints ?? {},

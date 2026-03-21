@@ -13,8 +13,7 @@ subtitle: "From raw scores to probabilities to yes/no and many-way choices"
   map={["Raw score", "Probability", "Threshold", "Decision"]}
   trackFocus={{
     conceptual: "Stay focused on the flow: score first, then probability, then decision.",
-    builder: "This is the first chapter where tradeoffs like precision and recall become product-shaping choices.",
-    educator: "Do not let learners confuse the probability threshold with the decision boundary in input space."
+    builder: "This is the first chapter where tradeoffs like precision and recall become product-shaping choices."
   }}
 />
 
@@ -70,8 +69,7 @@ That function is called **softmax**.
       modelIdea: "The model may start with a risk score, then convert that score into a probability or thresholded decision.",
       failureMode: "A threshold that is too strict can miss urgent cases. A threshold that is too loose can overwhelm clinicians with false alarms.",
       trackPrompt: {
-        builder: "This is the right mental frame for precision-recall tradeoffs: who pays the cost of each error type?",
-        educator: "Use this chapter to show that classification choices are product-policy choices, not just math."
+        builder: "This is the right mental frame for precision-recall tradeoffs: who pays the cost of each error type?"
       }
     },
     {
@@ -80,8 +78,7 @@ That function is called **softmax**.
       modelIdea: "Softmax is useful when the model must distribute confidence across multiple competing answers.",
       failureMode: "The top class can look confident even when the correct class was missing from the model's label set or training coverage.",
       trackPrompt: {
-        conceptual: "Notice why multi-class prediction feels different from binary yes/no.",
-        educator: "A model can still be wrong even when its internal distribution looks neat."
+        conceptual: "Notice why multi-class prediction feels different from binary yes/no."
       }
     }
   ]}
@@ -118,22 +115,3 @@ The notebook below lets you see the same idea in code: one model, one raw score,
 <Callout type="idea">
 Classification starts with a score, then turns that score into a decision. Sigmoid handles two classes. Softmax handles many.
 </Callout>
-
-<ChapterRecap
-  chapter={6}
-  summary={[
-    "Classification often starts from a raw score.",
-    "Sigmoid turns one score into a binary probability.",
-    "Softmax turns several scores into a probability distribution over classes."
-  ]}
-  checks={[
-    "Why is threshold choice a product decision and not just a math detail?",
-    "How do binary and multi-class outputs differ conceptually?"
-  ]}
-  nextStep="Next we ask the natural follow-up question: what if one decision boundary is not enough?"
-  trackActions={{
-    conceptual: "Keep the sequence score -> probability -> decision in your head. It prevents a lot of confusion later.",
-    builder: "Tie every threshold discussion to who pays for false positives and false negatives.",
-    educator: "Make learners verbalize the threshold/boundary distinction before moving to hidden layers."
-  }}
-/>

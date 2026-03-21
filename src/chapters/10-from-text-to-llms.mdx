@@ -13,8 +13,7 @@ subtitle: "How language becomes numbers a neural network can work with"
   map={["Text", "Tokens", "Embeddings", "Numeric representation"]}
   trackFocus={{
     conceptual: "The main leap is simple: text must be converted into learned numeric representations before a neural network can use it.",
-    builder: "Tokenization and embeddings are implementation choices with real downstream effects on cost, context length, and behavior.",
-    educator: "If learners skip this step, everything about LLMs feels magical instead of engineered."
+    builder: "Tokenization and embeddings are implementation choices with real downstream effects on cost, context length, and behavior."
   }}
 />
 
@@ -58,30 +57,6 @@ You can think of an embedding as the model's learned numeric representation of a
 
 The important shift is this: once tokens become embeddings, language is now in a form a neural network can transform.
 
-<CaseCards
-  title="Where tokenization and embeddings matter"
-  cards={[
-    {
-      title: "Code assistant",
-      product: "A developer prompt becomes a sequence of code tokens the model must continue or rewrite.",
-      modelIdea: "Tokenization decides how code fragments are chunked, while embeddings give those pieces learned numeric meaning inside the model.",
-      failureMode: "If learners think the model 'reads code like a person,' they miss why formatting, partial tokens, and token count limits matter so much.",
-      trackPrompt: {
-        builder: "This is where token cost and prompt length start becoming engineering constraints."
-      }
-    },
-    {
-      title: "Customer-support chatbot",
-      product: "User text becomes tokens and embeddings before any response reasoning happens.",
-      modelIdea: "The assistant is still a numeric model under the surface, even when the UX feels conversational.",
-      failureMode: "Without this mental model, teams may expect the model to understand context the way a human does rather than as transformed token patterns.",
-      trackPrompt: {
-        educator: "This is a good place to slow down and de-mystify 'conversation' as structured numeric processing."
-      }
-    }
-  ]}
-/>
-
 <Checkpoint
   id="ch10-embeddings"
   chapter={10}
@@ -122,7 +97,6 @@ Before an LLM can predict language, text must be broken into tokens and converte
   nextStep="Next we explain how tokens use context and influence one another through attention."
   trackActions={{
     conceptual: "Keep the phrase 'text becomes numbers' in mind. It makes the rest of the LLM stack easier to trust and inspect.",
-    builder: "Think about how tokenization choices affect latency, context size, and downstream behavior.",
-    educator: "Make sure learners can say what tokens and embeddings are before talking about attention."
+    builder: "Think about how tokenization choices affect latency, context size, and downstream behavior."
   }}
 />

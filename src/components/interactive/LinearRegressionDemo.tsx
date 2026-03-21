@@ -5,8 +5,10 @@ import { HOUSE_LINEAR_DATA, HOUSE_X_LABEL, HOUSE_Y_LABEL } from "./data";
 import { GuidedPrediction } from "./GuidedPrediction";
 import { useLearning } from "../../learning/LearningContext";
 
-const INITIAL_W = 1.2;
-const INITIAL_B = 0.6;
+const INITIAL_W = 1.05;
+const INITIAL_B = 0.85;
+const TARGET_W = 1.28;
+const TARGET_B = 0.56;
 
 export function LinearRegressionDemo() {
   const {
@@ -27,6 +29,7 @@ export function LinearRegressionDemo() {
     HOUSE_LINEAR_DATA.reduce((sum, [x, y]) => sum + (y - fn(x)) ** 2, 0) /
     HOUSE_LINEAR_DATA.length;
   const prediction = fn(3.2);
+  const fitCoach = getLinearFitCoach(w, b, mse);
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -72,6 +75,11 @@ export function LinearRegressionDemo() {
 
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: <strong>weight</strong> changes the tilt of the line, and <strong>bias</strong> lifts the whole line up or down.
+          </div>
+
+          <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${fitCoach.className}`}>
+            <p className="font-semibold">{fitCoach.title}</p>
+            <p className="mt-1">{fitCoach.detail}</p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3">
@@ -158,4 +166,40 @@ export function LinearRegressionDemo() {
       </div>
     </div>
   );
+}
+
+function getLinearFitCoach(w: number, b: number, mse: number) {
+  const nudges: string[] = [];
+
+  if (Math.abs(w - TARGET_W) > 0.08) {
+    nudges.push(w < TARGET_W ? "raise w a little" : "lower w a little");
+  }
+  if (Math.abs(b - TARGET_B) > 0.12) {
+    nudges.push(b < TARGET_B ? "raise b slightly" : "lower b slightly");
+  }
+
+  if (mse < 0.035) {
+    return {
+      title: "You found the fit.",
+      detail: "The line is sitting close to the data now. Try a tiny extra nudge and watch it start getting worse again.",
+      className:
+        "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100",
+    };
+  }
+
+  if (mse < 0.09) {
+    return {
+      title: "Very close.",
+      detail: nudges.length ? `You are almost there. Try to ${nudges.join(" and ")}.` : "Only a very small adjustment is left.",
+      className:
+        "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100",
+    };
+  }
+
+  return {
+    title: "Still off.",
+    detail: nudges.length ? `The fit is improving, but it needs more work. Try to ${nudges.join(" and ")}.` : "Keep nudging the line until it hugs the middle of the points.",
+    className:
+      "border-cyan-200 bg-cyan-50 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100",
+  };
 }

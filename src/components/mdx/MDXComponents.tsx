@@ -21,6 +21,7 @@ import { XorDemo } from "../interactive/XorDemo";
 import { TrainingCurveDemo } from "../interactive/TrainingCurveDemo";
 import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
 import { CapstoneStudio } from "../interactive/CapstoneStudio";
+import { useLearning } from "../../learning/LearningContext";
 
 const LazyLinearRegressionNotebook = lazy(async () => ({
   default: (await import("../interactive/LinearRegressionNotebook")).LinearRegressionNotebook,
@@ -36,6 +37,32 @@ function NotebookFallback() {
   return (
     <div className="my-8 rounded-[1.5rem] border border-stone-200 bg-white px-5 py-6 text-sm text-stone-500 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400">
       Loading notebook runtime...
+    </div>
+  );
+}
+
+function BuilderOnlyNotebook({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  const {
+    state: { track },
+  } = useLearning();
+
+  if (track === "builder") {
+    return <>{children}</>;
+  }
+
+  return (
+    <div className="my-8 rounded-[1.5rem] border border-cyan-200 bg-cyan-50 px-5 py-5 text-sm leading-6 text-cyan-900 shadow-sm dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em]">Builder Lab</p>
+      <p className="mt-2">
+        The editable <strong>{title}</strong> is hidden in Conceptual mode so the lesson stays high-level.
+        Switch to the Builder track whenever you want the lower-level Python walkthrough.
+      </p>
     </div>
   );
 }
@@ -121,18 +148,24 @@ export const mdxComponents: MDXComponentsType = {
   TokenPredictionDemo,
   CapstoneStudio,
   LinearRegressionNotebook: () => (
-    <Suspense fallback={<NotebookFallback />}>
-      <LazyLinearRegressionNotebook />
-    </Suspense>
+    <BuilderOnlyNotebook title="Linear Regression Notebook">
+      <Suspense fallback={<NotebookFallback />}>
+        <LazyLinearRegressionNotebook />
+      </Suspense>
+    </BuilderOnlyNotebook>
   ),
   ClassificationNotebook: () => (
-    <Suspense fallback={<NotebookFallback />}>
-      <LazyClassificationNotebook />
-    </Suspense>
+    <BuilderOnlyNotebook title="Classification Notebook">
+      <Suspense fallback={<NotebookFallback />}>
+        <LazyClassificationNotebook />
+      </Suspense>
+    </BuilderOnlyNotebook>
   ),
   NeuralNetworkNotebook: () => (
-    <Suspense fallback={<NotebookFallback />}>
-      <LazyNeuralNetworkNotebook />
-    </Suspense>
+    <BuilderOnlyNotebook title="Neural Network Notebook">
+      <Suspense fallback={<NotebookFallback />}>
+        <LazyNeuralNetworkNotebook />
+      </Suspense>
+    </BuilderOnlyNotebook>
   ),
 };

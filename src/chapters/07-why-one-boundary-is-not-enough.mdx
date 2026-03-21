@@ -13,8 +13,7 @@ subtitle: "The bridge from classification to neural networks"
   map={["One score", "One boundary", "Multiple signals", "Better fit"]}
   trackFocus={{
     conceptual: "This is the most important bridge chapter in the course. If it lands, neural networks stop feeling mystical.",
-    builder: "Think in terms of representation power: what internal signals would you want a model to discover before the final decision?",
-    educator: "Do not rush this. The entire network section becomes easier once learners feel the need for internal detectors."
+    builder: "Think in terms of representation power: what internal signals would you want a model to discover before the final decision?"
   }}
 />
 
@@ -42,30 +41,6 @@ Instead of asking the model for one final score immediately, we can first ask it
 - "does this look like low risk?"
 
 Those intermediate signals are often called **features**, **detectors**, or **representations**.
-
-<CaseCards
-  title="What this looks like in real products"
-  cards={[
-    {
-      title: "Loan approval assistant",
-      product: "Income, savings, debt, and stability signals become an approval recommendation.",
-      modelIdea: "A useful model may need separate internal detectors for different ways a candidate can look strong or risky.",
-      failureMode: "One crude boundary can reject applicants who are strong in one dimension but unusual in another.",
-      trackPrompt: {
-        builder: "This is a good example of why hand-designed one-score heuristics hit a ceiling quickly."
-      }
-    },
-    {
-      title: "Content moderation system",
-      product: "Text, image, and metadata signals become a moderation decision.",
-      modelIdea: "Different internal detectors might look for harassment, sexual content, impersonation, or context cues separately before the final decision.",
-      failureMode: "A single coarse score can miss nuanced harms or overfire on safe content.",
-      trackPrompt: {
-        educator: "Use this to connect hidden representations with product safety rather than treating them as abstract neurons."
-      }
-    }
-  ]}
-/>
 
 ## Why This Matters
 
@@ -117,7 +92,6 @@ The jump to neural networks is really a jump from one score to many learned inte
   nextStep="Next we finally name the system that learns those internal detectors: the neural network."
   trackActions={{
     conceptual: "Treat hidden detectors as 'useful intermediate questions' the model learns to answer.",
-    builder: "Ask what useful intermediate representation would make your final task easier.",
-    educator: "If learners still think a network is 'just a bigger line,' pause here and revisit the bridge."
+    builder: "Ask what useful intermediate representation would make your final task easier."
   }}
 />

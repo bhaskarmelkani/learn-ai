@@ -5,9 +5,12 @@ import { HOUSE_CURVED_DATA, HOUSE_X_LABEL, HOUSE_Y_LABEL } from "./data";
 import { GuidedPrediction } from "./GuidedPrediction";
 import { useLearning } from "../../learning/LearningContext";
 
-const INITIAL_A = 0.2;
-const INITIAL_B = 0.3;
-const INITIAL_C = 1.2;
+const INITIAL_A = 0.28;
+const INITIAL_B = -0.1;
+const INITIAL_C = 1.6;
+const TARGET_A = 0.46;
+const TARGET_B = -0.56;
+const TARGET_C = 2.05;
 
 export function NonlinearDemo() {
   const {
@@ -28,6 +31,7 @@ export function NonlinearDemo() {
   const mse =
     HOUSE_CURVED_DATA.reduce((sum, [x, y]) => sum + (y - fn(x)) ** 2, 0) /
     HOUSE_CURVED_DATA.length;
+  const fitCoach = getCurveFitCoach(a, b, c, mse);
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -73,6 +77,11 @@ export function NonlinearDemo() {
 
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: the new curved term lets the line bend upward instead of forcing one straight trend through every point.
+          </div>
+
+          <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${fitCoach.className}`}>
+            <p className="font-semibold">{fitCoach.title}</p>
+            <p className="mt-1">{fitCoach.detail}</p>
           </div>
 
           <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
@@ -126,4 +135,43 @@ export function NonlinearDemo() {
       </div>
     </div>
   );
+}
+
+function getCurveFitCoach(a: number, b: number, c: number, mse: number) {
+  const nudges: string[] = [];
+
+  if (Math.abs(a - TARGET_A) > 0.05) {
+    nudges.push(a < TARGET_A ? "increase a to add more bend" : "decrease a to soften the bend");
+  }
+  if (Math.abs(b - TARGET_B) > 0.12) {
+    nudges.push(b < TARGET_B ? "raise b a bit" : "lower b a bit");
+  }
+  if (Math.abs(c - TARGET_C) > 0.18) {
+    nudges.push(c < TARGET_C ? "raise c slightly" : "lower c slightly");
+  }
+
+  if (mse < 0.05) {
+    return {
+      title: "You’re on the curve.",
+      detail: "The fit is following the premium-home bend now. Tiny changes from here should mostly make it worse.",
+      className:
+        "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100",
+    };
+  }
+
+  if (mse < 0.14) {
+    return {
+      title: "Almost there.",
+      detail: nudges.length ? `The curve is close. Try to ${nudges.join(" and ")}.` : "Only one small nudge is left.",
+      className:
+        "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100",
+    };
+  }
+
+  return {
+    title: "Needs more shape.",
+    detail: nudges.length ? `The fit is still off. Try to ${nudges.join(" and ")}.` : "Push the curve until it follows the upward bend on the right-hand side.",
+    className:
+      "border-cyan-200 bg-cyan-50 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100",
+  };
 }

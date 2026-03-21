@@ -13,8 +13,7 @@ subtitle: "Error, loss, gradient descent, and why outliers matter"
   map={["Prediction", "Loss", "Gradient", "Update"]}
   trackFocus={{
     conceptual: "Treat loss as a 'badness score' and gradient descent as repeated downhill steps.",
-    builder: "Notice how the update rule turns a static model into a trainable system.",
-    educator: "This chapter works best when learners feel the geometry of improvement before they face formal math."
+    builder: "Notice how the update rule turns a static model into a trainable system."
   }}
 />
 
@@ -48,30 +47,6 @@ how should we change the line so that badness goes down?
 That update process is called **gradient descent**.
 
 <GradientDescentDemo />
-
-<CaseCards
-  title="Why optimization quality matters in products"
-  cards={[
-    {
-      title: "Ad bidding system",
-      product: "Campaign and user signals become a bid or ranking score.",
-      modelIdea: "Training tries to lower a loss by nudging parameters so useful predictions get better over time.",
-      failureMode: "If optimization is unstable or the objective is poorly chosen, the system can chase the wrong behavior at massive scale.",
-      trackPrompt: {
-        builder: "Ask what the loss is actually rewarding. Stable optimization on a bad objective still produces a bad product."
-      }
-    },
-    {
-      title: "Fraud detector",
-      product: "Transaction features become a fraud risk score.",
-      modelIdea: "The system needs a consistent way to measure wrongness before it can improve its parameters.",
-      failureMode: "Rare but extreme cases can dominate the fit or produce brittle thresholds if the training story is naive.",
-      trackPrompt: {
-        educator: "This is a good chapter to connect optimization with downstream business and trust costs."
-      }
-    }
-  ]}
-/>
 
 <Checkpoint
   id="ch4-learning-rate"
@@ -131,7 +106,6 @@ Learning a line means measuring error and repeatedly updating the parameters unt
   nextStep="Next we keep the same training story but change the shape of the model when a straight line stops being enough."
   trackActions={{
     conceptual: "Keep the picture of downhill steps. That picture survives even when the math gets harder.",
-    builder: "Notice how sensitive training can be to hyperparameters and data quality even in tiny examples.",
-    educator: "Ask learners to explain why a weird point can move the whole fit before you leave the chapter."
+    builder: "Notice how sensitive training can be to hyperparameters and data quality even in tiny examples."
   }}
 />
