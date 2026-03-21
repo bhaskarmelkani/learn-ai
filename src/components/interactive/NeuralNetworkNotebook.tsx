@@ -4,6 +4,16 @@ const cells = [
   {
     title: "Create a tiny XOR dataset",
     description: "A linear model cannot solve XOR, which is why this is a good toy problem for a small neural network.",
+    expected: [
+      "X should have shape (4, 2) and Y should have shape (4, 1).",
+      "The labels alternate in the XOR pattern 0, 1, 1, 0.",
+    ],
+    hints: [
+      "Each row is one input pair.",
+      "This dataset is tiny on purpose so you can inspect every example mentally.",
+    ],
+    noCodeFallback:
+      "XOR matters because one linear boundary cannot separate the positive and negative cases cleanly.",
     code: `import numpy as np
 
 X = np.array([
@@ -19,10 +29,23 @@ print("Y shape:", Y.shape)
 print(X)
 print(Y)`,
     packages: ["numpy"],
+    successKeywords: ["X shape:", "Y shape:"],
   },
   {
     title: "Train a two-layer network in NumPy",
     description: "Edit the hidden size, epochs, or learning rate and watch how the loss changes.",
+    expected: [
+      "Loss should fall substantially if training works.",
+      "The network should learn a representation that solves XOR better than one linear score.",
+    ],
+    hints: [
+      "W1 and b1 create the hidden representation; W2 and b2 turn that representation into the final output.",
+      "If training is unstable, lower the learning rate before changing the architecture.",
+    ],
+    breakPrompt:
+      "Set hidden = 1 and rerun. What does that reveal about how much representation capacity XOR needs?",
+    noCodeFallback:
+      "Backpropagation is just a way to send credit and blame backward so every layer learns how it contributed to the final error.",
     code: `rng = np.random.default_rng(4)
 
 hidden = 4
@@ -65,10 +88,22 @@ for epoch in range(epochs):
 
 print("\\ntraining finished")`,
     packages: ["numpy"],
+    successKeywords: ["loss=", "training finished"],
   },
   {
     title: "Inspect the predictions",
     description: "These values should move close to 0, 1, 1, 0 if training worked.",
+    expected: [
+      "Predictions should roughly match 0, 1, 1, 0 in order.",
+    ],
+    hints: [
+      "If all predictions sit near 0.5, the network did not really learn the pattern.",
+      "This cell is the test of whether the hidden layer built useful internal detectors.",
+    ],
+    breakPrompt:
+      "Restart the kernel and run only this cell. What dependency does it reveal about trained parameters and the active notebook session?",
+    noCodeFallback:
+      "The purpose of this cell is to check whether the learned internal representation actually improved the outputs on all four XOR cases.",
     code: `z1 = X @ W1 + b1
 a1 = np.tanh(z1)
 z2 = a1 @ W2 + b2
@@ -76,6 +111,7 @@ y_hat = sigmoid(z2)
 
 for x_row, pred, actual in zip(X, y_hat.flatten(), Y.flatten()):
     print(f"input={x_row}  pred={pred:.3f}  actual={actual:.1f}")`,
+    successKeywords: ["input=", "actual="],
   },
 ];
 

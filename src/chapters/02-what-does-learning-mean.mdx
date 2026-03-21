@@ -1,0 +1,145 @@
+---
+title: "What Does Learning Mean?"
+chapter: 2
+subtitle: "Training is just adjusting numbers until predictions improve"
+---
+
+# What Does Learning Mean?
+
+<ChapterBridge
+  why="This chapter removes the biggest beginner misconception: 'learning' sounds mystical until you realize it is just repeated improvement against examples."
+  buildsOn="The idea that a model has parameters inside a chosen architecture."
+  unlocks="Regression, classification, and every later training loop in the course."
+  map={["Prediction", "Comparison", "Update", "Repeat"]}
+  trackFocus={{
+    conceptual: "Focus on the loop, not the formulas. The loop is the portable mental model.",
+    builder: "Think like a debugger: what information does the model need so an update can happen at all?"
+  }}
+/>
+
+Suppose we want a model that helps estimate house prices.
+
+At first, the model's guesses are rough. The whole point of learning is to make those guesses better.
+
+That is all training really is:
+
+1. make a prediction
+2. compare it with reality
+3. adjust the model's numbers
+4. try again
+
+## The Intuition
+
+When people first hear "machine learning," it can sound mysterious.
+
+But the core idea is ordinary:
+
+- start with a model shape
+- show it examples
+- nudge its numbers until its predictions improve
+
+<Callout type="analogy">
+Think of tuning a guitar. The guitar shape stays the same, but you keep adjusting the tuning pegs until the sound gets better. Training does the same thing with parameters.
+</Callout>
+
+## Two Common Kinds of Prediction
+
+The predictions in this course mostly fall into two families:
+
+| Problem | Output | Example |
+|---------|--------|---------|
+| Predict a number | continuous value | house price |
+| Make a decision | category | approve / reject |
+
+The names come later. First we want to feel the need for them.
+
+## A Concrete Question
+
+Imagine we know these two house sales:
+
+| Size (sqft) | Price |
+|-------------|-------|
+| 1000 | $190k |
+| 2000 | $290k |
+
+Now a third house appears at 1500 sqft.
+
+What is the most obvious first way to guess its price?
+
+Most people do the same thing: they imagine a line between the known examples and place the new house somewhere along that trend.
+
+That is where we start next.
+
+<Exercise title="Prediction First" hint="Looking at the data trend, a 1500 sqft house might sell for around $300k-$350k. The key is noticing that price rises roughly proportionally with size.">
+Before going to the next chapter, make a quick guess for the 1500 sqft house. You do not need a formula yet. Just use the trend you see.
+</Exercise>
+
+<Checkpoint
+  id="ch2-learning-loop"
+  chapter={2}
+  prompt="What actually changes during learning?"
+  concepts={["training loop", "parameters", "examples"]}
+  options={[
+    {
+      label: "The model's numbers change so its predictions line up better with the examples.",
+      correct: true,
+      explanation: "Exactly. The model improves by changing internal parameters in response to the examples and targets it sees."
+    },
+    {
+      label: "The examples change so the model can stay the same.",
+      explanation: "That would destroy the whole point of supervised learning. The examples are the reference point the model is trying to match."
+    },
+    {
+      label: "Nothing changes until the model becomes fully accurate.",
+      explanation: "Training is gradual. Small updates happen long before the model is anywhere close to perfect."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch2-supervised-signal"
+  chapter={2}
+  prompt="What does a supervised model need to learn from data?"
+  concepts={["supervised learning", "labels", "training data"]}
+  options={[
+    {
+      label: "Labeled examples: inputs paired with the correct outputs so the model can measure its mistakes.",
+      correct: true,
+      explanation: "Right. The labels are the reference signal that tells the model how wrong its predictions are."
+    },
+    {
+      label: "Only the inputs — the model figures out the right answers on its own.",
+      explanation: "That describes unsupervised learning. Supervised learning specifically requires paired input-output examples."
+    },
+    {
+      label: "A human manually correcting every single prediction in real time.",
+      explanation: "Corrections happen through the training data, not live human intervention on each prediction."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch2-predict-compare"
+  chapter={2}
+  prompt="Why does the learning loop compare predictions to actual values?"
+  concepts={["loss", "training loop", "error"]}
+  options={[
+    {
+      label: "To measure how wrong the model is, so it knows which direction to adjust.",
+      correct: true,
+      explanation: "Exactly. Without comparison, the model has no signal for improvement."
+    },
+    {
+      label: "To delete the examples the model already gets right.",
+      explanation: "We keep all examples. The comparison provides a learning signal, not a filtering mechanism."
+    },
+    {
+      label: "To prove that the model is already perfect before training starts.",
+      explanation: "The whole point of comparison is to find errors and fix them through updates."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Takeaway">
+Learning is not magic. It is repeated improvement: predict, compare, adjust, repeat.
+</Callout>

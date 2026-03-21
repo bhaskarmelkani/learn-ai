@@ -3,17 +3,29 @@ import { useState } from "react";
 const TARGETS = ["input", "output", "parameter", "architecture"] as const;
 
 const ITEMS = [
-  { prompt: "House features: square footage, bedrooms, location", answer: "input" },
-  { prompt: "Spam / not spam", answer: "output" },
+  { prompt: "House features: size, bedrooms, location", answer: "input" },
+  { prompt: "Spam or not spam", answer: "output" },
   { prompt: "Weights and biases like w and b", answer: "parameter" },
   { prompt: "Linear model, neural network, transformer", answer: "architecture" },
 ] as const;
 
 const EVERYDAY_MODELS = [
-  { name: "Weather forecast", text: "Input: weather data. Output: tomorrow's temperature or rain chance." },
-  { name: "Recommendation system", text: "Input: your clicks and history. Output: a ranked list of items." },
-  { name: "Spam filter", text: "Input: email text. Output: spam or not spam." },
-];
+  {
+    name: "Weather forecast",
+    input: "temperature, pressure, humidity, cloud patterns",
+    output: "tomorrow's rain chance or temperature",
+  },
+  {
+    name: "Recommendation system",
+    input: "clicks, watch history, likes, skips",
+    output: "a ranked list of suggested items",
+  },
+  {
+    name: "Spam filter",
+    input: "email text, links, sender signals",
+    output: "spam or not spam",
+  },
+] as const;
 
 export function ConceptMatcher() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -28,10 +40,10 @@ export function ConceptMatcher() {
             Sort It
           </p>
           <h3 className="mt-2 text-xl font-semibold text-stone-900 dark:text-white">
-            Match the concept to the role
+            Match each example to its role in a model
           </h3>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-600 dark:text-gray-400">
-            Pick the right bucket for each example. This is the simplest way to make the model/input/output/parameter/architecture idea tangible.
+            The point is not memorization. It is to build the instinct of asking: what goes in, what comes out, what numbers get learned, and what overall shape did we choose?
           </p>
         </div>
         <div className="rounded-full bg-stone-100 px-4 py-2 text-sm font-medium text-stone-700 dark:bg-gray-800 dark:text-gray-200">
@@ -56,28 +68,26 @@ export function ConceptMatcher() {
               }`}
             >
               <p className="text-sm font-semibold text-stone-900 dark:text-white">{item.prompt}</p>
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                <label className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
-                  Role
-                </label>
-                <select
-                  value={value}
-                  onChange={(e) =>
-                    setAnswers((current) => ({ ...current, [index]: e.target.value }))
-                  }
-                  className="rounded-full border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 outline-none transition-colors focus:border-cyan-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
-                >
-                  <option value="">Choose one</option>
-                  {TARGETS.map((target) => (
-                    <option key={target} value={target}>
-                      {target}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-xs text-stone-500 dark:text-gray-400">
-                  {value ? (isCorrect ? "Correct" : "Try again") : "Pick a bucket"}
-                </span>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {TARGETS.map((target) => (
+                  <button
+                    key={target}
+                    onClick={() =>
+                      setAnswers((current) => ({ ...current, [index]: target }))
+                    }
+                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                      value === target
+                        ? "bg-cyan-600 text-white"
+                        : "bg-white text-stone-600 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                    }`}
+                  >
+                    {target}
+                  </button>
+                ))}
               </div>
+              <p className="mt-3 text-xs text-stone-500 dark:text-gray-400">
+                {value ? (isCorrect ? "Correct" : "Not quite yet") : "Choose the best role"}
+              </p>
             </div>
           );
         })}
@@ -85,13 +95,26 @@ export function ConceptMatcher() {
 
       <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/60">
         <p className="text-xs font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
-          Everyday models
+          Everyday model snapshots
         </p>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {EVERYDAY_MODELS.map((model) => (
             <div key={model.name} className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
               <p className="font-semibold text-stone-900 dark:text-white">{model.name}</p>
-              <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">{model.text}</p>
+              <div className="mt-4 space-y-3 text-sm leading-6 text-stone-600 dark:text-gray-400">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
+                    Input
+                  </p>
+                  <p className="mt-1">{model.input}</p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-emerald-700 dark:text-emerald-300">
+                    Output
+                  </p>
+                  <p className="mt-1">{model.output}</p>
+                </div>
+              </div>
             </div>
           ))}
         </div>

@@ -1,17 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { GRAPH_PAD, Graph, PlotLine, PlotPoints } from "./Graph";
-
-const BASE_DATA: [number, number][] = [
-  [1, 2.2],
-  [1.5, 2.8],
-  [2, 3.4],
-  [2.5, 4.0],
-  [3, 4.7],
-  [3.5, 5.0],
-  [4, 5.8],
-  [4.5, 6.2],
-  [5, 7.0],
-];
+import { HOUSE_LINEAR_DATA, HOUSE_X_LABEL, HOUSE_Y_LABEL } from "./data";
 
 function fitLine(data: [number, number][]) {
   const n = data.length;
@@ -35,10 +24,10 @@ function clamp(value: number, min: number, max: number) {
 
 export function LinearRegressionOutlierDemo() {
   const svgRef = useRef<SVGSVGElement | null>(null);
-  const [outlier, setOutlier] = useState<[number, number]>([6.2, 8.5]);
+  const [outlier, setOutlier] = useState<[number, number]>([4.8, 7.1]);
   const [dragging, setDragging] = useState(false);
 
-  const data = useMemo(() => [...BASE_DATA, outlier], [outlier]);
+  const data = useMemo(() => [...HOUSE_LINEAR_DATA, outlier], [outlier]);
   const { w, b } = useMemo(() => fitLine(data), [data]);
   const loss = mse(data, (x) => w * x + b);
   const yAtOutlier = w * outlier[0] + b;
@@ -47,10 +36,10 @@ export function LinearRegressionOutlierDemo() {
     const svg = svgRef.current;
     if (!svg) return;
     const rect = svg.getBoundingClientRect();
-    const xMin = 0;
-    const xMax = 7;
-    const yMin = 0;
-    const yMax = 10;
+    const xMin = 0.6;
+    const xMax = 5.2;
+    const yMin = 1.0;
+    const yMax = 8.4;
     const plotWidth = rect.width - GRAPH_PAD.left - GRAPH_PAD.right;
     const plotHeight = rect.height - GRAPH_PAD.top - GRAPH_PAD.bottom;
 
@@ -71,7 +60,7 @@ export function LinearRegressionOutlierDemo() {
               Watch the line react to an outlier
             </h3>
             <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">
-              Drag the red point around. The slope and intercept update immediately, so learners can feel how one unusual example affects the fit.
+              Drag the green point around and watch the fitted line react. One unusual sale can pull the whole story upward or downward.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -84,25 +73,34 @@ export function LinearRegressionOutlierDemo() {
               <p className="mt-1 font-mono text-lg font-semibold text-stone-900 dark:text-white">{b.toFixed(2)}</p>
             </div>
             <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">MSE</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Mean squared error (MSE)</p>
               <p className="mt-1 font-mono text-lg font-semibold text-stone-900 dark:text-white">{loss.toFixed(3)}</p>
             </div>
           </div>
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
-            If the point moves far away from the cluster, the fitted line bends toward it. That is the tangible reason outliers matter.
+            What to notice: if the point moves far away from the cluster, the fitted line bends toward it. That is why outliers matter.
           </div>
         </div>
         <div className="flex-1">
-          <Graph ref={svgRef} xMin={0} xMax={7} yMin={0} yMax={10}>
+          <Graph
+            ref={svgRef}
+            xMin={0.6}
+            xMax={5.2}
+            yMin={1}
+            yMax={8.4}
+            xLabel={HOUSE_X_LABEL}
+            yLabel={HOUSE_Y_LABEL}
+            caption="Move the unusual sale and watch how much the fitted line changes."
+          >
             {({ toX, toY, xMin, xMax }) => (
               <>
                 <PlotLine fn={(x) => w * x + b} toX={toX} toY={toY} xMin={xMin} xMax={xMax} />
-                <PlotPoints data={BASE_DATA} toX={toX} toY={toY} />
+                <PlotPoints data={HOUSE_LINEAR_DATA} toX={toX} toY={toY} />
                 <circle
                   cx={toX(outlier[0])}
                   cy={toY(outlier[1])}
                   r={7}
-                  fill="rgb(239, 68, 68)"
+                  fill="rgb(34, 197, 94)"
                   stroke="white"
                   strokeWidth={2}
                   style={{ cursor: dragging ? "grabbing" : "grab" }}
@@ -122,7 +120,7 @@ export function LinearRegressionOutlierDemo() {
                   y1={toY(outlier[1])}
                   x2={toX(outlier[0])}
                   y2={toY(yAtOutlier)}
-                  stroke="rgb(239, 68, 68)"
+                  stroke="rgb(34, 197, 94)"
                   strokeDasharray="4 4"
                   strokeOpacity={0.45}
                 />

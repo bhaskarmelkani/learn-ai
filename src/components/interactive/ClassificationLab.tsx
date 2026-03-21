@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Slider } from "./Slider";
+import { GuidedPrediction } from "./GuidedPrediction";
+import { useLearning } from "../../learning/LearningContext";
 
 type Scenario = {
   name: string;
@@ -13,6 +15,23 @@ type Scenario = {
 };
 
 const SCENARIOS: Scenario[] = [
+  {
+    name: "Mortgage approval",
+    description: "Higher affordability scores make approval more likely.",
+    xLabel: "Affordability score",
+    positiveLabel: "approve",
+    negativeLabel: "reject",
+    center: 55,
+    scale: 11,
+    cases: [
+      { x: 18, label: 0, note: "low income" },
+      { x: 28, label: 0, note: "high debt" },
+      { x: 44, label: 0, note: "borderline file" },
+      { x: 62, label: 1, note: "stable job" },
+      { x: 76, label: 1, note: "strong savings" },
+      { x: 88, label: 1, note: "very safe profile" },
+    ],
+  },
   {
     name: "Spam filter",
     description: "Higher feature values mean a more spam-like email.",
@@ -90,8 +109,16 @@ function confusionMatrix(cases: Scenario["cases"], threshold: number, center: nu
 }
 
 export function ClassificationLab() {
+  const {
+    state: { guidedMode },
+  } = useLearning();
   const [scenarioIndex, setScenarioIndex] = useState(0);
   const [threshold, setThreshold] = useState(0.5);
+  const [guidedLocked, setGuidedLocked] = useState(guidedMode);
+
+  useEffect(() => {
+    setGuidedLocked(guidedMode);
+  }, [guidedMode]);
 
   const scenario = SCENARIOS[scenarioIndex];
   const { tp, fp, tn, fn, results } = useMemo(
@@ -103,6 +130,7 @@ export function ClassificationLab() {
   const accuracy = total ? (tp + tn) / total : 0;
   const precision = tp + fp ? tp / (tp + fp) : 0;
   const recall = tp + fn ? tp / (tp + fn) : 0;
+  const controlsDisabled = guidedMode && guidedLocked;
 
   return (
     <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -120,11 +148,38 @@ export function ClassificationLab() {
             </p>
           </div>
 
+          {guidedMode && (
+            <GuidedPrediction
+              title="Predict the threshold tradeoff"
+              prompt="If you raise the decision threshold, what tradeoff should become more likely?"
+              compareText="Unlock the threshold slider, move it upward, and compare false positives, false negatives, precision, and recall."
+              onUnlockChange={setGuidedLocked}
+              choices={[
+                {
+                  value: "stricter",
+                  label: "Fewer positive predictions, usually fewer false positives, but more missed positives.",
+                  explanation: "That is the core threshold tradeoff. Stricter decisions help precision and often hurt recall.",
+                },
+                {
+                  value: "all-up",
+                  label: "Both precision and recall rise because the model is more careful.",
+                  explanation: "More caution does not automatically improve both. It usually creates a tradeoff between false alarms and misses.",
+                },
+                {
+                  value: "unchanged",
+                  label: "Only the labels change; the confusion matrix should stay roughly the same.",
+                  explanation: "The whole point of the threshold is to change the confusion matrix even when the underlying probabilities are fixed.",
+                },
+              ]}
+            />
+          )}
+
           <div className="flex flex-wrap gap-2">
             {SCENARIOS.map((item, index) => (
               <button
                 key={item.name}
-                onClick={() => setScenarioIndex(index)}
+                onClick={() => !controlsDisabled && setScenarioIndex(index)}
+                disabled={controlsDisabled}
                 className={`rounded-full px-3 py-1.5 text-xs transition-colors ${
                   index === scenarioIndex
                     ? "bg-cyan-600 text-white"
@@ -136,7 +191,7 @@ export function ClassificationLab() {
             ))}
           </div>
 
-          <Slider label="threshold" value={threshold} min={0.1} max={0.9} step={0.05} onChange={setThreshold} />
+          <Slider label="threshold" value={threshold} min={0.1} max={0.9} step={0.05} onChange={setThreshold} disabled={controlsDisabled} />
 
           <div className="grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
@@ -164,15 +219,15 @@ export function ClassificationLab() {
               Confusion matrix
             </p>
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
+            <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
                 <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Predicted positive</p>
-                <p className="mt-2 text-stone-700 dark:text-gray-300">TP {tp}</p>
-                <p className="text-stone-700 dark:text-gray-300">FP {fp}</p>
+                <p className="mt-2 text-stone-700 dark:text-gray-300">True positive (TP) {tp}</p>
+                <p className="text-stone-700 dark:text-gray-300">False positive (FP) {fp}</p>
               </div>
               <div className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-900">
                 <p className="text-xs uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">Predicted negative</p>
-                <p className="mt-2 text-stone-700 dark:text-gray-300">FN {fn}</p>
-                <p className="text-stone-700 dark:text-gray-300">TN {tn}</p>
+                <p className="mt-2 text-stone-700 dark:text-gray-300">False negative (FN) {fn}</p>
+                <p className="text-stone-700 dark:text-gray-300">True negative (TN) {tn}</p>
               </div>
             </div>
           </div>

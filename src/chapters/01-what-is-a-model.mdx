@@ -1,43 +1,78 @@
 ---
 title: "What Is a Model?"
 chapter: 1
-subtitle: "The foundation of everything in AI"
+subtitle: "Inputs, outputs, learned numbers, and why that idea keeps showing up"
 ---
 
 # What Is a Model?
 
-A **model** is just a function that maps inputs to outputs.
+<ChapterBridge
+  why="This chapter gives learners the simplest reusable frame in the whole course: every AI product takes something in, produces something out, and depends on learned internal numbers."
+  buildsOn="No math prerequisite. Just everyday intuition about prediction tools."
+  unlocks="Everything else in the course, because later chapters only change the shape and scale of the same core idea."
+  map={["Input", "Function", "Parameters", "Output"]}
+  trackFocus={{
+    conceptual: "Leave this chapter with one durable habit: always ask what goes in, what comes out, and what changed during training.",
+    builder: "Notice the split between architecture and parameters. That distinction becomes critical once you start building or debugging models."
+  }}
+/>
+
+Imagine three products:
+
+- a weather app that predicts tomorrow's rain chance
+- a spam filter that decides whether an email is junk
+- a house-pricing tool that estimates a sale price
+
+All three do the same high-level thing: they take some **input** and produce some **output**.
+
+That is the core idea of a model.
 
 $$y = f(x)$$
 
-That's it. Every AI system — from a spam filter to ChatGPT — is a function that takes some input and produces a prediction.
+A model is a function that maps inputs to outputs.
 
-<Path
-  current="This chapter is the starting point: we define what a model is and why the idea of inputs, outputs, and parameters matters."
-  next={{
-    title: "Linear Regression",
-    hint: "We turn the abstract idea of a model into the simplest trainable function: a line.",
-  }}
-/>
+That sounds small, but it is the foundation of everything from the simplest regression model to a large language model.
 
 ## Everyday Examples
 
 | Input $x$ | Output $y$ | Model |
 |-----------|-----------|-------|
-| House features (sqft, beds, location) | Price ($) | Real estate pricing |
+| House features (size, rooms, location) | Price | House-pricing model |
 | Email text | Spam or Not Spam | Spam filter |
 | Photo pixels | "Cat" or "Dog" | Image classifier |
-| Sequence of words | Next word | Language model (GPT) |
+| Sequence of tokens | Next token | Language model |
 
 <ConceptMatcher />
 
+<CaseCards
+  title="Real products that hide the same pattern"
+  cards={[
+    {
+      title: "Inbox spam filter",
+      product: "Incoming email text, links, and sender signals become a spam / not-spam decision.",
+      modelIdea: "The system maps message features to a binary output. The architecture could vary, but the core story is still input -> learned function -> output.",
+      failureMode: "False positives bury legitimate email. If the learner misses the cost of errors, they treat classification as an abstract toy instead of a product tradeoff.",
+      trackPrompt: {
+        builder: "Ask which features are likely doing the real work and how you would inspect false positives."
+      }
+    },
+    {
+      title: "House-price estimator",
+      product: "Square footage, rooms, and location become one predicted sale price.",
+      modelIdea: "This is a clean regression example because the output is a number, not a category.",
+      failureMode: "If the market shifts or the training data is biased toward one neighborhood, the prediction can feel precise while being badly wrong.",
+      trackPrompt: {
+        conceptual: "Notice why this example feels intuitive: you can imagine inputs and outputs immediately."
+      }
+    }
+  ]}
+/>
+
 ## Why "Model"?
 
-The word "model" means the same thing it does in everyday life — a **simplified representation** of something real.
+A model does **not** recreate the whole world. It captures enough of a pattern to be useful.
 
-A weather model doesn't recreate the atmosphere. It captures enough patterns to make useful predictions.
-
-> An AI model captures patterns in data to make predictions about new, unseen inputs.
+> A model is a simplified pattern-finder that helps us make a prediction for a new example.
 
 ## The Two Key Questions
 
@@ -46,42 +81,115 @@ Every model is defined by two questions:
 1. **What is the function's shape?** (architecture)
 2. **What are the function's numbers?** (parameters)
 
-The rest of this session is about answering those two questions — starting simple and building up to neural networks and LLMs.
+Those two questions stay with us all the way through the course.
 
 <Callout type="idea">
-If you understand that a model is a function with tunable numbers, you already have the core intuition for all of AI.
+If you understand that a model is a function with learned numbers, you already have the basic mental model for all of AI.
 </Callout>
 
-## What Does "Learning" Mean?
+## What Comes Next
 
-**Learning = finding the right numbers (parameters) for your function.**
+There are two broad kinds of problems we keep returning to:
 
-We don't hand-code the answer. Instead:
+1. predict a **number**
+2. make a **decision** between categories
 
-1. Start with a function shape (e.g., $y = wx + b$)
-2. Show it many examples of input → output
-3. Let an algorithm adjust $w$ and $b$ until the function fits the data
+We start with number prediction because it gives the clearest first picture of how models learn.
 
-This process is called **training**. The data drives the learning.
+<Exercise title="Mental Habit" hint="For a spam filter: the input is email text and metadata, the output is spam/not-spam, and the learned numbers are weights that capture which word patterns signal junk mail.">
+When you look at any AI product, ask two questions before anything else: **what goes in and what comes out?** and **which numbers inside the model are being learned?**
 
-<Callout type="analogy">
-Think of it like tuning a guitar. The shape of the guitar is fixed (architecture), but you adjust the tuning pegs (parameters) until it sounds right (fits the data).
-</Callout>
-
-<Exercise title="Mental Habit">
-When you look at any AI product, pause and ask two questions before anything else: **what are the inputs and outputs?** and **which numbers are being learned?**
-
-That habit is the whole session in miniature. If learners leave with only one instinct, it should be this one.
+If learners leave with only one instinct, it should be that one.
 </Exercise>
 
-<Checkpoint prompt="During training, what usually changes: the function shape or the numbers inside it?">
-Usually the **numbers** change. We choose a model family first, then training adjusts its parameters so the same overall function shape makes better predictions.
-</Checkpoint>
+<Checkpoint
+  id="ch1-parameters-change"
+  chapter={1}
+  prompt="During training, what usually changes first?"
+  concepts={["parameters", "training", "architecture"]}
+  options={[
+    {
+      label: "The learned numbers inside the model change while the model family stays fixed.",
+      correct: true,
+      explanation: "Yes. We usually choose the model family first, then training adjusts its parameters so the same overall shape makes better predictions."
+    },
+    {
+      label: "The dataset changes itself until it fits the model better.",
+      explanation: "The examples are the evidence. Training changes the model's internal numbers, not the ground-truth labels or observed inputs."
+    },
+    {
+      label: "The model always invents a completely new architecture from scratch.",
+      explanation: "Architecture search exists, but it is not the default mental model to teach here. Most training runs adjust parameters inside a chosen architecture."
+    }
+  ]}
+/>
 
-<Exercise title="Tiny Challenge">
+<Checkpoint
+  id="ch1-architecture-vs-params"
+  chapter={1}
+  prompt="What is the difference between architecture and parameters?"
+  concepts={["architecture", "parameters", "model"]}
+  options={[
+    {
+      label: "Architecture is the chosen function shape; parameters are the learned numbers inside it.",
+      correct: true,
+      explanation: "Exactly. The architecture is a design decision. The parameters are what training adjusts to make the model useful."
+    },
+    {
+      label: "Architecture is the training data and parameters are the test data.",
+      explanation: "Neither architecture nor parameters refer to data. Architecture is the model shape, and parameters are the internal numbers."
+    },
+    {
+      label: "They mean the same thing — both describe the model's internal numbers.",
+      explanation: "They are distinct. Architecture is the overall structure; parameters are the specific numbers learned within that structure."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch1-model-definition"
+  chapter={1}
+  prompt="Which description best captures what a model is?"
+  concepts={["model", "function", "prediction"]}
+  options={[
+    {
+      label: "A function that maps inputs to outputs, using learned internal numbers.",
+      correct: true,
+      explanation: "Yes. That is the reusable definition that scales from a line to an LLM."
+    },
+    {
+      label: "A database that stores every possible answer and looks them up.",
+      explanation: "A model generalizes from patterns rather than storing explicit answers. That is what makes it useful on new inputs."
+    },
+    {
+      label: "A set of rules written by an engineer that never change.",
+      explanation: "Hand-written rules are not learned from data. A model's parameters are adjusted during training."
+    }
+  ]}
+/>
+
+<Exercise title="Tiny Challenge" hint="Google Translate: input is a sentence in one language, output is the translated sentence, the architecture is a transformer, and the parameters are the millions of weights learned from parallel text corpora.">
 Pick one AI product you know and describe its input, output, parameters, and architecture in one sentence.
 </Exercise>
 
 <Callout type="idea" title="Takeaway">
-A model is a function with learned numbers, and that idea will keep showing up all the way to LLMs.
+A model is a function with learned numbers, and that same frame scales from a straight line to an LLM.
 </Callout>
+
+<ChapterRecap
+  chapter={1}
+  summary={[
+    "Models map inputs to outputs.",
+    "Architecture is the chosen function shape.",
+    "Parameters are the learned numbers that training adjusts."
+  ]}
+  checks={[
+    "What would count as the input and output of an AI product you use every week?",
+    "Why is 'architecture vs parameters' a better frame than calling AI 'magic'?"
+  ]}
+  nextStep="Next we make training feel ordinary instead of mysterious."
+  trackActions={{
+    conceptual: "Say the model story for one everyday product without using the word AI.",
+    builder: "Translate one product into a rough function signature and list the parameters you expect it to learn."
+  }}
+/>

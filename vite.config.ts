@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { fileURLToPath, URL } from "node:url";
 import mdx from "@mdx-js/rollup";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -10,6 +11,11 @@ import rehypePrettyCode from "rehype-pretty-code";
 
 export default defineConfig({
   base: process.env.BASE_PATH || "/",
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url))
+    }
+  },
   plugins: [
     mdx({
       remarkPlugins: [

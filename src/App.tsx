@@ -4,10 +4,13 @@ import { Sidebar } from "./components/Sidebar";
 import { SlideView } from "./components/SlideView";
 import { NavigationBar } from "./components/NavigationBar";
 import { useKeyboardNav } from "./hooks/useKeyboardNav";
+import { getTrackLabel, useLearning } from "./learning/LearningContext";
+import { WelcomeScreen, useOnboarding } from "./components/WelcomeScreen";
 
 const STORAGE_KEYS = {
   chapter: "learn-ai-current-chapter",
   theme: "learn-ai-theme",
+  sidebarCollapsed: "learn-ai-sidebar-collapsed",
 };
 
 function getInitialChapter() {
@@ -47,7 +50,18 @@ function getChapterHash(index: number) {
   return `chapter-${chapter.chapter}-${slug}`;
 }
 
+function getInitialSidebarCollapsed() {
+  if (typeof window === "undefined") return false;
+  return window.localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === "true";
+}
+
 export default function App() {
+  const {
+    state: { track, guidedMode, reviewedChapters },
+    setTrack,
+    setGuidedMode,
+  } = useLearning();
+  const { onboarded, completeOnboarding } = useOnboarding();
   const [current, setCurrent] = useState(getInitialChapter);
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window === "undefined" ? true : window.innerWidth >= 1024
@@ -56,6 +70,7 @@ export default function App() {
     typeof window === "undefined" ? true : window.innerWidth >= 1024
   );
   const [dark, setDark] = useState(getInitialTheme);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(getInitialSidebarCollapsed);
   const contentRef = useRef<HTMLDivElement>(null);
   const prevIsDesktop = useRef(isDesktop);
 
@@ -79,6 +94,11 @@ export default function App() {
     window.localStorage.setItem(STORAGE_KEYS.theme, dark ? "dark" : "light");
   }, [dark]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, String(sidebarCollapsed));
+  }, [sidebarCollapsed]);
+
   const goTo = useCallback(
     (i: number) => {
       if (i >= 0 && i < chapters.length) {
@@ -91,7 +111,13 @@ export default function App() {
 
   const onNext = useCallback(() => goTo(current + 1), [current, goTo]);
   const onPrev = useCallback(() => goTo(current - 1), [current, goTo]);
-  const onToggleSidebar = useCallback(() => setSidebarVisible((v) => !v), []);
+  const onToggleSidebar = useCallback(() => {
+    if (isDesktop) {
+      setSidebarCollapsed((currentValue) => !currentValue);
+      return;
+    }
+    setSidebarVisible((v) => !v);
+  }, [isDesktop]);
 
   useKeyboardNav({ onNext, onPrev, onToggleSidebar });
 
@@ -110,6 +136,18 @@ export default function App() {
   const previousChapter = current > 0 ? chapters[current - 1] : null;
   const nextChapter = current < chapters.length - 1 ? chapters[current + 1] : null;
 
+  if (!onboarded) {
+    return (
+      <WelcomeScreen
+        track={track}
+        onSelectTrack={setTrack}
+        guidedMode={guidedMode}
+        onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
+        onStart={completeOnboarding}
+      />
+    );
+  }
+
   return (
     <div className="h-screen flex overflow-hidden bg-stone-100 text-stone-900 dark:bg-gray-950 dark:text-gray-50">
       <Sidebar
@@ -117,11 +155,17 @@ export default function App() {
         current={current}
         onSelect={goTo}
         visible={sidebarVisible}
+        collapsed={isDesktop ? sidebarCollapsed : false}
         dark={dark}
         isDesktop={isDesktop}
         progress={progress}
         onToggleSidebar={onToggleSidebar}
         onToggleTheme={() => setDark((d) => !d)}
+        track={track}
+        onSelectTrack={setTrack}
+        guidedMode={guidedMode}
+        onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
+        completedChapters={reviewedChapters}
       />
       {sidebarVisible && !isDesktop && (
         <button
@@ -134,19 +178,25 @@ export default function App() {
       <main
         ref={contentRef}
         className={`relative flex-1 overflow-y-auto transition-[margin] duration-200 ${
-          sidebarVisible && isDesktop ? "lg:ml-80" : "lg:ml-0"
+          sidebarVisible && isDesktop
+            ? sidebarCollapsed
+              ? "lg:ml-20"
+              : "lg:ml-80"
+            : "lg:ml-0"
         }`}
       >
         <div className="sticky top-0 z-10 border-b border-stone-200/80 bg-stone-100/95 backdrop-blur dark:border-gray-800/80 dark:bg-gray-950/95">
           <div className="mx-auto flex max-w-5xl items-center gap-4 px-4 py-3 md:px-8">
-            <button
-              type="button"
-              onClick={onToggleSidebar}
-              className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
-            >
-              <span className="text-base leading-none">≡</span>
-              Chapters
-            </button>
+            {!isDesktop && (
+              <button
+                type="button"
+                onClick={onToggleSidebar}
+                className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
+              >
+                <span className="text-base leading-none">≡</span>
+                Chapters
+              </button>
+            )}
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-stone-800 dark:text-gray-100">
                 {chapter.chapter}. {chapter.title}
@@ -155,12 +205,26 @@ export default function App() {
                 {chapter.subtitle ?? "Build intuition step by step through concise explanations and live demos."}
               </p>
             </div>
+            <div className="hidden items-center gap-2 md:flex">
+              <div className="rounded-full bg-white px-3 py-1 text-xs font-medium text-stone-700 shadow-sm dark:bg-gray-900 dark:text-gray-200">
+                {getTrackLabel(track)}
+              </div>
+              <div
+                className={`rounded-full px-3 py-1 text-xs font-medium shadow-sm ${
+                  guidedMode
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-200"
+                    : "bg-white text-stone-700 dark:bg-gray-900 dark:text-gray-200"
+                }`}
+              >
+                {guidedMode ? "Guided" : "Open Mode"}
+              </div>
+            </div>
             <div className="hidden text-right md:block">
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
                 Progress
               </p>
               <p className="text-sm font-semibold text-stone-700 dark:text-gray-200">
-                {current + 1} / {chapters.length}
+                {current + 1} / {chapters.length} chapters
               </p>
             </div>
           </div>
@@ -188,6 +252,7 @@ export default function App() {
         nextTitle={nextChapter?.title}
         isDesktop={isDesktop}
         sidebarVisible={sidebarVisible}
+        sidebarCollapsed={sidebarCollapsed}
       />
     </div>
   );
