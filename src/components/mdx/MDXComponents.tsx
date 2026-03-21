@@ -24,6 +24,9 @@ import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
 import { AttentionHeatmap } from "../interactive/AttentionHeatmap";
 import { TokenizerPlayground } from "../interactive/TokenizerPlayground";
 import { CapstoneStudio } from "../interactive/CapstoneStudio";
+import { PromptComparison } from "../interactive/PromptComparison";
+import { GroundingLab } from "../interactive/GroundingLab";
+import { GenAICapstoneStudio } from "../interactive/GenAICapstoneStudio";
 import { CompletionDashboard } from "../CompletionDashboard";
 import { useLearning } from "../../learning/LearningContext";
 
@@ -80,37 +83,37 @@ function BuilderOnlyNotebook({
 export const mdxComponents: MDXComponentsType = {
   h1: (props) => (
     <h1
-      className="mb-6 max-w-4xl text-[clamp(2.7rem,5vw,4.6rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-stone-950 dark:text-stone-50 [font-family:var(--font-content)]"
+      className="mb-6 max-w-[34ch] text-pretty text-[clamp(1.62rem,2.5vw,2.42rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-stone-950 dark:text-stone-50 [font-family:var(--font-content)]"
       {...props}
     />
   ),
   h2: (props) => (
     <h2
-      className="mb-4 mt-16 max-w-4xl border-t border-stone-200/80 pt-8 text-[clamp(2rem,3vw,2.8rem)] font-semibold leading-tight tracking-[-0.03em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
+      className="mb-4 mt-14 w-full border-t border-stone-200/80 pt-7 text-pretty text-[clamp(1.24rem,1.5vw,1.58rem)] font-semibold leading-[1.16] tracking-[-0.018em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
       {...props}
     />
   ),
   h3: (props) => (
     <h3
-      className="mb-3 mt-10 max-w-4xl text-[1.55rem] font-semibold leading-tight tracking-[-0.02em] text-stone-900 dark:text-stone-100 [font-family:var(--font-content)]"
+      className="mb-3 mt-8 w-full text-pretty text-[1.02rem] font-semibold leading-[1.24] tracking-[-0.01em] text-stone-900 dark:text-stone-100 [font-family:var(--font-content)] md:text-[1.1rem]"
       {...props}
     />
   ),
   p: (props) => (
     <p
-      className="my-5 max-w-[68ch] text-[1.08rem] leading-8 text-stone-700 dark:text-gray-300 md:text-[1.18rem] md:leading-9 [font-family:var(--font-content)]"
+      className="my-4 w-full max-w-none text-pretty text-[0.97rem] font-[415] leading-[1.95] tracking-[0.002em] text-stone-800 dark:text-gray-100/92 md:text-[1.03rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
   ul: (props) => (
     <ul
-      className="my-5 ml-6 max-w-[68ch] list-disc space-y-2 text-[1.05rem] leading-8 text-stone-700 dark:text-gray-300 md:text-[1.15rem] md:leading-9 [font-family:var(--font-content)]"
+      className="my-4 ml-5 w-full max-w-none list-disc space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100/92 md:text-[1rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
   ol: (props) => (
     <ol
-      className="my-5 ml-6 max-w-[68ch] list-decimal space-y-2 text-[1.05rem] leading-8 text-stone-700 dark:text-gray-300 md:text-[1.15rem] md:leading-9 [font-family:var(--font-content)]"
+      className="my-4 ml-5 w-full max-w-none list-decimal space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100/92 md:text-[1rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
@@ -143,11 +146,11 @@ export const mdxComponents: MDXComponentsType = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="my-8 max-w-[68ch] rounded-[1.5rem] border border-stone-200/80 bg-stone-50/90 px-5 py-5 text-stone-700 shadow-sm dark:border-gray-800 dark:bg-gray-950/70 dark:text-gray-300 [&>p]:my-1"
+      className="my-7 w-full max-w-none rounded-[1.35rem] border border-stone-200/80 bg-stone-50/92 px-5 py-4 text-stone-800 shadow-sm dark:border-gray-800 dark:bg-gray-950/70 dark:text-gray-100/92 [&>p]:my-1"
       {...props}
     />
   ),
-  hr: () => <hr className="my-10 border-stone-200 dark:border-gray-800" />,
+  hr: () => <hr className="my-8 w-full border-stone-200 dark:border-gray-800" />,
   strong: (props) => (
     <strong
       className="font-semibold text-stone-950 dark:text-gray-100"
@@ -183,6 +186,9 @@ export const mdxComponents: MDXComponentsType = {
   TokenizerPlayground,
   AttentionHeatmap,
   CapstoneStudio,
+  PromptComparison,
+  GroundingLab,
+  GenAICapstoneStudio,
   CompletionDashboard,
   LinearRegressionNotebook: () => (
     <BuilderOnlyNotebook title="Linear Regression Notebook">

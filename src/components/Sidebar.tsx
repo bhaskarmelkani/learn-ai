@@ -53,25 +53,34 @@ export function Sidebar({
 }) {
   const themeActionLabel = dark ? "Light mode" : "Dark mode";
   const ThemeIcon = dark ? SunMedium : Moon;
+  const isMobileDrawer = !isDesktop;
+  const iconControlClass =
+    "flex h-11 w-11 items-center justify-center rounded-[1.25rem] border border-stone-300/80 bg-white/95 text-stone-500 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.55)] transition-[border-color,background-color,color,box-shadow] hover:border-stone-400/90 hover:bg-stone-50 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-100";
+  const pillControlClass =
+    "inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-300/85 bg-white/95 px-4 py-2 text-[0.9rem] font-medium text-stone-700 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.55)] transition-[border-color,background-color,color,box-shadow] hover:border-stone-400/90 hover:bg-stone-50 hover:text-stone-950 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-100";
 
   return (
     <aside
-      className={`fixed left-0 top-0 z-30 flex h-full flex-col border-r border-stone-200 bg-stone-50/98 shadow-xl backdrop-blur transition-[transform,width] duration-200 dark:border-gray-800 dark:bg-gray-950/98 ${
+      className={`fixed z-30 flex flex-col bg-stone-50/98 backdrop-blur transition-[transform,width] duration-200 dark:bg-gray-950/98 ${
+        isMobileDrawer
+          ? "bottom-3 left-3 top-3 h-auto w-[min(22rem,calc(100vw-1.5rem))] rounded-[2rem] border border-stone-200/90 shadow-[0_36px_80px_-32px_rgba(15,23,42,0.42)] dark:border-gray-800"
+          : "left-0 top-0 h-full border-r border-stone-200 shadow-xl dark:border-gray-800"
+      } ${
         visible ? "translate-x-0" : "-translate-x-full"
-      } ${collapsed ? "w-[4.5rem]" : "w-72"}`}
+      } ${isMobileDrawer ? "" : collapsed ? "w-[4.5rem]" : "w-72"}`}
     >
       <div
         className={`border-b border-stone-200 ${
-          collapsed ? "px-2 py-4" : "px-5 py-4"
+          collapsed ? "px-2 py-4" : isMobileDrawer ? "px-4 py-4" : "px-5 py-4"
         } dark:border-gray-800`}
       >
         {collapsed ? (
-          <div className="flex flex-col items-center gap-2.5">
+          <div className="flex flex-col items-center gap-3">
             {onBackToCatalog && (
               <button
                 type="button"
                 onClick={onBackToCatalog}
-                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-stone-500 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                className={iconControlClass}
                 title="All courses"
                 aria-label="Back to course catalog"
               >
@@ -82,7 +91,7 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={onToggleSidebar}
-                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-stone-500 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                className={iconControlClass}
                 title="Expand chapters"
                 aria-label="Expand chapter navigation"
               >
@@ -92,7 +101,7 @@ export function Sidebar({
             <button
               type="button"
               onClick={onToggleTheme}
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-stone-500 shadow-sm ring-1 ring-stone-200 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+              className={iconControlClass}
               title={themeActionLabel}
               aria-label={themeActionLabel}
             >
@@ -101,44 +110,60 @@ export function Sidebar({
           </div>
         ) : (
           <>
-            <div className="mb-4 flex items-center justify-between gap-2">
+            <div
+              className={`mb-5 ${
+                isMobileDrawer
+                  ? "grid grid-cols-2 gap-2.5"
+                  : "flex flex-wrap items-center gap-2.5"
+              }`}
+            >
               {onBackToCatalog ? (
                 <button
                   type="button"
                   onClick={onBackToCatalog}
-                  className="inline-flex items-center rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+                  className={`${pillControlClass} ${
+                    isMobileDrawer ? "col-span-2 justify-center" : ""
+                  }`}
                 >
                   All courses
                 </button>
               ) : (
                 <span />
               )}
-              <div className="flex items-center gap-2">
+              <div
+                className={`${
+                  isMobileDrawer
+                    ? "contents"
+                    : "flex flex-wrap items-center gap-2.5"
+                }`}
+              >
                 {isDesktop && (
                   <button
                     type="button"
                     onClick={onToggleSidebar}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+                    className={pillControlClass}
                     aria-label="Collapse chapter navigation"
                   >
-                    <PanelLeftClose className="h-3.5 w-3.5" />
+                    <PanelLeftClose className="h-4 w-4" />
                     Collapse
                   </button>
                 )}
                 <button
                   type="button"
                   onClick={onToggleTheme}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+                  className={`${pillControlClass} ${
+                    isMobileDrawer ? "justify-center px-3" : ""
+                  }`}
                   aria-label={themeActionLabel}
                 >
-                  <ThemeIcon className="h-3.5 w-3.5" />
+                  <ThemeIcon className="h-4 w-4" />
                   {themeActionLabel}
                 </button>
                 {!isDesktop && (
                   <button
                     type="button"
                     onClick={onToggleSidebar}
-                    className="inline-flex items-center rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+                    className={`${pillControlClass} justify-center px-3`}
                     title="Close navigation"
                   >
                     Close
@@ -150,14 +175,18 @@ export function Sidebar({
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
               Learn AI
             </p>
-            <h1 className="mt-2 text-lg font-semibold text-stone-900 dark:text-white">
+            <h1 className="mt-2 text-[1.05rem] font-semibold text-stone-900 dark:text-white">
               {courseTitle}
             </h1>
           </>
         )}
 
         {!collapsed && (
-          <div className="mt-4 rounded-[1.5rem] border border-stone-200 bg-white p-3.5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <div
+            className={`mt-5 rounded-[1.6rem] border border-stone-200/90 bg-white shadow-[0_16px_35px_-28px_rgba(15,23,42,0.6)] dark:border-gray-800 dark:bg-gray-900 ${
+              isMobileDrawer ? "p-3.5" : "p-4"
+            }`}
+          >
             <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
               <span>Course progress</span>
               <span>{Math.round(progress)}%</span>
@@ -204,7 +233,7 @@ export function Sidebar({
 
       <nav
         className={`flex-1 overflow-y-auto ${
-          collapsed ? "px-2 py-4" : "px-3 py-4"
+          collapsed ? "px-2.5 py-5" : isMobileDrawer ? "px-3 py-4" : "px-3.5 py-5"
         }`}
       >
         {chapters.map((ch, i) => (
@@ -218,9 +247,15 @@ export function Sidebar({
                   ? "rounded-2xl bg-cyan-50 text-cyan-800 dark:bg-cyan-500/10 dark:text-cyan-200"
                   : "rounded-2xl text-stone-600 hover:bg-white hover:text-stone-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-100"
                 : i === current
-                  ? "rounded-[1.35rem] border border-cyan-200 bg-cyan-50 text-cyan-800 shadow-sm dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-200"
-                  : "rounded-[1.35rem] border border-transparent text-stone-600 hover:border-stone-200 hover:bg-white hover:text-stone-900 dark:text-gray-400 dark:hover:border-gray-800 dark:hover:bg-gray-900 dark:hover:text-gray-100"
-            } ${collapsed ? "px-1 py-2.5" : "px-3 py-2.5 text-left"}`}
+                  ? "rounded-[1.5rem] border border-cyan-200/90 bg-cyan-50/90 text-cyan-800 shadow-[0_14px_28px_-24px_rgba(6,182,212,0.55)] dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-200"
+                  : "rounded-[1.5rem] border border-transparent text-stone-600 hover:border-stone-200/90 hover:bg-white hover:text-stone-900 dark:text-gray-400 dark:hover:border-gray-800 dark:hover:bg-gray-900 dark:hover:text-gray-100"
+            } ${
+              collapsed
+                ? "px-1.5 py-2.5"
+                : isMobileDrawer
+                  ? "px-3 py-2.5 text-left"
+                  : "px-3.5 py-3 text-left"
+            }`}
           >
             {collapsed ? (
               <div className="relative flex items-center justify-center">
@@ -228,7 +263,7 @@ export function Sidebar({
                   <span className="absolute left-0 top-1/2 h-6 w-1 -translate-y-1/2 rounded-r-full bg-cyan-500" />
                 )}
                 <span
-                  className={`inline-flex h-10 w-10 items-center justify-center rounded-[1rem] text-sm font-bold shadow-sm ring-1 transition-colors ${
+                  className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold shadow-sm ring-1 transition-colors ${
                     i === current
                       ? "bg-cyan-600 text-white ring-cyan-200 dark:bg-cyan-500 dark:text-white dark:ring-cyan-400/30"
                       : completedChapters[ch.chapter]
@@ -256,10 +291,14 @@ export function Sidebar({
             ) : (
               <div className="flex items-center gap-3">
                 <span
-                  className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-semibold shadow-sm ${
-                    completedChapters[ch.chapter] && i !== current
+                  className={`inline-flex shrink-0 items-center justify-center rounded-full text-sm font-semibold shadow-sm ring-1 ${
+                    isMobileDrawer ? "h-10 w-10" : "h-11 w-11"
+                  } ${
+                    i === current
+                      ? "bg-cyan-600 text-white ring-cyan-200 dark:bg-cyan-500 dark:text-white dark:ring-cyan-400/30"
+                      : completedChapters[ch.chapter]
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
-                      : "bg-white text-stone-500 dark:bg-gray-900 dark:text-gray-400"
+                      : "bg-white text-stone-500 ring-stone-200 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800"
                   }`}
                 >
                   {completedChapters[ch.chapter] && i !== current ? (
@@ -278,8 +317,14 @@ export function Sidebar({
                     String(ch.chapter).padStart(2, "0")
                   )}
                 </span>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold">{ch.title}</p>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`truncate font-semibold leading-[1.35] ${
+                      isMobileDrawer ? "text-[0.83rem]" : "text-[0.88rem]"
+                    }`}
+                  >
+                    {ch.title}
+                  </p>
                 </div>
               </div>
             )}
@@ -292,7 +337,7 @@ export function Sidebar({
           {String(current + 1).padStart(2, "0")}/
           {String(chapters.length).padStart(2, "0")}
         </div>
-      ) : (
+      ) : isMobileDrawer ? null : (
         <div className="border-t border-stone-200 px-5 py-4 text-[11px] text-stone-500 dark:border-gray-800 dark:text-gray-500">
           Arrow keys navigate.{" "}
           <kbd className="rounded bg-stone-100 px-1 py-0.5 font-mono dark:bg-gray-800">

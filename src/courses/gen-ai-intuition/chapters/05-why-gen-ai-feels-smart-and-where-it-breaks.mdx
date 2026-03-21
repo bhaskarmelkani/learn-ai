@@ -1,0 +1,161 @@
+---
+title: "Why Gen AI Feels Smart and Where It Breaks"
+chapter: 5
+subtitle: "Fluency, hallucinations, ambiguity, and the trust mistakes beginners make first"
+---
+
+# Why Gen AI Feels Smart and Where It Breaks
+
+<ChapterBridge
+  why="To use Gen AI well, learners need more than excitement. They need a stable trust model. This chapter explains why fluent output can feel intelligent while still being fragile."
+  buildsOn="The generation loop and the idea that prompts shape outputs but do not guarantee truth."
+  unlocks="Verification habits, grounding, safer workflow design, and more realistic tool selection."
+  map={["Pattern fit", "Fluency", "Weak evidence", "Human verification"]}
+  trackFocus={{
+    conceptual: "The goal is calibrated trust: useful, impressive, and still in need of checking.",
+    builder: "The goal is to identify the failure mode before you scale the workflow."
+  }}
+/>
+
+Generative AI often feels smart because it is very good at producing:
+
+- fluent language
+- plausible structure
+- smooth transitions
+- familiar reasoning patterns
+
+Those are real capabilities.
+
+But they do **not** prove:
+
+- factual accuracy
+- access to the right evidence
+- stable judgment under ambiguity
+- awareness of your private context
+
+## Hallucination Is a Workflow Problem, Not Just a Buzzword
+
+A hallucination is a confident-looking output that is unsupported, invented, or unjustified.
+
+That can happen because:
+
+- the prompt was underspecified
+- the model lacked the needed facts
+- the context was noisy or contradictory
+- the workflow asked the model to sound complete even when evidence was weak
+
+The healthiest beginner habit is not "assume the model lies." It is:
+
+> Ask what evidence this answer was actually based on.
+
+## Three Common Beginner Mistakes
+
+1. trusting style as proof
+2. skipping verification on familiar-looking topics
+3. asking the model to guess where a lookup or source check would be better
+
+<CaseCards
+  title="What failure really looks like in practice"
+  cards={[
+    {
+      title: "Confident summary, wrong facts",
+      product: "A model summarizes a document the user never actually uploaded.",
+      modelIdea: "The system is still generating plausible language, but it is filling a missing-context gap with learned patterns.",
+      failureMode: "The answer sounds professional enough that the user notices the error late."
+    },
+    {
+      title: "Helpful tone, bad legal certainty",
+      product: "A chat assistant gives policy-sounding advice about a contract clause.",
+      modelIdea: "Fluent legal-sounding text is easy to generate. Reliable legal review is a separate workflow problem.",
+      failureMode: "A user mistakes polish for authority and skips expert review."
+    }
+  ]}
+/>
+
+<Exercise title="Spot the Risk" hint="A strong answer names the missing evidence and the human check. Example: 'This answer sounds useful, but it depends on a policy document the model may not have. I would ask it to cite the source or check the actual handbook.'">
+Think of one task where a polished but unsupported answer would be dangerous or costly. Write what the failure would look like and what check you would add before trusting the result.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch5-fluency"
+  chapter={5}
+  prompt="Why can Gen AI feel smarter than it really is?"
+  concepts={["fluency", "trust", "hallucination"]}
+  options={[
+    {
+      label: "Because fluent, well-structured language is easier to generate than fully reliable knowledge or judgment.",
+      correct: true,
+      explanation: "Yes. Style and coherence can be strong even when factual support is weak."
+    },
+    {
+      label: "Because every confident answer comes from hidden source checking.",
+      explanation: "Some systems do source checking, but confidence and style alone do not prove that."
+    },
+    {
+      label: "Because Gen AI only fails when the prompt is short.",
+      explanation: "Prompt quality matters, but even long prompts do not remove uncertainty or evidence gaps."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch5-hallucination"
+  chapter={5}
+  prompt="Which habit best reduces hallucination risk?"
+  concepts={["verification", "hallucination", "grounding"]}
+  options={[
+    {
+      label: "Ask what evidence the answer came from and verify important claims against the real source.",
+      correct: true,
+      explanation: "Right. Verification works better than assuming tone equals truth."
+    },
+    {
+      label: "Always increase temperature so the model sounds more creative and honest.",
+      explanation: "Temperature changes generation style, not factual support."
+    },
+    {
+      label: "Use Gen AI only for jokes and never for work.",
+      explanation: "The goal is informed use in the right tasks, not blanket avoidance."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch5-lookup"
+  chapter={5}
+  prompt="When should you prefer a lookup or source-based workflow over pure generation?"
+  concepts={["retrieval", "source-based work", "workflow design"]}
+  options={[
+    {
+      label: "When the answer depends on current, private, or exact information that should be traced back to a source.",
+      correct: true,
+      explanation: "Exactly. Those are the cases where grounding matters most."
+    },
+    {
+      label: "Only when the task is too boring for a language model.",
+      explanation: "The issue is not boredom. It is whether the answer depends on exact evidence."
+    },
+    {
+      label: "Never, because generation is always faster and therefore better.",
+      explanation: "Speed is not the same as reliability."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={5}
+  summary={[
+    "Fluency is a capability, not a guarantee of truth.",
+    "Hallucinations happen when the workflow asks for confident output without enough evidence or checking.",
+    "A better trust habit is to ask what the answer was grounded in."
+  ]}
+  checks={[
+    "Can you name a task where a polished answer would still need source verification?",
+    "Can you explain why style is easier to generate than trustworthy evidence?"
+  ]}
+  nextStep="Next we move from pure generation to a stronger pattern: working with your own documents and knowledge."
+  trackActions={{
+    conceptual: "Pick one workflow where you would require citations or a source excerpt before trusting the answer.",
+    builder: "List one failure mode you would design around before rolling out a prompt to a team."
+  }}
+/>

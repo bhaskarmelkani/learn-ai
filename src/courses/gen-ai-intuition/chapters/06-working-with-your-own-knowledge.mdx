@@ -1,0 +1,163 @@
+---
+title: "Working With Your Own Knowledge"
+chapter: 6
+subtitle: "Documents, grounding, retrieval, and the practical intuition behind RAG"
+---
+
+# Working With Your Own Knowledge
+
+<ChapterBridge
+  why="Many useful Gen AI workflows are not about world knowledge at all. They are about helping with your own notes, policies, files, and team context."
+  buildsOn="The trust model from the last chapter: answers are stronger when evidence is available and reviewable."
+  unlocks="A practical intuition for grounding, retrieval, and when a model needs your documents rather than its general prior patterns."
+  map={["Question", "Relevant source", "Grounded context", "Generated answer"]}
+  trackFocus={{
+    conceptual: "Understand why 'knowing language' is different from 'knowing my documents.'",
+    builder: "Understand when a workflow needs source retrieval instead of a better prompt alone."
+  }}
+/>
+
+One of the biggest beginner misconceptions is:
+
+> "The model is smart, so it probably knows our company information too."
+
+Usually, it does not.
+
+If the answer depends on:
+
+- your handbook
+- your pricing page
+- your notes
+- your CRM records
+- your support docs
+
+then the workflow usually needs **grounding**.
+
+Grounding means giving the system relevant context from a trusted source so it can answer with better evidence.
+
+## What Retrieval Adds
+
+Retrieval answers a simple question first:
+
+> Which source or chunk of source material should the model see before it responds?
+
+That is the heart of many document Q&A systems.
+
+The term **RAG** usually means retrieval-augmented generation:
+
+1. retrieve relevant context
+2. pass that context into the prompt
+3. generate an answer from that grounded context
+
+You do not need infrastructure detail to get the beginner intuition. The important distinction is:
+
+- pure generation guesses from prior patterns
+- grounded generation answers with selected evidence in context
+
+<GroundingLab />
+
+<CaseCards
+  title="Where grounding matters most"
+  cards={[
+    {
+      title: "Internal policy assistant",
+      product: "A workplace tool that answers PTO, travel, and expense questions from the company handbook.",
+      modelIdea: "The value is not broad world knowledge. It is accurate retrieval from the right internal source.",
+      failureMode: "A generic answer that sounds plausible can create real policy confusion."
+    },
+    {
+      title: "Support agent helper",
+      product: "A system that drafts replies using the help center and customer account notes.",
+      modelIdea: "Generation becomes more useful when the workflow surfaces the right article and the right customer context.",
+      failureMode: "If retrieval fetches the wrong article, the generated draft may sound polished and still be wrong."
+    }
+  ]}
+/>
+
+<Exercise title="Design the Source Path" hint="A strong answer names the exact source and the consequence of missing it: 'For warranty questions, the workflow must look at the order record and warranty terms. Without those, the model will guess from generic patterns.'">
+Choose one question that depends on private or exact information. Write which source the system would need, what should be retrieved, and what could go wrong if it answered without that source.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch6-grounding"
+  chapter={6}
+  prompt="What is the main purpose of grounding a Gen AI workflow?"
+  concepts={["grounding", "documents", "reliability"]}
+  options={[
+    {
+      label: "To give the model relevant evidence from trusted sources so the answer depends less on generic guessing.",
+      correct: true,
+      explanation: "Yes. Grounding improves the evidence available to the model at answer time."
+    },
+    {
+      label: "To permanently retrain the model on your private files every time you ask a question.",
+      explanation: "Grounding typically provides context at runtime. It is not the same as retraining."
+    },
+    {
+      label: "To make the model more creative when it writes.",
+      explanation: "Grounding is about relevance and evidence, not creativity."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch6-rag"
+  chapter={6}
+  prompt="Which description best captures the intuition behind RAG?"
+  concepts={["rag", "retrieval", "generation"]}
+  options={[
+    {
+      label: "Find the relevant source first, then let the model answer with that source in context.",
+      correct: true,
+      explanation: "Exactly. That is the practical beginner mental model."
+    },
+    {
+      label: "Ask the model the same question many times until it becomes more certain.",
+      explanation: "Repetition does not replace evidence."
+    },
+    {
+      label: "Remove all documents so the model can think more freely.",
+      explanation: "That does the opposite of grounding."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch6-private-knowledge"
+  chapter={6}
+  prompt="Why is 'the model probably knows our docs' a risky assumption?"
+  concepts={["private knowledge", "context", "trust"]}
+  options={[
+    {
+      label: "Because the workflow may need exact, current, or private information the model does not actually have at answer time.",
+      correct: true,
+      explanation: "Right. Many useful business workflows depend on data the base model cannot safely infer."
+    },
+    {
+      label: "Because models cannot work with documents at all.",
+      explanation: "They can work well with documents when the workflow provides the right context."
+    },
+    {
+      label: "Because private knowledge only matters for legal teams.",
+      explanation: "Support, operations, HR, sales, and learning workflows all depend on private context too."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={6}
+  summary={[
+    "Useful document workflows depend on grounding, not just general model capability.",
+    "RAG is best understood as retrieve first, then generate from that context.",
+    "When exact private information matters, pure generation is usually the wrong default."
+  ]}
+  checks={[
+    "Can you explain the difference between a general answer and a grounded answer?",
+    "Can you name one source your ideal workflow would need before it should respond?"
+  ]}
+  nextStep="Now that we have text workflows and grounded workflows, we can widen the picture to multimodal Gen AI."
+  trackActions={{
+    conceptual: "Find one question in your life that should never be answered without a source.",
+    builder: "Describe one workflow where retrieval quality matters more than prompt cleverness."
+  }}
+/>

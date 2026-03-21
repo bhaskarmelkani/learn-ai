@@ -26,7 +26,10 @@ test("catalog start opens the first chapter", async ({ page }) => {
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /start course/i }).click();
+  const aiIntuitionCard = page.locator("article").filter({
+    has: page.getByRole("heading", { name: /^AI In-tuition$/i }),
+  });
+  await aiIntuitionCard.getByRole("button", { name: /start course/i }).click();
 
   await expect(page).toHaveURL(/\/courses\/ai-fundamentals\/1$/);
   await expect(
@@ -56,7 +59,12 @@ test("continue resumes the saved chapter and next navigation updates the url", a
   });
 
   await page.goto("/");
-  await page.getByRole("button", { name: /continue learning/i }).click();
+  const aiIntuitionCard = page.locator("article").filter({
+    has: page.getByRole("heading", { name: /^AI In-tuition$/i }),
+  });
+  await aiIntuitionCard
+    .getByRole("button", { name: /continue learning/i })
+    .click();
 
   await expect(page).toHaveURL(/\/courses\/ai-fundamentals\/4$/);
   await page.getByRole("button", { name: /^Next →/ }).click();

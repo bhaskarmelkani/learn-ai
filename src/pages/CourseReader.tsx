@@ -248,7 +248,7 @@ function CourseReaderInner({
         }`}
       >
         <div className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-100/82 backdrop-blur-xl dark:border-gray-800/70 dark:bg-gray-950/84">
-          <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4 md:px-8">
+          <div className="mx-auto flex max-w-[74rem] items-center gap-4 px-4 py-4 md:px-8">
             {!isDesktop && (
               <button
                 type="button"
@@ -263,20 +263,20 @@ function CourseReaderInner({
               <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-stone-500 dark:text-gray-500">
                 {manifest.title}
               </p>
-              <p className="mt-1 truncate text-sm font-semibold text-stone-800 dark:text-gray-100">
+              <p className="mt-1 truncate text-[0.9rem] font-semibold text-stone-800 dark:text-gray-100">
                 {chapter.chapter}. {chapter.title}
               </p>
-              <p className="truncate text-xs text-stone-500 dark:text-gray-400">
+              <p className="truncate text-[0.72rem] text-stone-500 dark:text-gray-400">
                 {chapter.subtitle ??
                   "Build intuition step by step through concise explanations and live demos."}
               </p>
             </div>
             <div className="hidden items-center gap-2 md:flex">
-              <div className="rounded-full border border-stone-200/80 bg-white/90 px-3 py-1 text-xs font-medium text-stone-700 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200">
+              <div className="rounded-full border border-stone-200/80 bg-white/90 px-3 py-1 text-[0.72rem] font-medium text-stone-700 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200">
                 {getTrackLabel(track)}
               </div>
               <div
-                className={`rounded-full border px-3 py-1 text-xs font-medium shadow-sm ${
+                className={`rounded-full border px-3 py-1 text-[0.72rem] font-medium shadow-sm ${
                   guidedMode
                     ? "border-amber-200 bg-amber-100 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200"
                     : "border-stone-200/80 bg-white/90 text-stone-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200"
@@ -289,12 +289,12 @@ function CourseReaderInner({
               <p className="text-xs font-medium uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
                 Progress
               </p>
-              <p className="text-sm font-semibold text-stone-700 dark:text-gray-200">
+              <p className="text-[0.9rem] font-semibold text-stone-700 dark:text-gray-200">
                 {currentIndex + 1} / {chapters.length} chapters
               </p>
             </div>
           </div>
-          <div className="mx-auto max-w-6xl px-4 pb-3 md:px-8">
+          <div className="mx-auto max-w-[74rem] px-4 pb-3 md:px-8">
             <div className="h-1 w-full rounded-full bg-stone-200/80 dark:bg-gray-900">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 transition-[width] duration-300"

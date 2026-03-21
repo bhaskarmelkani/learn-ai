@@ -1,0 +1,161 @@
+---
+title: "Images, Audio, Video, and Multimodal AI"
+chapter: 7
+subtitle: "Choosing the right modality and keeping your expectations realistic"
+---
+
+# Images, Audio, Video, and Multimodal AI
+
+<ChapterBridge
+  why="Beginners often equate Gen AI with chatbots, but modern systems work across text, images, voice, documents, and video. This chapter expands the mental model without turning it into hype."
+  buildsOn="The idea that models generate outputs from patterns and often work better with good context and review."
+  unlocks="Better tool choice across modalities and more realistic expectations about what multimodal systems can and cannot do."
+  map={["Task", "Modality", "Generated artifact", "Review loop"]}
+  trackFocus={{
+    conceptual: "The main shift is to see modality as a task choice, not just a product category.",
+    builder: "The main shift is to match the workflow to the strongest input-output pair instead of defaulting to chat every time."
+  }}
+/>
+
+Generative AI is now wider than text.
+
+Common modality pairs include:
+
+| Input | Output | Common job |
+|-----------|-------|-------|
+| Text | Image | concept art, mockups, visual ideation |
+| Audio | Text | transcription, meeting notes |
+| Text | Audio | narration, voice response |
+| Image | Text | captioning, inspection, explanation |
+| Document | Structured fields | extraction, classification, Q&A |
+| Text | Video | short scene generation, storyboard drafts |
+
+The practical beginner lesson is not "one model can do everything."
+
+It is:
+
+> Different modalities are strong at different jobs, and each one needs its own review habit.
+
+## What Multimodal Systems Are Often Good At
+
+- transcribing speech
+- describing or summarizing images
+- extracting information from forms and PDFs
+- generating rough visual concepts quickly
+- turning voice or text into first-draft media assets
+
+## Where They Still Need Care
+
+- image realism can hide factual impossibility
+- transcription can miss names or numbers
+- document extraction can fail on messy layouts
+- video output can look polished while staying shallow or inconsistent
+
+<CaseCards
+  title="Modality choice in practice"
+  cards={[
+    {
+      title: "Meeting transcription workflow",
+      product: "Audio becomes a transcript, summary, and action-item list.",
+      modelIdea: "The system combines speech recognition, summarization, and task extraction.",
+      failureMode: "Wrong speaker names or numbers can quietly corrupt the final summary."
+    },
+    {
+      title: "Document intake assistant",
+      product: "A model reads invoices or claims forms and extracts key fields.",
+      modelIdea: "This is less about creativity and more about reliable multimodal parsing plus verification.",
+      failureMode: "Messy scans or unusual layouts can cause silent field errors.",
+      trackPrompt: {
+        builder: "This is a great example of why multimodal does not always mean open-ended generation."
+      }
+    }
+  ]}
+/>
+
+<Exercise title="Choose the Modality" hint="A strong answer might say: 'For turning recorded interviews into research notes, I would use audio-to-text plus summarization, because the key value is transcription and structured synthesis, not image generation or open-ended chat alone.'">
+Pick a real task and say which modality or modality combination fits it best. Explain why that pair is better than plain chat alone, and what you would still need to verify manually.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch7-modality"
+  chapter={7}
+  prompt="What is the healthiest way to think about multimodal AI?"
+  concepts={["multimodal", "workflow", "task choice"]}
+  options={[
+    {
+      label: "As a way to match the right input-output modality pair to the job, with its own review needs.",
+      correct: true,
+      explanation: "Yes. Modality should follow the task, not hype."
+    },
+    {
+      label: "As proof that one AI tool can replace all specialized software.",
+      explanation: "Multimodal systems are useful, but they do not erase task differences or verification needs."
+    },
+    {
+      label: "As something that only matters for media companies.",
+      explanation: "Speech, documents, screenshots, and forms matter in many ordinary workflows."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch7-review"
+  chapter={7}
+  prompt="Why do multimodal outputs still need review?"
+  concepts={["review", "transcription", "extraction", "generation"]}
+  options={[
+    {
+      label: "Because polished image, audio, or document outputs can still contain subtle errors that matter in practice.",
+      correct: true,
+      explanation: "Right. Smooth presentation does not remove the need for verification."
+    },
+    {
+      label: "Because multimodal systems never work at all.",
+      explanation: "They often work well. The point is calibrated review, not dismissal."
+    },
+    {
+      label: "Because review only matters when the file is very large.",
+      explanation: "Review matters whenever the consequence of an error matters."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch7-document"
+  chapter={7}
+  prompt="Which multimodal workflow is most about reliability rather than creativity?"
+  concepts={["documents", "extraction", "workflow design"]}
+  options={[
+    {
+      label: "Extracting structured fields from invoices or forms.",
+      correct: true,
+      explanation: "Exactly. That workflow is closer to careful parsing and verification than open-ended ideation."
+    },
+    {
+      label: "Generating ten visual moodboard options from a short concept.",
+      explanation: "That workflow is more about rapid ideation and variation."
+    },
+    {
+      label: "Brainstorming ad slogans from a product brief.",
+      explanation: "That is primarily a text generation workflow."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={7}
+  summary={[
+    "Multimodal AI means working across text, images, audio, documents, and video.",
+    "The right modality follows the task rather than hype or novelty.",
+    "Each modality still needs a review habit tied to its likely failure modes."
+  ]}
+  checks={[
+    "Can you explain why document extraction and image ideation are different Gen AI jobs?",
+    "Can you name what you would verify first in an audio or document workflow?"
+  ]}
+  nextStep="Next we pause the evergreen conceptual arc and take one dated snapshot of the current tool landscape."
+  trackActions={{
+    conceptual: "Choose one everyday task and explain why the right modality is not automatically text chat.",
+    builder: "Match one workflow you know to the exact input-output pair it should use."
+  }}
+/>
