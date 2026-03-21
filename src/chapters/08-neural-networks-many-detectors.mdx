@@ -73,6 +73,50 @@ Neural networks matter because they can build internal representations automatic
   ]}
 />
 
+<Checkpoint
+  id="ch8-neuron-job"
+  chapter={8}
+  prompt="What is a single neuron doing?"
+  concepts={["neuron", "activation", "detector"]}
+  options={[
+    {
+      label: "Computing a weighted score, applying a non-linearity, and passing the result forward.",
+      correct: true,
+      explanation: "Exactly. A neuron is a small pattern detector — nothing more mysterious than that."
+    },
+    {
+      label: "Storing one complete memory from the training data.",
+      explanation: "Neurons are not memory cells. They compute a signal from their inputs each time they are activated."
+    },
+    {
+      label: "Deciding the final output class by itself.",
+      explanation: "A single neuron contributes one signal. The final decision comes from combining many neurons across layers."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch8-depth-benefit"
+  chapter={8}
+  prompt="Why does stacking multiple layers help?"
+  concepts={["deep networks", "layers", "composition"]}
+  options={[
+    {
+      label: "Each layer builds on the previous layer's features, enabling progressively richer pattern recognition.",
+      correct: true,
+      explanation: "Right. Depth lets the network compose simple features into complex ones — edges become shapes become objects."
+    },
+    {
+      label: "More layers always mean higher accuracy regardless of the task.",
+      explanation: "Depth helps only when the problem benefits from hierarchical features. Too many layers can also cause training difficulties."
+    },
+    {
+      label: "Stacking layers removes the need for a loss function.",
+      explanation: "The network still needs a loss function to guide training, no matter how many layers it has."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Takeaway">
 Neural networks are many small detectors arranged in layers so later layers can use what earlier layers discovered.
 </Callout>

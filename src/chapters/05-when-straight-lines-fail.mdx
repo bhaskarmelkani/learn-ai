@@ -79,6 +79,50 @@ But if the pattern bends, the model needs more expressive shape. That is the fir
   ]}
 />
 
+<Checkpoint
+  id="ch5-overfitting-risk"
+  chapter={5}
+  prompt="What is the risk of using a very flexible model on a small dataset?"
+  concepts={["overfitting", "model complexity", "generalization"]}
+  options={[
+    {
+      label: "It can memorize noise in the training data and make worse predictions on new data.",
+      correct: true,
+      explanation: "Yes. A highly flexible model can fit every quirk in the data, including irrelevant noise."
+    },
+    {
+      label: "Flexible models always perform better because they capture more patterns.",
+      explanation: "More flexibility helps only if the patterns are real. On small data, it can capture noise instead."
+    },
+    {
+      label: "Flexible models take less time to train, which causes errors.",
+      explanation: "Training time is not the concern. The risk is fitting to noise rather than the underlying trend."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch5-when-to-add-complexity"
+  chapter={5}
+  prompt="When is it justified to move from a line to a curve?"
+  concepts={["model selection", "non-linearity", "data patterns"]}
+  options={[
+    {
+      label: "When the data shows a pattern that bends in a way a straight line cannot capture.",
+      correct: true,
+      explanation: "Exactly. Model complexity should respond to a data need, not a desire to use something fancier."
+    },
+    {
+      label: "Always — curves are strictly better than lines in every situation.",
+      explanation: "Not always. If the real pattern is roughly linear, a line can generalize better than an overfit curve."
+    },
+    {
+      label: "Only when you have fewer than 10 data points.",
+      explanation: "Dataset size matters, but the decision depends on whether the pattern itself is non-linear."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Takeaway">
 When reality bends, the model must gain more shape. That is the intuition behind non-linear models.
 </Callout>

@@ -23,7 +23,7 @@ export function ChapterRecap({
   const reviewed = Boolean(reviewedChapters[chapter]);
 
   return (
-    <details className="my-10 overflow-hidden rounded-[1.5rem] border border-stone-200 bg-stone-50 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <details open className="my-10 overflow-hidden rounded-[1.5rem] border border-stone-200 bg-stone-50 shadow-sm dark:border-gray-800 dark:bg-gray-900">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-700 dark:text-emerald-300">

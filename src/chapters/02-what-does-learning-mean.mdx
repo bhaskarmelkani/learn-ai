@@ -70,7 +70,7 @@ Most people do the same thing: they imagine a line between the known examples an
 
 That is where we start next.
 
-<Exercise title="Prediction First">
+<Exercise title="Prediction First" hint="Looking at the data trend, a 1500 sqft house might sell for around $300k-$350k. The key is noticing that price rises roughly proportionally with size.">
 Before going to the next chapter, make a quick guess for the 1500 sqft house. You do not need a formula yet. Just use the trend you see.
 </Exercise>
 
@@ -92,6 +92,50 @@ Before going to the next chapter, make a quick guess for the 1500 sqft house. Yo
     {
       label: "Nothing changes until the model becomes fully accurate.",
       explanation: "Training is gradual. Small updates happen long before the model is anywhere close to perfect."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch2-supervised-signal"
+  chapter={2}
+  prompt="What does a supervised model need to learn from data?"
+  concepts={["supervised learning", "labels", "training data"]}
+  options={[
+    {
+      label: "Labeled examples: inputs paired with the correct outputs so the model can measure its mistakes.",
+      correct: true,
+      explanation: "Right. The labels are the reference signal that tells the model how wrong its predictions are."
+    },
+    {
+      label: "Only the inputs — the model figures out the right answers on its own.",
+      explanation: "That describes unsupervised learning. Supervised learning specifically requires paired input-output examples."
+    },
+    {
+      label: "A human manually correcting every single prediction in real time.",
+      explanation: "Corrections happen through the training data, not live human intervention on each prediction."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch2-predict-compare"
+  chapter={2}
+  prompt="Why does the learning loop compare predictions to actual values?"
+  concepts={["loss", "training loop", "error"]}
+  options={[
+    {
+      label: "To measure how wrong the model is, so it knows which direction to adjust.",
+      correct: true,
+      explanation: "Exactly. Without comparison, the model has no signal for improvement."
+    },
+    {
+      label: "To delete the examples the model already gets right.",
+      explanation: "We keep all examples. The comparison provides a learning signal, not a filtering mechanism."
+    },
+    {
+      label: "To prove that the model is already perfect before training starts.",
+      explanation: "The whole point of comparison is to find errors and fix them through updates."
     }
   ]}
 />

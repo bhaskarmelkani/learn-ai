@@ -73,6 +73,19 @@ export function LinearRegressionDemo() {
             />
           )}
 
+          <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${
+            mse < 0.035
+              ? "border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100"
+              : "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100"
+          }`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Challenge</p>
+            <p className="mt-1">
+              {mse < 0.035
+                ? "Challenge complete! You got the MSE below 0.035. Now try to make the line intentionally bad — notice how the error jumps."
+                : "Get the mean squared error below 0.035 by adjusting the weight and bias sliders."}
+            </p>
+          </div>
+
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: <strong>weight</strong> changes the tilt of the line, and <strong>bias</strong> lifts the whole line up or down.
           </div>

@@ -98,6 +98,50 @@ That can make the product much more useful, but it also means the visible behavi
   ]}
 />
 
+<Checkpoint
+  id="ch12-hallucination"
+  chapter={12}
+  prompt="Why do language models sometimes hallucinate?"
+  concepts={["hallucination", "LLM failure", "generation"]}
+  options={[
+    {
+      label: "Because they predict likely continuations based on learned patterns, not verified facts — so they can produce fluent but unsupported text.",
+      correct: true,
+      explanation: "Right. The model optimizes for plausible next tokens, not factual accuracy. Fluency does not equal truth."
+    },
+    {
+      label: "Because they deliberately make up information to test the user.",
+      explanation: "There is no intentionality. Hallucination is a consequence of pattern-based generation, not a design choice."
+    },
+    {
+      label: "Because they only hallucinate on topics that were not in the training data.",
+      explanation: "Models can hallucinate even on well-covered topics by generating plausible but incorrect combinations."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch12-system-layers"
+  chapter={12}
+  prompt="Why should teams think of an LLM product as a system, not just a model?"
+  concepts={["system design", "retrieval", "tool use", "guardrails"]}
+  options={[
+    {
+      label: "Because the visible behavior depends on retrieval, tool use, prompts, guardrails, and UX — not just the base model.",
+      correct: true,
+      explanation: "Exactly. Attributing everything to 'the model' misses the system layers that actually shape product quality."
+    },
+    {
+      label: "Because the model itself is too small to produce useful outputs alone.",
+      explanation: "Model size is not the issue. Even large models benefit from system layers like retrieval and evaluation."
+    },
+    {
+      label: "Because system layers replace the need for model training entirely.",
+      explanation: "The model still needs training. System layers complement it, they do not replace it."
+    }
+  ]}
+/>
+
 <Callout type="warning" title="Modern Product Reality">
 An LLM product is usually not just "one model." It is a model plus prompts, retrieval, tool access, guardrails, UX, evaluation, and human oversight.
 </Callout>

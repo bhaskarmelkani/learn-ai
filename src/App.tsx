@@ -5,6 +5,7 @@ import { SlideView } from "./components/SlideView";
 import { NavigationBar } from "./components/NavigationBar";
 import { useKeyboardNav } from "./hooks/useKeyboardNav";
 import { getTrackLabel, useLearning } from "./learning/LearningContext";
+import { WelcomeScreen, useOnboarding } from "./components/WelcomeScreen";
 
 const STORAGE_KEYS = {
   chapter: "learn-ai-current-chapter",
@@ -56,10 +57,11 @@ function getInitialSidebarCollapsed() {
 
 export default function App() {
   const {
-    state: { track, guidedMode },
+    state: { track, guidedMode, reviewedChapters },
     setTrack,
     setGuidedMode,
   } = useLearning();
+  const { onboarded, completeOnboarding } = useOnboarding();
   const [current, setCurrent] = useState(getInitialChapter);
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window === "undefined" ? true : window.innerWidth >= 1024
@@ -134,6 +136,18 @@ export default function App() {
   const previousChapter = current > 0 ? chapters[current - 1] : null;
   const nextChapter = current < chapters.length - 1 ? chapters[current + 1] : null;
 
+  if (!onboarded) {
+    return (
+      <WelcomeScreen
+        track={track}
+        onSelectTrack={setTrack}
+        guidedMode={guidedMode}
+        onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
+        onStart={completeOnboarding}
+      />
+    );
+  }
+
   return (
     <div className="h-screen flex overflow-hidden bg-stone-100 text-stone-900 dark:bg-gray-950 dark:text-gray-50">
       <Sidebar
@@ -151,6 +165,7 @@ export default function App() {
         onSelectTrack={setTrack}
         guidedMode={guidedMode}
         onToggleGuidedMode={() => setGuidedMode(!guidedMode)}
+        completedChapters={reviewedChapters}
       />
       {sidebarVisible && !isDesktop && (
         <button

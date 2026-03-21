@@ -80,7 +80,7 @@ That is why we separate:
   ]}
 />
 
-<Exercise title="Tiny Challenge">
+<Exercise title="Tiny Challenge" hint="The overfit setting looks best on training data (lowest training loss), but the balanced setting gives the best validation story because it generalizes without memorizing noise.">
 Switch between underfit, balanced, and overfit. Which setting looks best on training data? Which one gives the best validation story?
 </Exercise>
 
@@ -102,6 +102,50 @@ Switch between underfit, balanced, and overfit. Which setting looks best on trai
     {
       label: "Because validation data makes backpropagation mathematically simpler.",
       explanation: "Validation is about trustworthy evaluation, not simplifying the gradient calculation."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch9-backprop"
+  chapter={9}
+  prompt="What does backpropagation do?"
+  concepts={["backpropagation", "gradients", "training"]}
+  options={[
+    {
+      label: "It sends the error signal backward through the network so every layer knows how to adjust its weights.",
+      correct: true,
+      explanation: "Right. Backpropagation distributes the blame for errors across all layers efficiently."
+    },
+    {
+      label: "It sends data backward through the network to generate new training examples.",
+      explanation: "Backpropagation moves error signals, not data. It computes gradients for parameter updates."
+    },
+    {
+      label: "It removes layers that are not contributing to the correct answer.",
+      explanation: "Backpropagation adjusts weights, not architecture. All layers remain and get updated."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch9-overfit-signs"
+  chapter={9}
+  prompt="What is the clearest sign of overfitting?"
+  concepts={["overfitting", "generalization", "training curve"]}
+  options={[
+    {
+      label: "Training loss keeps dropping but validation loss starts rising.",
+      correct: true,
+      explanation: "Yes. The growing gap between training and validation performance is the classic overfitting signature."
+    },
+    {
+      label: "Both training and validation loss are high and not improving.",
+      explanation: "That is underfitting — the model lacks capacity or is not learning at all."
+    },
+    {
+      label: "The model trains very slowly regardless of learning rate.",
+      explanation: "Slow training can have many causes. Overfitting is specifically about the train/validation gap."
     }
   ]}
 />

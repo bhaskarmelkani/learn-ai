@@ -82,6 +82,50 @@ The important intuition is not "memorize the line equation." It is "a model can 
   ]}
 />
 
+<Checkpoint
+  id="ch3-bias-role"
+  chapter={3}
+  prompt="What does the bias do in the line equation y = wx + b?"
+  concepts={["linear regression", "bias", "parameters"]}
+  options={[
+    {
+      label: "It shifts the whole line up or down without changing the slope.",
+      correct: true,
+      explanation: "Right. Bias sets the baseline — where the line crosses zero input."
+    },
+    {
+      label: "It controls how steeply the line rises or falls.",
+      explanation: "That is the weight's job. Bias only moves the line vertically."
+    },
+    {
+      label: "It determines how many data points are used for training.",
+      explanation: "Bias is a model parameter, not a data selection mechanism."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch3-why-line-first"
+  chapter={3}
+  prompt="Why is a straight line a good first model to study?"
+  concepts={["linear regression", "model complexity", "learning"]}
+  options={[
+    {
+      label: "Because it has very few parameters, so you can see exactly what each one does.",
+      correct: true,
+      explanation: "Yes. With just a weight and a bias, the effect of changing each parameter is immediately visible."
+    },
+    {
+      label: "Because straight lines can fit any real-world dataset perfectly.",
+      explanation: "Lines cannot fit curved patterns. That is why later chapters introduce non-linear models."
+    },
+    {
+      label: "Because it is the only model that can be trained with gradient descent.",
+      explanation: "Gradient descent works on many model shapes, not just lines."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Takeaway">
 Linear regression is the first concrete example of a model learning to predict a number from data.
 </Callout>

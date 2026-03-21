@@ -127,6 +127,23 @@ export function GradientDescentDemo() {
             />
           )}
 
+          <div className={`rounded-2xl border px-4 py-3 text-sm leading-6 ${
+            lossForWeight(w) < 0.05
+              ? "border-emerald-300 bg-emerald-50 text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-100"
+              : lr > 0.08
+                ? "border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100"
+                : "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-100"
+          }`}>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em]">Challenge</p>
+            <p className="mt-1">
+              {lossForWeight(w) < 0.05
+                ? "Challenge 1 complete! Now try Challenge 2: set the learning rate above 0.08 and press Run — watch the weight diverge instead of converging."
+                : lr > 0.08 && running
+                  ? "Notice the instability! High learning rates can cause the weight to bounce around instead of settling."
+                  : "Get the loss below 0.05 using gradient descent. Then try raising the learning rate to see what happens when steps are too large."}
+            </p>
+          </div>
+
           <div className="rounded-2xl border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm leading-6 text-cyan-900 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
             What to notice: the gradient tells us which way makes the house-price fit worse. Gradient descent walks in the opposite direction.
           </div>

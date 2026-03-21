@@ -22,6 +22,7 @@ export function Sidebar({
   onSelectTrack,
   guidedMode,
   onToggleGuidedMode,
+  completedChapters,
 }: {
   chapters: Chapter[];
   current: number;
@@ -37,6 +38,7 @@ export function Sidebar({
   onSelectTrack: (track: AudienceTrack) => void;
   guidedMode: boolean;
   onToggleGuidedMode: () => void;
+  completedChapters: Record<number, boolean>;
 }) {
   return (
     <aside
@@ -208,16 +210,36 @@ export function Sidebar({
                   className={`inline-flex h-12 w-12 items-center justify-center rounded-[1.1rem] text-sm font-bold shadow-md ring-1 transition-colors ${
                     i === current
                       ? "bg-cyan-600 text-white ring-cyan-200 dark:bg-cyan-500 dark:text-white dark:ring-cyan-400/30"
-                      : "bg-white text-stone-600 ring-stone-200 dark:bg-gray-900 dark:text-gray-300 dark:ring-gray-800"
+                      : completedChapters[ch.chapter]
+                        ? "bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:ring-emerald-500/30"
+                        : "bg-white text-stone-600 ring-stone-200 dark:bg-gray-900 dark:text-gray-300 dark:ring-gray-800"
                   }`}
                 >
-                  {String(ch.chapter).padStart(2, "0")}
+                  {completedChapters[ch.chapter] && i !== current ? (
+                    <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    String(ch.chapter).padStart(2, "0")
+                  )}
                 </span>
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-xs font-semibold text-stone-500 shadow-sm dark:bg-gray-900 dark:text-gray-400">
-                  {String(ch.chapter).padStart(2, "0")}
+                <span
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-xs font-semibold shadow-sm ${
+                    completedChapters[ch.chapter] && i !== current
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
+                      : "bg-white text-stone-500 dark:bg-gray-900 dark:text-gray-400"
+                  }`}
+                >
+                  {completedChapters[ch.chapter] && i !== current ? (
+                    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  ) : (
+                    String(ch.chapter).padStart(2, "0")
+                  )}
                 </span>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{ch.title}</p>

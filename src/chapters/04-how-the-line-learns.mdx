@@ -84,7 +84,51 @@ Now that the loop is clear, edit the training code directly and watch the number
 
 <LinearRegressionNotebook />
 
-<Exercise title="Describe the Loop">
+<Checkpoint
+  id="ch4-loss-purpose"
+  chapter={4}
+  prompt="What is the purpose of the loss function?"
+  concepts={["loss", "MSE", "training"]}
+  options={[
+    {
+      label: "It gives one summary number for how wrong the model is, so training knows which direction to improve.",
+      correct: true,
+      explanation: "Exactly. Without a loss, the model has no signal for whether its predictions are getting better or worse."
+    },
+    {
+      label: "It removes bad data points from the training set.",
+      explanation: "Loss measures model error, not data quality. All data points contribute to the loss."
+    },
+    {
+      label: "It decides the final architecture of the model.",
+      explanation: "Architecture is chosen before training. Loss guides parameter updates, not structural decisions."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch4-outlier-effect"
+  chapter={4}
+  prompt="Why can one unusual data point have an outsized effect on the fitted line?"
+  concepts={["outliers", "MSE", "robustness"]}
+  options={[
+    {
+      label: "Because squaring the error makes large mistakes count much more than small ones.",
+      correct: true,
+      explanation: "Right. MSE squares errors, so one far-off point can dominate the total loss and pull the line toward it."
+    },
+    {
+      label: "Because the model memorizes every data point exactly.",
+      explanation: "Linear regression fits a line, not a lookup table. But outliers still pull the line because of how squared error works."
+    },
+    {
+      label: "Because outliers are always removed before training begins.",
+      explanation: "Outliers are not automatically removed. If present, they influence the fit — which is the product risk."
+    }
+  ]}
+/>
+
+<Exercise title="Describe the Loop" hint="The model guesses a price, we measure how far off the guess was, we nudge the weight in the direction that makes the guess less wrong, and then we repeat with the next example.">
 Say the training loop in plain language without math symbols: prediction, measurement, update, repeat.
 </Exercise>
 

@@ -21,7 +21,10 @@ import { NeuralNetworkDemo } from "../interactive/NeuralNetworkDemo";
 import { XorDemo } from "../interactive/XorDemo";
 import { TrainingCurveDemo } from "../interactive/TrainingCurveDemo";
 import { TokenPredictionDemo } from "../interactive/TokenPredictionDemo";
+import { AttentionHeatmap } from "../interactive/AttentionHeatmap";
+import { TokenizerPlayground } from "../interactive/TokenizerPlayground";
 import { CapstoneStudio } from "../interactive/CapstoneStudio";
+import { CompletionDashboard } from "../CompletionDashboard";
 import { useLearning } from "../../learning/LearningContext";
 
 const LazyLinearRegressionNotebook = lazy(async () => ({
@@ -147,7 +150,10 @@ export const mdxComponents: MDXComponentsType = {
   XorDemo,
   TrainingCurveDemo,
   TokenPredictionDemo,
+  TokenizerPlayground,
+  AttentionHeatmap,
   CapstoneStudio,
+  CompletionDashboard,
   LinearRegressionNotebook: () => (
     <BuilderOnlyNotebook title="Linear Regression Notebook">
       <Suspense fallback={<NotebookFallback />}>

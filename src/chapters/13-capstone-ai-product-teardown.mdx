@@ -69,6 +69,50 @@ Now use that habit on a product of your own.
   ]}
 />
 
+<Checkpoint
+  id="ch13-failure-thinking"
+  chapter={13}
+  prompt="Why is failure mode analysis important in an AI product teardown?"
+  concepts={["failure modes", "product analysis", "risk"]}
+  options={[
+    {
+      label: "Because identifying how a system can fail is what separates surface-level description from genuine product understanding.",
+      correct: true,
+      explanation: "Yes. Anyone can describe what a product does. Identifying how it breaks shows you understand how it actually works."
+    },
+    {
+      label: "Because every AI product will inevitably fail completely, so we should not build them.",
+      explanation: "Failure modes are risks to manage, not reasons to avoid building. The goal is informed design."
+    },
+    {
+      label: "Because listing failure modes is only useful for marketing materials.",
+      explanation: "Failure analysis is an engineering and product design tool, not a marketing exercise."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch13-human-loop"
+  chapter={13}
+  prompt="Why does a strong AI product analysis include a human oversight plan?"
+  concepts={["human-in-the-loop", "oversight", "product design"]}
+  options={[
+    {
+      label: "Because someone needs to detect and correct mistakes the model will inevitably make.",
+      correct: true,
+      explanation: "Right. No model is perfect. A trustworthy product has a clear path for humans to catch and fix errors."
+    },
+    {
+      label: "Because human oversight is required by law for every AI product.",
+      explanation: "Regulations vary by domain. The reason is practical: models make mistakes that need catching."
+    },
+    {
+      label: "Because adding a human review makes the model itself more accurate.",
+      explanation: "Human review catches errors but does not directly improve the model's weights. It is a system-level safeguard."
+    }
+  ]}
+/>
+
 <Callout type="idea" title="Final Takeaway">
 Good AI understanding is not memorizing vocabulary. It is being able to explain the system, predict its likely strengths, and anticipate where it can fail.
 </Callout>
@@ -90,3 +134,5 @@ Good AI understanding is not memorizing vocabulary. It is being able to explain 
     builder: "Turn one capstone scenario into a real prototype spec: data, eval metrics, failure tests, and system layers."
   }}
 />
+
+<CompletionDashboard />

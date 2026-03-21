@@ -112,6 +112,50 @@ The notebook below lets you see the same idea in code: one model, one raw score,
   ]}
 />
 
+<Checkpoint
+  id="ch6-sigmoid-purpose"
+  chapter={6}
+  prompt="What does the sigmoid function do?"
+  concepts={["sigmoid", "probability", "classification"]}
+  options={[
+    {
+      label: "It squashes a raw score into the 0-to-1 range so the output can be interpreted as a probability.",
+      correct: true,
+      explanation: "Yes. Sigmoid is the bridge between an unbounded score and a probability a human can reason about."
+    },
+    {
+      label: "It removes all negative values from the model's output.",
+      explanation: "Sigmoid does not simply zero out negatives. It smoothly maps any number to a value between 0 and 1."
+    },
+    {
+      label: "It chooses the final class label directly without producing a probability.",
+      explanation: "Sigmoid produces a probability. A separate threshold step turns that probability into a decision."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch6-threshold-tradeoff"
+  chapter={6}
+  prompt="What happens if you lower the decision threshold from 0.5 to 0.3?"
+  concepts={["threshold", "precision", "recall"]}
+  options={[
+    {
+      label: "More cases get classified as positive — catching more true positives but also more false positives.",
+      correct: true,
+      explanation: "Right. A lower threshold increases recall but typically decreases precision. This is a product tradeoff."
+    },
+    {
+      label: "The model becomes more accurate on every metric simultaneously.",
+      explanation: "Lowering the threshold shifts the tradeoff between catching positives and avoiding false alarms."
+    },
+    {
+      label: "The model retrains itself to use the new threshold internally.",
+      explanation: "The threshold is a post-model decision, not a training parameter. Changing it does not retrain the model."
+    }
+  ]}
+/>
+
 <Callout type="idea">
 Classification starts with a score, then turns that score into a decision. Sigmoid handles two classes. Softmax handles many.
 </Callout>

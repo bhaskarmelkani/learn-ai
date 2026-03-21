@@ -40,6 +40,8 @@ A token might be:
 
 The reason is practical: a model needs a discrete unit it can look up, count, and represent numerically.
 
+<TokenizerPlayground />
+
 ## Step 2: Turn Tokens into Vectors
 
 Neural networks operate on numbers, not raw text.
@@ -75,6 +77,50 @@ The important shift is this: once tokens become embeddings, language is now in a
     {
       label: "They replace the need for tokenization entirely.",
       explanation: "Embeddings depend on tokens. Tokenization happens first so the model knows which discrete units it is representing."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch10-why-tokenize"
+  chapter={10}
+  prompt="Why does a language model need tokenization?"
+  concepts={["tokenization", "discrete units", "vocabulary"]}
+  options={[
+    {
+      label: "Because the model needs discrete units it can look up, count, and convert into numeric representations.",
+      correct: true,
+      explanation: "Right. Neural networks need numbers. Tokenization is the first step from raw text to numbers."
+    },
+    {
+      label: "Because tokenization translates text into a different human language first.",
+      explanation: "Tokenization splits text into pieces, not languages. Translation is a separate task."
+    },
+    {
+      label: "Because the model can only process exactly one word at a time.",
+      explanation: "Tokens can be subwords, whole words, or punctuation. The model processes sequences of tokens together."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch10-subword-benefit"
+  chapter={10}
+  prompt="Why do modern tokenizers split words into subword pieces?"
+  concepts={["BPE", "subword tokenization", "vocabulary"]}
+  options={[
+    {
+      label: "So the model can handle rare or unseen words by combining familiar parts.",
+      correct: true,
+      explanation: "Exactly. Subword tokenization balances vocabulary size with coverage of new words."
+    },
+    {
+      label: "Because splitting words always reduces the total number of tokens in a sequence.",
+      explanation: "Subword splitting usually increases token count. The benefit is vocabulary flexibility, not sequence length."
+    },
+    {
+      label: "Because whole words are too simple for modern hardware to process.",
+      explanation: "Hardware can handle whole words fine. The issue is that a whole-word vocabulary cannot cover every possible word."
     }
   ]}
 />

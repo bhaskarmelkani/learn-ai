@@ -96,7 +96,7 @@ There are two broad kinds of problems we keep returning to:
 
 We start with number prediction because it gives the clearest first picture of how models learn.
 
-<Exercise title="Mental Habit">
+<Exercise title="Mental Habit" hint="For a spam filter: the input is email text and metadata, the output is spam/not-spam, and the learned numbers are weights that capture which word patterns signal junk mail.">
 When you look at any AI product, ask two questions before anything else: **what goes in and what comes out?** and **which numbers inside the model are being learned?**
 
 If learners leave with only one instinct, it should be that one.
@@ -124,7 +124,51 @@ If learners leave with only one instinct, it should be that one.
   ]}
 />
 
-<Exercise title="Tiny Challenge">
+<Checkpoint
+  id="ch1-architecture-vs-params"
+  chapter={1}
+  prompt="What is the difference between architecture and parameters?"
+  concepts={["architecture", "parameters", "model"]}
+  options={[
+    {
+      label: "Architecture is the chosen function shape; parameters are the learned numbers inside it.",
+      correct: true,
+      explanation: "Exactly. The architecture is a design decision. The parameters are what training adjusts to make the model useful."
+    },
+    {
+      label: "Architecture is the training data and parameters are the test data.",
+      explanation: "Neither architecture nor parameters refer to data. Architecture is the model shape, and parameters are the internal numbers."
+    },
+    {
+      label: "They mean the same thing — both describe the model's internal numbers.",
+      explanation: "They are distinct. Architecture is the overall structure; parameters are the specific numbers learned within that structure."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch1-model-definition"
+  chapter={1}
+  prompt="Which description best captures what a model is?"
+  concepts={["model", "function", "prediction"]}
+  options={[
+    {
+      label: "A function that maps inputs to outputs, using learned internal numbers.",
+      correct: true,
+      explanation: "Yes. That is the reusable definition that scales from a line to an LLM."
+    },
+    {
+      label: "A database that stores every possible answer and looks them up.",
+      explanation: "A model generalizes from patterns rather than storing explicit answers. That is what makes it useful on new inputs."
+    },
+    {
+      label: "A set of rules written by an engineer that never change.",
+      explanation: "Hand-written rules are not learned from data. A model's parameters are adjusted during training."
+    }
+  ]}
+/>
+
+<Exercise title="Tiny Challenge" hint="Google Translate: input is a sentence in one language, output is the translated sentence, the architecture is a transformer, and the parameters are the millions of weights learned from parallel text corpora.">
 Pick one AI product you know and describe its input, output, parameters, and architecture in one sentence.
 </Exercise>
 
