@@ -1,60 +1,47 @@
 # Learn AI
 
-An interactive, local-first learning app for building intuition around AI.
+Learn AI is a local-first, multi-course learning platform for building intuition about AI through short chapters, interactive demos, and browser-based notebooks.
 
-This project is designed for short training sessions and self-study. It mixes concise slide-style explanations with hands-on demos so people can explore concepts by trying them, not just reading about them.
+The current starter course, `ai-fundamentals`, takes learners from "What is a model?" through linear models, neural networks, and LLM system design. The platform is built so additional courses can be added without rewriting the reader, state model, or catalog flow.
 
-## What It Covers
+## Highlights
 
-- What a model is
-- Linear regression and gradient descent
-- Classification and sigmoid
-- Non-linear models and neural networks
-- Training loops and backpropagation
-- How neural nets connect to LLMs
+- Multi-course catalog with route-based navigation
+- Course-scoped progress with resume support
+- Global learner track preference: `conceptual` or `builder`
+- Guided mode for prediction-first learning
+- MDX-powered chapters with reusable teaching components
+- In-browser Python labs powered by Pyodide
+- Local-first persistence with migration from the older single-course state model
 
-## What Makes It Different
+## Routes
 
-- Short, readable chapters instead of long articles
-- Interactive demos for each core concept
-- Runnable notebook-style Python labs in the browser
-- A course flow designed to build intuition step by step
-- Audience tracks for conceptual learners, builders, and educator/PM use cases
-- Guided mode that asks learners to predict before they manipulate key demos
-- Mastery features including interactive checkpoints, review queue, chapter recaps, and a final capstone
+- `/` shows the course catalog
+- `/courses/:courseSlug` resumes a course at the learner's saved chapter
+- `/courses/:courseSlug/:chapterNumber` opens a specific chapter
+- Legacy hashes like `#chapter-3-whatever` redirect to `/courses/ai-fundamentals/3`
 
 ## Tech Stack
 
-- React
+- React 19
 - TypeScript
 - Vite
+- React Router
 - MDX
 - Tailwind CSS
-- shadcn/ui
-- react-hook-form
-- zod
-- Pyodide for in-browser Python notebooks
+- shadcn/ui primitives
+- react-hook-form + zod
+- Vitest
+- Playwright
 
-## Run Locally
+## Getting Started
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Then open the local Vite URL shown in the terminal.
-
-## Build For Production
-
-```bash
-pnpm build
-```
-
-To preview the production build locally:
-
-```bash
-pnpm preview
-```
+Open the local Vite URL printed in the terminal.
 
 ## Validation
 
@@ -65,26 +52,58 @@ pnpm build
 pnpm e2e
 ```
 
-## Agent-Ready Repo Conventions
+`pnpm e2e` is especially useful after navigation, onboarding, or catalog changes.
 
-- Project instructions live in `AGENTS.md` and `CLAUDE.md`.
-- shadcn is configured through `.mcp.json` and `components.json`.
-- Canonical examples for agents live in `src/features/agent-ready/`.
-- Shared UI primitives live in `src/components/ui/`.
-- The project playbook lives in `docs/agent-ready-playbook.md`.
+## Project Structure
 
-## Notes
+```text
+src/
+  components/              shared UI, interactive demos, and MDX helpers
+  courses/
+    registry.ts            course discovery and chapter loading
+    types.ts               course manifest and chapter types
+    ai-fundamentals/
+      course.ts            manifest for the starter course
+      chapters/            MDX chapter files
+  learning/                global learner state and course-scoped progress
+  pages/                   catalog, reader, and legacy redirect pages
+tests/                     unit and integration coverage
+e2e/                       Playwright smoke tests
+docs/                      contributor and agent-facing documentation
+```
 
-- The browser notebooks use Pyodide, so they run without a backend.
-- The layout is optimized for reading, presenting, and live training sessions.
-- The course now includes track-specific framing, concept bridges, case cards, guided labs, and mastery-oriented recap flows.
-- You can navigate chapters with the sidebar or keyboard shortcuts.
+## Adding A New Course
 
-## Contributing
+Each course lives in `src/courses/{slug}/` and includes:
 
-Contributions are welcome. Good places to help are:
+- `course.ts` exporting a `CourseManifest`
+- `chapters/` containing numbered MDX files like `01-intro.mdx`
 
-- More interactive exercises
-- Better explanations and examples
+The registry auto-discovers courses with `import.meta.glob`, so there is no manual registration step.
+
+Useful docs:
+
+- [Course contribution guide](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/contributing-courses.md)
+- [Skill docs](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md)
+- [Agent-ready playbook](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/agent-ready-playbook.md)
+
+## Contributor Workflow
+
+1. Fork or branch from the repo.
+2. Run `pnpm install`.
+3. Make incremental changes that follow the patterns in `src/components`, `src/components/mdx`, `src/components/interactive`, and `src/learning`.
+4. Run the validation commands above.
+5. Open a PR with screenshots or notes for any UI changes.
+
+If you are using an agent, start with [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
+
+## Hosting Notes
+
+This is a client-side routed SPA. Production hosting must rewrite unknown paths to `index.html`, or deep links like `/courses/ai-fundamentals/4` will 404 on refresh.
+
+## Contributing Ideas
+
+- New courses or chapters
+- More interactive demos and labs
 - Accessibility and mobile UX improvements
-- Additional chapters on AI topics
+- Better contributor tooling and validation

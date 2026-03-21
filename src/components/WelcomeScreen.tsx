@@ -1,4 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState } from "react";
+import { courses } from "../courses/registry";
 import { type AudienceTrack, getTrackLabel } from "../learning/LearningContext";
 
 const STORAGE_KEY = "learn-ai-onboarded";
@@ -31,6 +33,11 @@ export function WelcomeScreen({
   onStart: () => void;
 }) {
   const [step, setStep] = useState(0);
+  const featuredCourse = courses.find((course) => course.featured) ?? courses[0];
+  const totalChapters = courses.reduce(
+    (count, course) => count + course.chapterCount,
+    0,
+  );
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-stone-100 dark:bg-gray-950">
@@ -41,23 +48,38 @@ export function WelcomeScreen({
               Learn AI
             </p>
             <h1 className="mt-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-bold text-transparent">
-              AI In-tuition
+              Interactive AI courses for curious learners
             </h1>
             <p className="mt-4 text-lg leading-8 text-stone-700 dark:text-gray-300">
-              Build real intuition for how AI works — from the simplest model to large language models — through interactive demos and concise explanations.
+              Build real intuition for how AI works through concise explanations,
+              interactive demos, and track-aware learning paths you can revisit
+              at any time.
             </p>
             <div className="mt-6 space-y-3">
               <div className="flex items-start gap-3 rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">13</span>
-                <span className="text-sm text-stone-600 dark:text-gray-300">chapters from "What Is a Model?" to a capstone product teardown</span>
+                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">
+                  {courses.length}
+                </span>
+                <span className="text-sm text-stone-600 dark:text-gray-300">
+                  course{courses.length === 1 ? "" : "s"} in one catalog, with a
+                  shared track preference across the platform
+                </span>
               </div>
               <div className="flex items-start gap-3 rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">~2h</span>
-                <span className="text-sm text-stone-600 dark:text-gray-300">at your own pace, with interactive demos and checkpoints</span>
+                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">
+                  {totalChapters}
+                </span>
+                <span className="text-sm text-stone-600 dark:text-gray-300">
+                  total chapters with checkpoints, recaps, and interactive demos
+                </span>
               </div>
               <div className="flex items-start gap-3 rounded-2xl bg-stone-50 px-4 py-3 dark:bg-gray-950/60">
-                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">0</span>
-                <span className="text-sm text-stone-600 dark:text-gray-300">prerequisites — just curiosity</span>
+                <span className="mt-0.5 text-cyan-600 dark:text-cyan-400">
+                  {featuredCourse?.title ?? "Start"}
+                </span>
+                <span className="text-sm text-stone-600 dark:text-gray-300">
+                  featured first course for beginner-friendly intuition building
+                </span>
               </div>
             </div>
             <button
@@ -79,7 +101,8 @@ export function WelcomeScreen({
               Choose your learning track
             </h2>
             <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">
-              You can change this anytime from the sidebar.
+              You can change this anytime from the course sidebar, and it
+              applies across the whole catalog.
             </p>
 
             <div className="mt-5 space-y-3">

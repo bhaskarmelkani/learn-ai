@@ -16,8 +16,10 @@ export function ChapterRecap({
   trackActions: TrackActions;
 }) {
   const {
-    state: { reviewedChapters, track },
+    state: { track },
+    reviewedChapters,
     markChapterReviewed,
+    activeCourseSlug,
   } = useLearning();
 
   const reviewed = Boolean(reviewedChapters[chapter]);
@@ -74,7 +76,7 @@ export function ChapterRecap({
             </div>
             <button
               type="button"
-              onClick={() => markChapterReviewed(chapter)}
+              onClick={() => markChapterReviewed(activeCourseSlug, chapter)}
               className={`rounded-full px-4 py-2 text-xs font-medium ${
                 reviewed
                   ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300"

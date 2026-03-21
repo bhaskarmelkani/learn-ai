@@ -1,8 +1,8 @@
 # Agent-Ready Playbook
 
-This repository is now set up so coding agents can work against stable context, deterministic checks, and canonical UI patterns.
+This repository is intentionally structured so Claude Code, Codex, Copilot-style agents, and human contributors can extend the platform without guessing where courses, routes, and state live.
 
-## Commands
+## Core Commands
 
 - `pnpm install`
 - `pnpm dev`
@@ -15,43 +15,53 @@ This repository is now set up so coding agents can work against stable context, 
 
 - `AGENTS.md`
 - `CLAUDE.md`
-- `.mcp.json`
+- `README.md`
+- `docs/contributing-courses.md`
+- `docs/skills/`
 - `components.json`
-- `.claude/settings.json`
 
 ## Canonical Patterns
 
-Agents should prefer these files before inventing new patterns:
+Inspect these before inventing a new pattern:
 
 - Page composition: `src/features/agent-ready/canonical-course-page.tsx`
-- Form pattern: `src/features/agent-ready/canonical-onboarding-form.tsx`
-- Dialog pattern: `src/features/agent-ready/canonical-review-dialog.tsx`
-- Data table pattern: `src/features/agent-ready/canonical-progress-table.tsx`
-- Shared shadcn primitives: `src/components/ui/`
+- Onboarding form: `src/features/agent-ready/canonical-onboarding-form.tsx`
+- Review dialog: `src/features/agent-ready/canonical-review-dialog.tsx`
+- Progress table: `src/features/agent-ready/canonical-progress-table.tsx`
+- Shared UI primitives: `src/components/ui/`
+- Teaching components: `src/components/mdx/`
 
-## Architecture
+## Multi-Course Architecture
 
-- `src/components/`: shared UI and MDX-facing components
-- `src/components/ui/`: shadcn UI primitives
-- `src/components/interactive/`: teaching demos and labs
-- `src/components/mdx/`: educational content wrappers
-- `src/features/`: feature-oriented examples and future product areas
-- `src/lib/`: shared utilities
-- `tests/`: unit and schema tests
-- `e2e/`: Playwright smoke coverage
-- `docs/`: repo conventions and agent guidance
+- Courses live in `src/courses/{slug}/`
+- Each course has a `course.ts` manifest and `chapters/*.mdx`
+- `src/courses/registry.ts` auto-discovers courses and chapters
+- Routes:
+  - `/`
+  - `/courses/:courseSlug`
+  - `/courses/:courseSlug/:chapterNumber`
+- Learning state is stored in `learn-ai-learning-state-v3`
+- Progress is course-scoped under `courseProgress[slug]`
 
 ## Rules For Agents
 
 - Use `pnpm`, never `npm`.
+- Prefer incremental edits over rewrites.
 - Prefer existing components before creating new ones.
-- Use `react-hook-form` and `zod` for forms.
-- Use shadcn-compatible composition for new UI.
-- Keep educational surfaces concise, readable, and accessible.
-- Run lint, tests, and build before finishing.
+- Keep new course content in `src/courses/`, not `src/chapters/`.
+- Use `react-hook-form` and `zod` for new forms.
+- Preserve keyboard navigation, onboarding, progress persistence, and legacy hash redirects unless the task says otherwise.
+- Run lint, tests, and build before finishing, plus Playwright for navigation or UI flow changes.
 
-## Recommended Next Product Work
+## Contributor Workflows
 
-- build a learner onboarding flow from the canonical form
-- build an admin review flow from the canonical dialog and table
-- migrate future reusable UI to `src/components/ui/` or feature-level wrappers
+- Add a course: use the `create-course` workflow in `docs/skills/create-course.md`
+- Add a chapter: use `docs/skills/add-chapter.md`
+- Review a course before merge: use `docs/skills/course-review.md`
+- Author learning UI: use `docs/skills/course-authoring-ui.md`
+
+## Open Source Readiness Notes
+
+- Keep docs updated when the course model, routes, or contributor workflow changes.
+- If you add deep-link routes, document any hosting rewrite requirements.
+- Treat `src/features/agent-ready/` as canonical copy-targets for future agent automation.

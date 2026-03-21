@@ -1,7 +1,14 @@
+import type { ComponentType } from "react";
+import type { MDXProps } from "mdx/types";
 import { mdxComponents } from "./mdx/MDXComponents";
-import type { Chapter } from "../chapters";
 
-export function SlideView({ chapter }: { chapter: Chapter }) {
+interface SlideChapter {
+  Component: ComponentType<MDXProps>;
+  chapter: number;
+  subtitle?: string;
+}
+
+export function SlideView({ chapter }: { chapter: SlideChapter }) {
   const { Component } = chapter;
   return (
     <div className="chapter-content mx-auto max-w-5xl px-4 py-6 pb-28 md:px-8 md:py-8">

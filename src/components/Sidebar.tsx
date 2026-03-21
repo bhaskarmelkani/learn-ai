@@ -1,6 +1,11 @@
-import type { Chapter } from "../chapters";
 import type { AudienceTrack } from "../learning/LearningContext";
 import { getTrackLabel } from "../learning/LearningContext";
+
+interface SidebarChapter {
+  chapter: number;
+  title: string;
+  subtitle?: string;
+}
 
 const TRACK_HELPER_COPY: Record<AudienceTrack, string> = {
   conceptual: "High-level intuition first. Fewer implementation details and no code labs.",
@@ -23,8 +28,11 @@ export function Sidebar({
   guidedMode,
   onToggleGuidedMode,
   completedChapters,
+  courseTitle = "AI In-tuition",
+  courseSubtitle = "Beginner-first chapters and interactive demos for building intuition step by step.",
+  onBackToCatalog,
 }: {
-  chapters: Chapter[];
+  chapters: SidebarChapter[];
   current: number;
   onSelect: (i: number) => void;
   visible: boolean;
@@ -39,6 +47,9 @@ export function Sidebar({
   guidedMode: boolean;
   onToggleGuidedMode: () => void;
   completedChapters: Record<number, boolean>;
+  courseTitle?: string;
+  courseSubtitle?: string;
+  onBackToCatalog?: () => void;
 }) {
   return (
     <aside
@@ -51,9 +62,21 @@ export function Sidebar({
           <div className={collapsed ? "w-full" : ""}>
             {collapsed ? (
               <div className="flex flex-col items-center gap-3">
+                {onBackToCatalog && (
+                  <button
+                    type="button"
+                    onClick={onBackToCatalog}
+                    className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-stone-500 shadow-md ring-1 ring-stone-200 transition-colors hover:bg-stone-50 hover:text-stone-900 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                    title="Back to catalog"
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                  </button>
+                )}
                 <div
                   className="flex h-12 w-12 items-center justify-center rounded-[1.25rem] bg-white shadow-md ring-1 ring-sky-200 dark:bg-gray-900 dark:ring-sky-900/60"
-                  title="AI In-tuition"
+                  title={courseTitle}
                 >
                   <span className="bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-base font-bold tracking-[0.2em] text-transparent">
                     AI
@@ -63,14 +86,26 @@ export function Sidebar({
               </div>
             ) : (
               <>
+                {onBackToCatalog && (
+                  <button
+                    type="button"
+                    onClick={onBackToCatalog}
+                    className="mb-3 inline-flex items-center gap-1.5 text-xs font-medium text-stone-500 transition-colors hover:text-stone-900 dark:text-gray-400 dark:hover:text-gray-100"
+                  >
+                    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    All courses
+                  </button>
+                )}
                 <p className="text-xs font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
                   Learn AI
                 </p>
                 <h1 className="mt-2 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-lg font-bold text-transparent">
-                  AI In-tuition
+                  {courseTitle}
                 </h1>
                 <p className="mt-2 text-sm leading-6 text-stone-600 dark:text-gray-400">
-                  Beginner-first chapters and interactive demos for building intuition step by step.
+                  {courseSubtitle}
                 </p>
               </>
             )}

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This repository is a Vite + React + TypeScript learning product focused on teaching AI concepts through narrative chapters and interactive demos.
+This repository is a Vite + React + TypeScript multi-course learning product focused on teaching AI concepts through narrative chapters and interactive demos.
 
 ## Core Workflow
 
@@ -34,10 +34,20 @@ This repository is a Vite + React + TypeScript learning product focused on teach
 - Keep shadcn primitives in `src/components/ui/`.
 - Keep interactive teaching demos in `src/components/interactive/`.
 - Keep MDX presentation helpers in `src/components/mdx/`.
+- Keep courses in `src/courses/{slug}/` with a `course.ts` manifest and a `chapters/` directory.
+- Keep the course registry model in `src/courses/registry.ts`; do not hand-maintain separate course index files.
 - Keep cross-cutting state and learning flow logic in `src/learning/`.
 - Keep canonical agent copy-targets in `src/features/agent-ready/`.
 - Put generic helpers in `src/lib/` if new shared utilities are needed.
 - Add tests under `tests/` and browser smoke coverage under `e2e/`.
+
+## Routing And Progress
+
+- The catalog lives at `/`.
+- Course routes live at `/courses/:courseSlug/:chapterNumber?`.
+- Learner progress is stored in `learn-ai-learning-state-v3`.
+- `track` and `guidedMode` are global preferences; checkpoints, reviewed chapters, and `lastChapter` are course-scoped.
+- Preserve legacy hash redirect support unless the task is explicitly removing backward compatibility.
 
 ## Forms And Validation
 
