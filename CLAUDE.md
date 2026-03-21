@@ -53,6 +53,7 @@ Do not modify these areas without explicit instruction:
 ## Reusable Workflows
 
 Project skills live in `.agents/skills/` and are mirrored in `.claude/skills/`.
+Agent-agnostic mirrors live in `docs/skills/`.
 Canonical UI copy-targets live in `src/features/agent-ready/`.
 
 Preferred subagents:

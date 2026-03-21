@@ -1,22 +1,24 @@
 import { useLearning, getTrackLabel } from "../learning/LearningContext";
+import { getCourse } from "../courses/registry";
 
-const CONCEPTS_COVERED = [
-  "Models as functions with learned parameters",
-  "Supervised learning and the training loop",
-  "Linear regression — weight and bias",
-  "Loss, gradients, and gradient descent",
-  "Non-linear models and expressiveness",
-  "Classification — sigmoid, softmax, thresholds",
-  "Decision boundaries and hidden features",
-  "Neural networks — neurons, layers, representations",
-  "Backpropagation and overfitting",
-  "Tokenization and embeddings",
-  "Attention and next-token prediction",
-  "Pretraining, alignment, and LLM system layers",
-  "End-to-end AI product teardown",
-];
+const DEFAULT_CONCEPTS_BY_COURSE: Record<string, string[]> = {
+  "ai-fundamentals": [
+    "Models as functions with learned parameters",
+    "Supervised learning and the training loop",
+    "Linear regression, loss, and gradient descent",
+    "Classification with sigmoid, softmax, and thresholds",
+    "Non-linear decision boundaries and hidden features",
+    "Neural networks, backpropagation, and overfitting",
+    "Tokenization, embeddings, attention, and next-token prediction",
+    "Pretraining, alignment, and end-to-end AI product teardown",
+  ],
+};
 
-export function CompletionDashboard() {
+export function CompletionDashboard({
+  conceptsCovered,
+}: {
+  conceptsCovered?: string[];
+}) {
   const {
     state: { track },
     masterySummary: getMastery,
@@ -24,8 +26,11 @@ export function CompletionDashboard() {
     activeCourseSlug,
   } = useLearning();
 
+  const course = getCourse(activeCourseSlug);
   const masterySummary = getMastery(activeCourseSlug);
   const reviewQueue = getReviewQueue(activeCourseSlug);
+  const coveredConcepts =
+    conceptsCovered ?? DEFAULT_CONCEPTS_BY_COURSE[activeCourseSlug] ?? [];
 
   return (
     <div className="my-8 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -37,7 +42,9 @@ export function CompletionDashboard() {
           Congratulations!
         </h2>
         <p className="mx-auto mt-3 max-w-lg text-lg leading-8 text-stone-600 dark:text-gray-300">
-          You have worked through all 13 chapters of AI In-tuition. Here is a summary of what you covered.
+          You have worked through all {course?.chapterCount ?? 0} chapters of{" "}
+          {course?.title ?? "this course"}. Here is a summary of what you
+          covered.
         </p>
       </div>
 
@@ -61,7 +68,7 @@ export function CompletionDashboard() {
             Chapters reviewed
           </p>
           <p className="mt-1 text-xs text-stone-400 dark:text-gray-500">
-            of 13 total
+            of {course?.chapterCount ?? 0} total
           </p>
         </div>
         <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 text-center dark:border-gray-800 dark:bg-gray-950/60">
@@ -74,21 +81,34 @@ export function CompletionDashboard() {
         </div>
       </div>
 
-      <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-50 p-5 dark:border-gray-800 dark:bg-gray-950/60">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
-          Concepts you covered
-        </p>
-        <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {CONCEPTS_COVERED.map((concept) => (
-            <div key={concept} className="flex items-start gap-2 text-sm text-stone-700 dark:text-gray-300">
-              <svg className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              {concept}
-            </div>
-          ))}
+      {coveredConcepts.length > 0 && (
+        <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-50 p-5 dark:border-gray-800 dark:bg-gray-950/60">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
+            Concepts you covered
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {coveredConcepts.map((concept) => (
+              <div
+                key={concept}
+                className="flex items-start gap-2 text-sm text-stone-700 dark:text-gray-300"
+              >
+                <svg
+                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                {concept}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {reviewQueue.length > 0 && (
         <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-500/20 dark:bg-amber-500/10">

@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { courses } from "../courses/registry";
+import { useThemePreference } from "../hooks/useThemePreference";
 import { useLearning } from "../learning/LearningContext";
 import type { CourseManifest, CourseProfession } from "../courses/types";
 import type { AudienceTrack } from "../learning/LearningContext";
@@ -12,26 +13,13 @@ const PROFESSION_LABELS: Record<CourseProfession, string> = {
   general: "General",
 };
 
-function getInitialTheme() {
-  if (typeof window === "undefined") return false;
-  const saved = window.localStorage.getItem("learn-ai-theme");
-  if (saved === "dark") return true;
-  if (saved === "light") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
-
 export function CatalogPage() {
   const navigate = useNavigate();
   const { getCourseProgress, state } = useLearning();
   const [professionFilter, setProfessionFilter] =
     useState<CourseProfession | "all">("all");
   const [trackFilter, setTrackFilter] = useState<AudienceTrack | "all">("all");
-  const [dark, setDark] = useState(getInitialTheme);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    window.localStorage.setItem("learn-ai-theme", dark ? "dark" : "light");
-  }, [dark]);
+  const { dark, setDark } = useThemePreference();
 
   const filtered = courses.filter((c) => {
     if (professionFilter !== "all" && c.profession !== professionFilter)
@@ -84,7 +72,8 @@ export function CatalogPage() {
       <div className="mx-auto max-w-6xl px-4 pt-8 md:px-8">
         <p className="max-w-2xl text-lg leading-8 text-stone-600 dark:text-gray-300">
           Interactive, beginner-first courses that build real intuition for how
-          AI works. Pick a course and learn at your own pace.
+          AI works. Pick a course, keep your preferred track across the
+          platform, and resume where you left off.
         </p>
 
         {/* Filters */}

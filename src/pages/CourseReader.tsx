@@ -1,25 +1,18 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { Sidebar } from "../components/Sidebar";
 import { SlideView } from "../components/SlideView";
 import { NavigationBar } from "../components/NavigationBar";
 import { useKeyboardNav } from "../hooks/useKeyboardNav";
+import { useThemePreference } from "../hooks/useThemePreference";
 import { getTrackLabel, useLearning } from "../learning/LearningContext";
 import { getCourse, loadCourseChapters } from "../courses/registry";
+import { resolveChapterNumber } from "../courses/navigation";
 import type { CourseManifest, CourseChapter } from "../courses/types";
 
 const STORAGE_KEYS = {
-  theme: "learn-ai-theme",
   sidebarCollapsed: "learn-ai-sidebar-collapsed",
 };
-
-function getInitialTheme() {
-  if (typeof window === "undefined") return false;
-  const saved = window.localStorage.getItem(STORAGE_KEYS.theme);
-  if (saved === "dark") return true;
-  if (saved === "light") return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
-}
 
 function getInitialSidebarCollapsed() {
   if (typeof window === "undefined") return false;
@@ -75,12 +68,19 @@ function CourseReaderInner({
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    loadCourseChapters(courseSlug).then((loaded) => {
-      if (!cancelled) {
-        setChapters(loaded);
-        setLoading(false);
-      }
-    });
+    loadCourseChapters(courseSlug)
+      .then((loaded) => {
+        if (!cancelled) {
+          setChapters(loaded);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setChapters([]);
+          setLoading(false);
+        }
+      });
     return () => {
       cancelled = true;
     };
@@ -89,39 +89,32 @@ function CourseReaderInner({
   // Determine active chapter index
   const courseProgress = getCourseProgress(courseSlug);
   const requestedChapter = chapterNumber ? Number(chapterNumber) : null;
-
-  const currentIndex = (() => {
-    if (chapters.length === 0) return 0;
-
-    if (requestedChapter !== null && !Number.isNaN(requestedChapter)) {
-      const idx = chapters.findIndex((c) => c.chapter === requestedChapter);
-      if (idx >= 0) return idx;
-    }
-
-    // No chapter in URL — resume from saved progress
-    if (requestedChapter === null) {
-      const savedIdx = chapters.findIndex(
-        (c) => c.chapter === courseProgress.lastChapter,
-      );
-      if (savedIdx >= 0) return savedIdx;
-    }
-
-    return 0;
-  })();
-
-  const chapter = chapters[currentIndex];
+  const resolvedChapterNumber = useMemo(
+    () =>
+      resolveChapterNumber({
+        chapters,
+        requestedChapter:
+          requestedChapter !== null && !Number.isNaN(requestedChapter)
+            ? requestedChapter
+            : null,
+        resumeChapter: courseProgress.lastChapter,
+      }),
+    [chapters, requestedChapter, courseProgress.lastChapter],
+  );
+  const currentIndex = useMemo(() => {
+    if (resolvedChapterNumber === null) return -1;
+    return chapters.findIndex((c) => c.chapter === resolvedChapterNumber);
+  }, [chapters, resolvedChapterNumber]);
+  const chapter = currentIndex >= 0 ? chapters[currentIndex] : undefined;
 
   // Redirect to correct chapter number in URL if needed
   useEffect(() => {
-    if (loading || chapters.length === 0) return;
-    const ch = chapters[currentIndex];
-    if (!ch) return;
-
-    const expectedNum = String(ch.chapter);
+    if (loading || resolvedChapterNumber === null) return;
+    const expectedNum = String(resolvedChapterNumber);
     if (chapterNumber !== expectedNum) {
       navigate(`/courses/${courseSlug}/${expectedNum}`, { replace: true });
     }
-  }, [loading, chapters, currentIndex, chapterNumber, courseSlug, navigate]);
+  }, [loading, resolvedChapterNumber, chapterNumber, courseSlug, navigate]);
 
   // Save lastChapter on chapter change
   useEffect(() => {
@@ -130,7 +123,7 @@ function CourseReaderInner({
   }, [chapter, courseSlug, setLastChapter]);
 
   // Theme + sidebar state
-  const [dark, setDark] = useState(getInitialTheme);
+  const { dark, setDark } = useThemePreference();
   const [isDesktop, setIsDesktop] = useState(() =>
     typeof window === "undefined" ? true : window.innerWidth >= 1024,
   );
@@ -155,11 +148,6 @@ function CourseReaderInner({
       prevIsDesktop.current = isDesktop;
     }
   }, [isDesktop]);
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    window.localStorage.setItem(STORAGE_KEYS.theme, dark ? "dark" : "light");
-  }, [dark]);
 
   useEffect(() => {
     window.localStorage.setItem(
