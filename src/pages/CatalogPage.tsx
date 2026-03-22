@@ -1,4 +1,4 @@
-import { Moon, SunMedium } from "lucide-react";
+import { Github, Moon, SunMedium } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { courses } from "../courses/registry";
@@ -39,6 +39,7 @@ export function CatalogPage() {
     (sum, course) => sum + (course.estimatedMinutes ?? 0),
     0
   );
+  const githubRepoUrl = "https://github.com/bhaskarmelkani/learn-ai";
   const themeActionLabel = dark ? "Light mode" : "Dark mode";
   const ThemeIcon = dark ? SunMedium : Moon;
 
@@ -54,14 +55,26 @@ export function CatalogPage() {
               Course Catalog
             </h1>
           </div>
-          <button
-            onClick={() => setDark((value) => !value)}
-            className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
-            aria-label={themeActionLabel}
-          >
-            <ThemeIcon className="h-3.5 w-3.5" />
-            {themeActionLabel}
-          </button>
+          <div className="flex items-center gap-2">
+            <a
+              href={githubRepoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+              aria-label="Open the Learn AI GitHub repository"
+            >
+              <Github className="h-3.5 w-3.5" />
+              GitHub
+            </a>
+            <button
+              onClick={() => setDark((value) => !value)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+              aria-label={themeActionLabel}
+            >
+              <ThemeIcon className="h-3.5 w-3.5" />
+              {themeActionLabel}
+            </button>
+          </div>
         </div>
       </header>
 
