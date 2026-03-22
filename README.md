@@ -123,6 +123,27 @@ Contributions that bypass the documented agent workflow may be declined so the r
 
 This is a client-side routed SPA. Production hosting must rewrite unknown paths to `index.html`, or deep links like `/courses/ai-fundamentals/4` will 404 on refresh.
 
+### GitHub Pages With PR Previews
+
+The repo includes GitHub Actions workflows for:
+
+- deploying `main` to the `gh-pages` branch
+- publishing pull request previews under `pr-preview/pr-{number}/`
+- posting the preview URL back onto the PR
+
+One-time repository setup:
+
+1. In GitHub `Settings > Pages`, set the source to `Deploy from a branch`, then choose `gh-pages` and `/ (root)`.
+2. In `Settings > Actions > General`, set workflow permissions to `Read and write permissions`.
+3. If the site is served from a custom path, set a repository variable named `PAGES_BASE_PATH`.
+
+Use these `PAGES_BASE_PATH` values:
+
+- `/` for a user or organization site like `https://owner.github.io/` or for a custom domain rooted at `/`
+- `/learn-ai/` for a project site served from `https://owner.github.io/learn-ai/`
+
+If you use a custom domain and want the PR comment to point at that host instead of the default `github.io` URL, set `PAGES_SITE_URL` to the public site URL, for example `https://learn.example.com/`.
+
 ## Contributing Ideas
 
 - New courses or chapters

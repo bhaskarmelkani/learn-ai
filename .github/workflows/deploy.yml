@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy GitHub Pages
 
 on:
   push:
@@ -7,15 +7,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,20 +32,41 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Compute Pages base path
+        id: pages
+        shell: bash
+        run: |
+          repo_name="${{ github.event.repository.name }}"
+          configured_base="${{ vars.PAGES_BASE_PATH }}"
+
+          if [[ -n "$configured_base" ]]; then
+            base="$configured_base"
+          elif [[ "$repo_name" == *.github.io ]]; then
+            base="/"
+          else
+            base="/$repo_name/"
+          fi
+
+          if [[ "$base" != "/" ]]; then
+            base="/${base#/}"
+            base="${base%/}/"
+          fi
+
+          echo "root=$base" >> "$GITHUB_OUTPUT"
+
       - name: Build
         run: pnpm build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.root }}
 
       - name: Copy 404 fallback for SPA routing
         run: cp dist/index.html dist/404.html
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: 'dist'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          branch: gh-pages
+          folder: dist
+          clean-exclude: |
+            pr-preview
+          force: false

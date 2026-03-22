@@ -1,0 +1,109 @@
+name: Deploy PR Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        if: github.event.action != 'closed'
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        if: github.event.action != 'closed'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        if: github.event.action != 'closed'
+        run: pnpm install --frozen-lockfile
+
+      - name: Compute preview paths
+        id: pages
+        shell: bash
+        run: |
+          repo_name="${{ github.event.repository.name }}"
+          owner="${{ github.repository_owner }}"
+          configured_base="${{ vars.PAGES_BASE_PATH }}"
+          configured_url="${{ vars.PAGES_SITE_URL }}"
+
+          if [[ -n "$configured_base" ]]; then
+            root_base="$configured_base"
+          elif [[ "$repo_name" == *.github.io ]]; then
+            root_base="/"
+          else
+            root_base="/$repo_name/"
+          fi
+
+          if [[ "$root_base" != "/" ]]; then
+            root_base="/${root_base#/}"
+            root_base="${root_base%/}/"
+          fi
+
+          if [[ "$root_base" == "/" ]]; then
+            preview_base="/pr-preview/pr-${{ github.event.number }}/"
+          else
+            preview_base="${root_base}pr-preview/pr-${{ github.event.number }}/"
+          fi
+
+          if [[ -n "$configured_url" ]]; then
+            pages_url="${configured_url#https://}"
+            pages_url="${pages_url#http://}"
+          elif [[ "$repo_name" == *.github.io ]]; then
+            pages_url="${owner}.github.io"
+          else
+            pages_url="${owner}.github.io/${repo_name}"
+          fi
+
+          pages_url="${pages_url%/}/"
+
+          echo "preview_base=$preview_base" >> "$GITHUB_OUTPUT"
+          echo "pages_url=$pages_url" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        if: github.event.action != 'closed'
+        run: pnpm build
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.preview_base }}
+
+      - name: Copy 404 fallback for SPA routing
+        if: github.event.action != 'closed'
+        run: cp dist/index.html dist/404.html
+
+      - name: Deploy preview
+        if: github.event.action != 'closed'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: dist
+          preview-branch: gh-pages
+          pages-base-url: ${{ steps.pages.outputs.pages_url }}
+          wait-for-pages-deployment: true
+
+      - name: Remove preview
+        if: github.event.action == 'closed'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          action: remove
+          preview-branch: gh-pages
+          pages-base-url: ${{ steps.pages.outputs.pages_url }}
+          wait-for-pages-deployment: true

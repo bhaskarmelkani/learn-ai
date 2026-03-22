@@ -8,6 +8,7 @@ import "@fontsource/source-serif-4/400.css";
 import "@fontsource/source-serif-4/600.css";
 import "@fontsource/source-serif-4/700.css";
 import App from "./App";
+import { appBasePath } from "./lib/base-path";
 import { LearningProvider } from "./learning/LearningContext";
 import { applyLegacyHashRedirect } from "./pages/LegacyHashRedirect";
 import "./index.css";
@@ -17,7 +18,7 @@ applyLegacyHashRedirect();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={appBasePath}>
       <LearningProvider>
         <App />
       </LearningProvider>

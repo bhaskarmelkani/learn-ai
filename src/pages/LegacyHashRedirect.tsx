@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { withBasePath } from "@/lib/base-path";
 
 /**
  * Reads window.location.hash on mount and redirects legacy
@@ -35,6 +36,6 @@ export function applyLegacyHashRedirect() {
   const match = hash.match(/^chapter-(\d+)/);
   if (match) {
     const newPath = `/courses/ai-fundamentals/${match[1]}`;
-    window.history.replaceState(null, "", newPath);
+    window.history.replaceState(null, "", withBasePath(newPath));
   }
 }
