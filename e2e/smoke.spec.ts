@@ -73,6 +73,23 @@ test("continue resumes the saved chapter and next navigation updates the url", a
   await expect(page).toHaveURL(/\/courses\/ai-fundamentals\/5$/);
 });
 
+test("dark mode keeps chapter body copy readable", async ({ page }) => {
+  await page.addInitScript(() => {
+    window.localStorage.setItem("learn-ai-onboarded", "true");
+    window.localStorage.setItem("learn-ai-theme", "dark");
+  });
+
+  await page.goto("/courses/ai-fundamentals/1");
+
+  await expect(
+    page.getByRole("button", { name: /light mode/i }),
+  ).toBeVisible();
+
+  const bodyCopy = page.getByText("Imagine three products:");
+  await expect(bodyCopy).toBeVisible();
+  await expect(bodyCopy).toHaveCSS("color", "rgb(243, 244, 246)");
+});
+
 test("gen ai browser llm lab renders and runs in mock mode", async ({
   page,
 }) => {

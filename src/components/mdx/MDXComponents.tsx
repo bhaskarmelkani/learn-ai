@@ -107,19 +107,19 @@ export const mdxComponents: MDXComponentsType = {
   ),
   p: (props) => (
     <p
-      className="my-4 w-full max-w-none text-pretty text-[0.97rem] font-[415] leading-[1.95] tracking-[0.002em] text-stone-800 dark:text-gray-100/92 md:text-[1.03rem] [font-family:var(--font-content)]"
+      className="my-4 w-full max-w-none text-pretty text-[0.97rem] font-[415] leading-[1.95] tracking-[0.002em] text-stone-800 dark:text-gray-100 md:text-[1.03rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
   ul: (props) => (
     <ul
-      className="my-4 ml-5 w-full max-w-none list-disc space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100/92 md:text-[1rem] [font-family:var(--font-content)]"
+      className="my-4 ml-5 w-full max-w-none list-disc space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100 md:text-[1rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
   ol: (props) => (
     <ol
-      className="my-4 ml-5 w-full max-w-none list-decimal space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100/92 md:text-[1rem] [font-family:var(--font-content)]"
+      className="my-4 ml-5 w-full max-w-none list-decimal space-y-2 text-[0.95rem] leading-[1.9] text-stone-800 dark:text-gray-100 md:text-[1rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
@@ -152,7 +152,7 @@ export const mdxComponents: MDXComponentsType = {
   ),
   blockquote: (props) => (
     <blockquote
-      className="my-7 w-full max-w-none rounded-[1.35rem] border border-stone-200/80 bg-stone-50/92 px-5 py-4 text-stone-800 shadow-sm dark:border-gray-800 dark:bg-gray-950/70 dark:text-gray-100/92 [&>p]:my-1"
+      className="my-7 w-full max-w-none rounded-[1.35rem] border border-stone-200/80 bg-stone-50/92 px-5 py-4 text-stone-800 shadow-sm dark:border-gray-800 dark:bg-gray-950/70 dark:text-gray-100 [&>p]:my-1"
       {...props}
     />
   ),
