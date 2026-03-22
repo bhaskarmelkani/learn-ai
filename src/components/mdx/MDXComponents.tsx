@@ -27,6 +27,12 @@ import { CapstoneStudio } from "../interactive/CapstoneStudio";
 import { PromptComparison } from "../interactive/PromptComparison";
 import { GroundingLab } from "../interactive/GroundingLab";
 import { GenAICapstoneStudio } from "../interactive/GenAICapstoneStudio";
+import { BrowserLLMLab } from "../interactive/BrowserLLMLab";
+import { TokenizerArena } from "../interactive/TokenizerArena";
+import { ContextBudgetLab } from "../interactive/ContextBudgetLab";
+import { EmbeddingSimilarityLab } from "../interactive/EmbeddingSimilarityLab";
+import { SemanticSearchLab } from "../interactive/SemanticSearchLab";
+import { RetrievalVsModelOnlyLab } from "../interactive/RetrievalVsModelOnlyLab";
 import { CompletionDashboard } from "../CompletionDashboard";
 import { useLearning } from "../../learning/LearningContext";
 
@@ -150,7 +156,9 @@ export const mdxComponents: MDXComponentsType = {
       {...props}
     />
   ),
-  hr: () => <hr className="my-8 w-full border-stone-200 dark:border-gray-800" />,
+  hr: () => (
+    <hr className="my-8 w-full border-stone-200 dark:border-gray-800" />
+  ),
   strong: (props) => (
     <strong
       className="font-semibold text-stone-950 dark:text-gray-100"
@@ -189,6 +197,12 @@ export const mdxComponents: MDXComponentsType = {
   PromptComparison,
   GroundingLab,
   GenAICapstoneStudio,
+  BrowserLLMLab,
+  TokenizerArena,
+  ContextBudgetLab,
+  EmbeddingSimilarityLab,
+  SemanticSearchLab,
+  RetrievalVsModelOnlyLab,
   CompletionDashboard,
   LinearRegressionNotebook: () => (
     <BuilderOnlyNotebook title="Linear Regression Notebook">

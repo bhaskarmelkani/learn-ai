@@ -14,7 +14,7 @@ describe("course registry", () => {
   it("includes ai-fundamentals", () => {
     const aiFund = courses.find((c) => c.slug === "ai-fundamentals");
     expect(aiFund).toBeDefined();
-    expect(aiFund!.title).toBe("AI In-tuition");
+    expect(aiFund!.title).toBe("AI Foundations");
     expect(aiFund!.chapterCount).toBe(13);
   });
 

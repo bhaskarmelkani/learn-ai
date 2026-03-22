@@ -12,8 +12,10 @@ subtitle: "Clarity, examples, constraints, and the iteration habit that actually
   unlocks="Better everyday workflows for extraction, drafting, analysis, and review."
   map={["Clear task", "Examples", "Constraints", "Iteration"]}
   trackFocus={{
-    conceptual: "Notice how small prompt changes often improve usefulness by reducing ambiguity and forcing clearer output expectations.",
-    builder: "Notice how examples, schemas, and review instructions create repeatable workflows without writing code."
+    conceptual:
+      "Notice how small prompt changes often improve usefulness by reducing ambiguity and forcing clearer output expectations.",
+    builder:
+      "Notice how examples, schemas, and review instructions create repeatable workflows without writing code.",
   }}
 />
 
@@ -57,12 +59,25 @@ Good prompting often looks like:
 
 <PromptComparison />
 
+The design ideas above become more vivid when you run them on a weak local model.
+
+When the model is tiny, vague prompts break faster and structured prompts help more obviously.
+
+<BrowserLLMLab />
+
 <Callout type="warning" title="Avoid brittle prompt mythology">
-Do not overfit to internet folklore about one magic phrase that always unlocks hidden intelligence. Durable prompting is clearer workflow design, not superstition.
+  Do not overfit to internet folklore about one magic phrase that always unlocks
+  hidden intelligence. Durable prompting is clearer workflow design, not
+  superstition.
 </Callout>
 
-<Exercise title="Upgrade the Prompt" hint="A strong revision might add audience, output structure, and uncertainty handling: 'Extract the risks from this proposal for an operations lead. Return a table with risk, impact, and missing information. If evidence is weak, mark it unclear.'">
-Take the prompt you wrote in the last chapter. Improve it in three ways: add one useful constraint, add a better output structure, and add one instruction about uncertainty, missing information, or evidence.
+<Exercise
+  title="Upgrade the Prompt"
+  hint="A strong revision might add audience, output structure, and uncertainty handling: 'Extract the risks from this proposal for an operations lead. Return a table with risk, impact, and missing information. If evidence is weak, mark it unclear.'"
+>
+  Take the prompt you wrote in the last chapter. Improve it in three ways: add
+  one useful constraint, add a better output structure, and add one instruction
+  about uncertainty, missing information, or evidence.
 </Exercise>
 
 <Checkpoint
@@ -72,18 +87,22 @@ Take the prompt you wrote in the last chapter. Improve it in three ways: add one
   concepts={["examples", "few-shot", "prompting"]}
   options={[
     {
-      label: "When the task or preferred output style is easy to misunderstand from description alone.",
+      label:
+        "When the task or preferred output style is easy to misunderstand from description alone.",
       correct: true,
-      explanation: "Yes. Examples are often the fastest way to show the pattern you want."
+      explanation:
+        "Yes. Examples are often the fastest way to show the pattern you want.",
     },
     {
       label: "Only when the model is bad at language and needs training data.",
-      explanation: "Examples can help even strong models because they reduce ambiguity about the requested pattern."
+      explanation:
+        "Examples can help even strong models because they reduce ambiguity about the requested pattern.",
     },
     {
       label: "Never, because examples always make prompts too long.",
-      explanation: "Examples can be extremely helpful when they teach the format or judgment you want."
-    }
+      explanation:
+        "Examples can be extremely helpful when they teach the format or judgment you want.",
+    },
   ]}
 />
 
@@ -94,18 +113,22 @@ Take the prompt you wrote in the last chapter. Improve it in three ways: add one
   concepts={["constraints", "quality", "prompt design"]}
   options={[
     {
-      label: "They narrow the space of acceptable answers so the output is easier to use and review.",
+      label:
+        "They narrow the space of acceptable answers so the output is easier to use and review.",
       correct: true,
-      explanation: "Right. Constraints help the model aim at a narrower definition of success."
+      explanation:
+        "Right. Constraints help the model aim at a narrower definition of success.",
     },
     {
       label: "They guarantee the model will never hallucinate.",
-      explanation: "Constraints can reduce drift, but they do not guarantee factual accuracy."
+      explanation:
+        "Constraints can reduce drift, but they do not guarantee factual accuracy.",
     },
     {
       label: "They only matter for creative writing.",
-      explanation: "Constraints are just as useful for summaries, extractions, and planning tasks."
-    }
+      explanation:
+        "Constraints are just as useful for summaries, extractions, and planning tasks.",
+    },
   ]}
 />
 
@@ -116,18 +139,23 @@ Take the prompt you wrote in the last chapter. Improve it in three ways: add one
   concepts={["iteration", "workflow", "prompting"]}
   options={[
     {
-      label: "Run a first draft, inspect what failed, then revise the prompt to fix the specific weakness.",
+      label:
+        "Run a first draft, inspect what failed, then revise the prompt to fix the specific weakness.",
       correct: true,
-      explanation: "Exactly. Prompting improves fastest when you treat it like an iterative workflow."
+      explanation:
+        "Exactly. Prompting improves fastest when you treat it like an iterative workflow.",
     },
     {
-      label: "Start from the longest prompt template you can find online and never change it.",
-      explanation: "Templates can help, but blind reuse usually creates bloated or mismatched prompts."
+      label:
+        "Start from the longest prompt template you can find online and never change it.",
+      explanation:
+        "Templates can help, but blind reuse usually creates bloated or mismatched prompts.",
     },
     {
       label: "Keep changing random phrases until the model sounds smarter.",
-      explanation: "Random tweaking is slower than identifying the real failure mode and addressing it directly."
-    }
+      explanation:
+        "Random tweaking is slower than identifying the real failure mode and addressing it directly.",
+    },
   ]}
 />
 
@@ -136,15 +164,16 @@ Take the prompt you wrote in the last chapter. Improve it in three ways: add one
   summary={[
     "Prompt quality improves when you add examples, constraints, and structure where they are genuinely needed.",
     "Iteration works better than superstition.",
-    "The strongest prompt habit is to fix a specific failure mode, not to chase magic wording."
+    "The strongest prompt habit is to fix a specific failure mode, not to chase magic wording.",
   ]}
   checks={[
     "Can you name one prompt weakness that is really a workflow-spec problem?",
-    "Can you explain when an example teaches faster than extra instructions?"
+    "Can you explain when an example teaches faster than extra instructions?",
   ]}
   nextStep="Next we turn from improvement tactics to the more important question: where do these systems still break?"
   trackActions={{
     conceptual: "Rewrite one sloppy prompt so that success is easier to judge.",
-    builder: "Define one repeatable prompt pattern you could hand to a teammate without extra explanation."
+    builder:
+      "Define one repeatable prompt pattern you could hand to a teammate without extra explanation.",
   }}
 />

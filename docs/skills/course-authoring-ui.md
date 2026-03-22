@@ -24,3 +24,4 @@ Use this workflow when creating or revising course-facing chapter UI.
 - Keep long-form text readable on mobile
 - Use accessible headings, buttons, and focus states
 - If a chapter needs validation-heavy inputs, use `react-hook-form` and `zod`
+- Reuse the shared browser-AI labs and runtime before inventing a one-off local AI interactive

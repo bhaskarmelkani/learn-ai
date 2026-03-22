@@ -12,8 +12,10 @@ subtitle: "Documents, grounding, retrieval, and the practical intuition behind R
   unlocks="A practical intuition for grounding, retrieval, and when a model needs your documents rather than its general prior patterns."
   map={["Question", "Relevant source", "Grounded context", "Generated answer"]}
   trackFocus={{
-    conceptual: "Understand why 'knowing language' is different from 'knowing my documents.'",
-    builder: "Understand when a workflow needs source retrieval instead of a better prompt alone."
+    conceptual:
+      "Understand why 'knowing language' is different from 'knowing my documents.'",
+    builder:
+      "Understand when a workflow needs source retrieval instead of a better prompt alone.",
   }}
 />
 
@@ -54,28 +56,45 @@ You do not need infrastructure detail to get the beginner intuition. The importa
 - pure generation guesses from prior patterns
 - grounded generation answers with selected evidence in context
 
-<GroundingLab />
+<SemanticSearchLab />
+
+Retrieval alone is not the final answer.
+
+The model still has to respond after the source is found, which is why it helps to compare the whole system path:
+
+<RetrievalVsModelOnlyLab />
 
 <CaseCards
   title="Where grounding matters most"
   cards={[
     {
       title: "Internal policy assistant",
-      product: "A workplace tool that answers PTO, travel, and expense questions from the company handbook.",
-      modelIdea: "The value is not broad world knowledge. It is accurate retrieval from the right internal source.",
-      failureMode: "A generic answer that sounds plausible can create real policy confusion."
+      product:
+        "A workplace tool that answers PTO, travel, and expense questions from the company handbook.",
+      modelIdea:
+        "The value is not broad world knowledge. It is accurate retrieval from the right internal source.",
+      failureMode:
+        "A generic answer that sounds plausible can create real policy confusion.",
     },
     {
       title: "Support agent helper",
-      product: "A system that drafts replies using the help center and customer account notes.",
-      modelIdea: "Generation becomes more useful when the workflow surfaces the right article and the right customer context.",
-      failureMode: "If retrieval fetches the wrong article, the generated draft may sound polished and still be wrong."
-    }
+      product:
+        "A system that drafts replies using the help center and customer account notes.",
+      modelIdea:
+        "Generation becomes more useful when the workflow surfaces the right article and the right customer context.",
+      failureMode:
+        "If retrieval fetches the wrong article, the generated draft may sound polished and still be wrong.",
+    },
   ]}
 />
 
-<Exercise title="Design the Source Path" hint="A strong answer names the exact source and the consequence of missing it: 'For warranty questions, the workflow must look at the order record and warranty terms. Without those, the model will guess from generic patterns.'">
-Choose one question that depends on private or exact information. Write which source the system would need, what should be retrieved, and what could go wrong if it answered without that source.
+<Exercise
+  title="Design the Source Path"
+  hint="A strong answer names the exact source and the consequence of missing it: 'For warranty questions, the workflow must look at the order record and warranty terms. Without those, the model will guess from generic patterns.'"
+>
+  Choose one question that depends on private or exact information. Write which
+  source the system would need, what should be retrieved, and what could go
+  wrong if it answered without that source.
 </Exercise>
 
 <Checkpoint
@@ -85,18 +104,22 @@ Choose one question that depends on private or exact information. Write which so
   concepts={["grounding", "documents", "reliability"]}
   options={[
     {
-      label: "To give the model relevant evidence from trusted sources so the answer depends less on generic guessing.",
+      label:
+        "To give the model relevant evidence from trusted sources so the answer depends less on generic guessing.",
       correct: true,
-      explanation: "Yes. Grounding improves the evidence available to the model at answer time."
+      explanation:
+        "Yes. Grounding improves the evidence available to the model at answer time.",
     },
     {
-      label: "To permanently retrain the model on your private files every time you ask a question.",
-      explanation: "Grounding typically provides context at runtime. It is not the same as retraining."
+      label:
+        "To permanently retrain the model on your private files every time you ask a question.",
+      explanation:
+        "Grounding typically provides context at runtime. It is not the same as retraining.",
     },
     {
       label: "To make the model more creative when it writes.",
-      explanation: "Grounding is about relevance and evidence, not creativity."
-    }
+      explanation: "Grounding is about relevance and evidence, not creativity.",
+    },
   ]}
 />
 
@@ -107,18 +130,20 @@ Choose one question that depends on private or exact information. Write which so
   concepts={["rag", "retrieval", "generation"]}
   options={[
     {
-      label: "Find the relevant source first, then let the model answer with that source in context.",
+      label:
+        "Find the relevant source first, then let the model answer with that source in context.",
       correct: true,
-      explanation: "Exactly. That is the practical beginner mental model."
+      explanation: "Exactly. That is the practical beginner mental model.",
     },
     {
-      label: "Ask the model the same question many times until it becomes more certain.",
-      explanation: "Repetition does not replace evidence."
+      label:
+        "Ask the model the same question many times until it becomes more certain.",
+      explanation: "Repetition does not replace evidence.",
     },
     {
       label: "Remove all documents so the model can think more freely.",
-      explanation: "That does the opposite of grounding."
-    }
+      explanation: "That does the opposite of grounding.",
+    },
   ]}
 />
 
@@ -129,18 +154,22 @@ Choose one question that depends on private or exact information. Write which so
   concepts={["private knowledge", "context", "trust"]}
   options={[
     {
-      label: "Because the workflow may need exact, current, or private information the model does not actually have at answer time.",
+      label:
+        "Because the workflow may need exact, current, or private information the model does not actually have at answer time.",
       correct: true,
-      explanation: "Right. Many useful business workflows depend on data the base model cannot safely infer."
+      explanation:
+        "Right. Many useful business workflows depend on data the base model cannot safely infer.",
     },
     {
       label: "Because models cannot work with documents at all.",
-      explanation: "They can work well with documents when the workflow provides the right context."
+      explanation:
+        "They can work well with documents when the workflow provides the right context.",
     },
     {
       label: "Because private knowledge only matters for legal teams.",
-      explanation: "Support, operations, HR, sales, and learning workflows all depend on private context too."
-    }
+      explanation:
+        "Support, operations, HR, sales, and learning workflows all depend on private context too.",
+    },
   ]}
 />
 
@@ -149,15 +178,17 @@ Choose one question that depends on private or exact information. Write which so
   summary={[
     "Useful document workflows depend on grounding, not just general model capability.",
     "RAG is best understood as retrieve first, then generate from that context.",
-    "When exact private information matters, pure generation is usually the wrong default."
+    "When exact private information matters, pure generation is usually the wrong default.",
   ]}
   checks={[
     "Can you explain the difference between a general answer and a grounded answer?",
-    "Can you name one source your ideal workflow would need before it should respond?"
+    "Can you name one source your ideal workflow would need before it should respond?",
   ]}
   nextStep="Now that we have text workflows and grounded workflows, we can widen the picture to multimodal Gen AI."
   trackActions={{
-    conceptual: "Find one question in your life that should never be answered without a source.",
-    builder: "Describe one workflow where retrieval quality matters more than prompt cleverness."
+    conceptual:
+      "Find one question in your life that should never be answered without a source.",
+    builder:
+      "Describe one workflow where retrieval quality matters more than prompt cleverness.",
   }}
 />

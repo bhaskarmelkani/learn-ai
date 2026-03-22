@@ -21,4 +21,5 @@ Use this skill when reviewing or implementing UI changes that may drift from est
 2. Check spacing, sizing, border radius, and typography rhythm.
 3. Look for duplicate variants that should be unified.
 4. Keep dark-mode and mobile behavior aligned with current patterns.
-5. Call out drift early, before it spreads.
+5. For browser-AI labs, standardize badges, status cards, control layouts, and fallback copy instead of creating one-off visual treatments.
+6. Call out drift early, before it spreads.
