@@ -12,8 +12,10 @@ subtitle: "Audience, task, constraints, and why prompts are an interface"
   unlocks="Stronger prompting habits, clearer workflow design, and less disappointment from vague asks."
   map={["Goal", "Context", "Constraints", "Output shape"]}
   trackFocus={{
-    conceptual: "Think of a prompt as a way of framing the job clearly for a pattern-based system.",
-    builder: "Think of a prompt as the first layer of workflow design: task, input, constraints, and output schema."
+    conceptual:
+      "Think of a prompt as a way of framing the job clearly for a pattern-based system.",
+    builder:
+      "Think of a prompt as the first layer of workflow design: task, input, constraints, and output schema.",
   }}
 />
 
@@ -54,33 +56,50 @@ When in doubt, use this sequence:
 
 For example:
 
-| Weak prompt | Better first prompt |
-|-----------|-------|
+| Weak prompt       | Better first prompt                                                                                                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | "Summarize this." | "Summarize this for a busy teammate in 4 bullets: main point, decision, blocker, and next step. If something is unclear, say so." |
+
+Below is a tiny model running entirely in your browser.
+
+It is intentionally much weaker than a cloud LLM, which makes it useful for learning: vague prompts tend to break fast, and clearer prompts usually help in visible ways.
+
+<BrowserLLMLab />
 
 <CaseCards
   title="Why first prompts fail"
   cards={[
     {
       title: "The hidden audience problem",
-      product: "A model writes an email that sounds too casual for an executive client.",
-      modelIdea: "The prompt named the task but not the audience, so the model filled that gap with a generic style.",
-      failureMode: "Users blame the model when the missing detail was in the interface design."
+      product:
+        "A model writes an email that sounds too casual for an executive client.",
+      modelIdea:
+        "The prompt named the task but not the audience, so the model filled that gap with a generic style.",
+      failureMode:
+        "Users blame the model when the missing detail was in the interface design.",
     },
     {
       title: "The missing output shape",
-      product: "A learner asks for a research summary and gets a wall of text instead of a structured extraction.",
+      product:
+        "A learner asks for a research summary and gets a wall of text instead of a structured extraction.",
       modelIdea: "The prompt specified topic but not answer format.",
-      failureMode: "Without a shape constraint, the model defaults to a plausible but not necessarily useful response.",
+      failureMode:
+        "Without a shape constraint, the model defaults to a plausible but not necessarily useful response.",
       trackPrompt: {
-        builder: "Whenever the output needs to feed another step, specify the schema early."
-      }
-    }
+        builder:
+          "Whenever the output needs to feed another step, specify the schema early.",
+      },
+    },
   ]}
 />
 
-<Exercise title="Write Your First Real Prompt" hint="A strong answer might say: 'Turn these meeting notes into a project update for the team lead. Use 5 bullets: decision, owner, timeline, blocker, next action. If a date is missing, say missing.'">
-Pick a real task you do: summarize notes, draft a message, pull action items, or compare options. Write a prompt that names the task, audience, context, output format, and how uncertainty should be handled.
+<Exercise
+  title="Write Your First Real Prompt"
+  hint="A strong answer might say: 'Turn these meeting notes into a project update for the team lead. Use 5 bullets: decision, owner, timeline, blocker, next action. If a date is missing, say missing.'"
+>
+  Pick a real task you do: summarize notes, draft a message, pull action items,
+  or compare options. Write a prompt that names the task, audience, context,
+  output format, and how uncertainty should be handled.
 </Exercise>
 
 <Checkpoint
@@ -90,18 +109,22 @@ Pick a real task you do: summarize notes, draft a message, pull action items, or
   concepts={["prompting", "interface design", "ambiguity"]}
   options={[
     {
-      label: "Because the main job is to reduce ambiguity and specify what success looks like for the model.",
+      label:
+        "Because the main job is to reduce ambiguity and specify what success looks like for the model.",
       correct: true,
-      explanation: "Yes. Strong prompting is usually clearer task framing, not secret incantations."
+      explanation:
+        "Yes. Strong prompting is usually clearer task framing, not secret incantations.",
     },
     {
       label: "Because the best prompt is always the longest possible prompt.",
-      explanation: "Length can help or hurt. Clarity matters more than sheer volume."
+      explanation:
+        "Length can help or hurt. Clarity matters more than sheer volume.",
     },
     {
       label: "Because a prompt mainly changes the model's training data.",
-      explanation: "A prompt changes the immediate context, not the model's learned weights."
-    }
+      explanation:
+        "A prompt changes the immediate context, not the model's learned weights.",
+    },
   ]}
 />
 
@@ -112,18 +135,22 @@ Pick a real task you do: summarize notes, draft a message, pull action items, or
   concepts={["audience", "tone", "prompt design"]}
   options={[
     {
-      label: "It helps the model choose the right tone, detail level, and emphasis for the output.",
+      label:
+        "It helps the model choose the right tone, detail level, and emphasis for the output.",
       correct: true,
-      explanation: "Right. Audience is one of the fastest ways to make the output feel useful instead of generic."
+      explanation:
+        "Right. Audience is one of the fastest ways to make the output feel useful instead of generic.",
     },
     {
       label: "It makes the model factually correct automatically.",
-      explanation: "Audience can improve usefulness, but it does not guarantee truth."
+      explanation:
+        "Audience can improve usefulness, but it does not guarantee truth.",
     },
     {
       label: "It only matters in creative writing, not in work tasks.",
-      explanation: "Audience matters in summaries, memos, explanations, and extraction tasks too."
-    }
+      explanation:
+        "Audience matters in summaries, memos, explanations, and extraction tasks too.",
+    },
   ]}
 />
 
@@ -134,18 +161,21 @@ Pick a real task you do: summarize notes, draft a message, pull action items, or
   concepts={["output format", "workflow", "prompt design"]}
   options={[
     {
-      label: "Because a defined structure makes the model easier to use, review, and plug into the next step.",
+      label:
+        "Because a defined structure makes the model easier to use, review, and plug into the next step.",
       correct: true,
-      explanation: "Exactly. The more reusable the output needs to be, the more the format matters."
+      explanation:
+        "Exactly. The more reusable the output needs to be, the more the format matters.",
     },
     {
       label: "Because models only understand prompts written as bullet lists.",
-      explanation: "Bullet lists can help, but they are not the only format models can understand."
+      explanation:
+        "Bullet lists can help, but they are not the only format models can understand.",
     },
     {
       label: "Because structure removes the need to review the answer.",
-      explanation: "Structure helps review. It does not replace review."
-    }
+      explanation: "Structure helps review. It does not replace review.",
+    },
   ]}
 />
 
@@ -154,15 +184,16 @@ Pick a real task you do: summarize notes, draft a message, pull action items, or
   summary={[
     "A prompt is an interface for task framing, not a magic spell.",
     "Strong prompts specify task, context, audience, and output shape.",
-    "Ambiguity left in the prompt usually becomes ambiguity in the answer."
+    "Ambiguity left in the prompt usually becomes ambiguity in the answer.",
   ]}
   checks={[
     "Can you explain the difference between a vague request and a well-scoped task?",
-    "Can you name what output shape would help in one of your real workflows?"
+    "Can you name what output shape would help in one of your real workflows?",
   ]}
   nextStep="Next we sharpen prompting without turning it into brittle prompt-hack culture."
   trackActions={{
     conceptual: "Rewrite one vague everyday request into a clearer prompt.",
-    builder: "Choose one workflow and define the exact answer schema you would want from the model."
+    builder:
+      "Choose one workflow and define the exact answer schema you would want from the model.",
   }}
 />

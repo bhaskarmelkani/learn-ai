@@ -1,13 +1,25 @@
 # Contributing Courses
 
-This guide is for contributors adding or extending courses in the multi-course platform.
+This guide is for contributors adding or extending courses in the multi-course platform through coding agents that follow the repo instructions and mirrored skill docs.
 
 ## Quick Start
 
 1. Fork the repo or create a feature branch.
 2. Run `pnpm install`.
 3. Start the app with `pnpm dev`.
-4. Read [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) and [docs/skills/README.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md) before making structural changes.
+4. Read [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
+5. Read [docs/skills/README.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md) before making structural changes.
+
+## Contribution Policy
+
+Substantive code and content changes are expected to go through coding agents that follow the repo workflow.
+
+- contributors should use a coding agent
+- contributors should start from repo instructions and mirrored skill docs
+- contributors should run the documented validation commands before opening a PR
+- contributions that bypass the documented agent workflow may be declined
+
+The reason is consistency. This repo encodes contributor judgment in reusable skills so course structure, browser-AI labs, design patterns, and testing standards stay aligned.
 
 ## Course Structure
 
@@ -46,25 +58,21 @@ pnpm e2e
 
 If Playwright is unavailable in your environment, mention that in the PR.
 
-## Suggested Workflow By Tool
+## Minimum Contribution Path
 
-### Claude Code
+Use the workflow order below for substantive course changes:
 
-- Start from `CLAUDE.md`
-- Use the mirrored skills under `.claude/skills/`
-- Follow the docs in `docs/skills/` if you want agent-agnostic instructions
+1. `create-course` or `course-authoring-ui`
+2. `add-chapter` when extending an existing course
+3. `browser-ai-labs` when the change adds or edits local AI labs
+4. `design-system-guard`
+5. `course-review`
+6. `test-and-verify`
 
-### Codex
+If the change includes accessibility-sensitive UI or validation-heavy forms, also use:
 
-- Start from `AGENTS.md`
-- Prefer existing patterns in `src/components`, `src/components/mdx`, `src/components/interactive`, and `src/learning`
-- Use the same `docs/skills/` workflows for course scaffolding and review
-
-### Copilot Or Manual Contributions
-
-- Follow the docs in `docs/skills/`
-- Treat `src/courses/ai-fundamentals/` as the main example course
-- Keep changes incremental and easy to review
+- `accessibility-audit`
+- `form-and-validation`
 
 ## Pull Request Checklist
 

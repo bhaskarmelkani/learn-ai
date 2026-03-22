@@ -2,7 +2,7 @@ import type { CourseManifest } from "../types";
 
 export const course: CourseManifest = {
   slug: "gen-ai-intuition",
-  title: "Generative AI, Intuitively",
+  title: "Generative AI Foundations",
   subtitle:
     "Build practical intuition for modern generative AI through hands-on workflows, grounded mental models, and durable habits.",
   profession: "general",

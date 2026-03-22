@@ -1,8 +1,13 @@
 # Learn AI
 
-Learn AI is a local-first, multi-course learning platform for building intuition about AI through short chapters, interactive demos, and browser-based notebooks.
+Learn AI is a local-first, multi-course learning platform for building intuition about AI through short chapters, interactive demos, browser-based notebooks, and lightweight in-browser AI labs.
 
-The current starter course, `ai-fundamentals`, takes learners from "What is a model?" through linear models, neural networks, and LLM system design. The platform is built so additional courses can be added without rewriting the reader, state model, or catalog flow.
+The platform currently ships two public courses:
+
+- `ai-fundamentals` for the path from "What is a model?" through neural networks and LLM system design
+- `gen-ai-intuition` for prompting, grounding, retrieval, and practical generative-AI workflows
+
+The product is built so new courses, chapters, and interactive labs can be added without rewriting the reader, state model, or catalog flow.
 
 ## Highlights
 
@@ -12,6 +17,7 @@ The current starter course, `ai-fundamentals`, takes learners from "What is a mo
 - Guided mode for prediction-first learning
 - MDX-powered chapters with reusable teaching components
 - In-browser Python labs powered by Pyodide
+- Browser-only AI labs for tokenization, embeddings, retrieval, and tiny local LLMs
 - Local-first persistence with migration from the older single-course state model
 
 ## Routes
@@ -31,6 +37,8 @@ The current starter course, `ai-fundamentals`, takes learners from "What is a mo
 - Tailwind CSS
 - shadcn/ui primitives
 - react-hook-form + zod
+- `@huggingface/transformers`
+- `gpt-tokenizer`
 - Vitest
 - Playwright
 
@@ -53,6 +61,18 @@ pnpm e2e
 ```
 
 `pnpm e2e` is especially useful after navigation, onboarding, or catalog changes.
+
+## Browser AI Labs
+
+The repo now includes a shared browser-AI toolkit for static-hosted, no-backend teaching labs.
+
+- Runs entirely in the browser with no API keys
+- Designed to work on GitHub Pages and other static hosts
+- Downloads model/runtime assets on first use, then reuses the browser cache
+- Defaults to WASM-safe behavior and uses WebGPU opportunistically when available
+- Uses intentionally small local models, so quality is educational rather than production-grade
+
+The current labs cover tokenization, context budgets, tiny local text generation, embeddings, semantic search, and retrieval-vs-model-only comparisons.
 
 ## Project Structure
 
@@ -89,13 +109,15 @@ Useful docs:
 
 ## Contributor Workflow
 
-1. Fork or branch from the repo.
-2. Run `pnpm install`.
-3. Make incremental changes that follow the patterns in `src/components`, `src/components/mdx`, `src/components/interactive`, and `src/learning`.
-4. Run the validation commands above.
-5. Open a PR with screenshots or notes for any UI changes.
+Substantive contributions to this repo are expected to go through coding agents that follow the repo instructions and mirrored skill docs.
 
-If you are using an agent, start with [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
+1. Start from [CONTRIBUTING.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CONTRIBUTING.md).
+2. Read [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
+3. Follow the workflows in [docs/skills/README.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md).
+4. Run the validation commands above.
+5. Open a PR with screenshots or notes for visible UI changes.
+
+Contributions that bypass the documented agent workflow may be declined so the repo can keep course quality, browser-AI patterns, and validation expectations consistent.
 
 ## Hosting Notes
 

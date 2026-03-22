@@ -10,6 +10,7 @@ Use this workflow before merging a course contribution.
 - Frontmatter: every chapter includes `title` and `chapter`
 - Pedagogy: each chapter includes at least one recap, checkpoint, or exercise
 - Interactives: referenced demos exist and still render
+- Browser AI labs: reuse the shared runtime and include loading, unsupported, offline, and failure states when relevant
 - Validation: `pnpm lint`, `pnpm test`, and `pnpm build` pass
 
 ## Review Focus
@@ -18,3 +19,4 @@ Use this workflow before merging a course contribution.
 - Interactive elements reinforce the theory rather than replace it
 - Dark mode, mobile readability, and keyboard navigation are preserved
 - Progress and completion behavior remain course-aware
+- Browser-only labs remain static-hosting safe and do not require a backend or API keys

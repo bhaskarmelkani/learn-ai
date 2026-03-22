@@ -70,8 +70,15 @@ export function CatalogPage() {
           <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
             Beginner-first AI courses
           </p>
-          <h2 className="mt-4 text-[clamp(2.8rem,6vw,4.25rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-stone-950 dark:text-white [font-family:var(--font-content)]">
-            Learn AI through calm, narrative courses.
+          <h2 className="mt-4 text-[clamp(2.55rem,5.5vw,4rem)] font-semibold leading-[1.01] tracking-[-0.045em] text-stone-950 dark:text-white [font-family:var(--font-content)]">
+            <span className="block">Courses that build</span>
+            <span className="block">
+              <span className="relative inline-block">
+                <span className="absolute inset-x-1 bottom-[0.14em] h-[0.18em] rounded-full bg-cyan-300/55 dark:bg-cyan-500/18" />
+                <span className="relative">intuition</span>
+              </span>{" "}
+              for how AI works.
+            </span>
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-stone-600 dark:text-gray-300">
             Pick a course, choose your preferred track, and resume exactly where

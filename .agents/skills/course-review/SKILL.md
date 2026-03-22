@@ -15,12 +15,15 @@ Use this skill to review a course for completeness and quality before merge.
 4. **Frontmatter**: Every chapter MDX has `title` and `chapter` in frontmatter.
 5. **Pedagogical components**: Each chapter should include at least one of: `<Checkpoint>`, `<Exercise>`, `<ChapterRecap>`.
 6. **Interactive components**: Verify any referenced interactive components exist in `src/components/interactive/`.
-7. **Project checks**: Run `pnpm lint`, `pnpm test`, `pnpm build`.
+7. **Browser-AI reuse**: When a chapter adds local LLM, embedding, tokenizer, or retrieval experiences, verify it reuses the shared `src/lib/browser-ai/` runtime and existing labs where appropriate.
+8. **Failure states**: Verify browser-AI labs expose loading, unsupported-browser, offline, and model-download failure copy.
+9. **Project checks**: Run `pnpm lint`, `pnpm test`, `pnpm build`.
 
 ## Quality Checks
 
 - Language is concise, supportive, and beginner-accessible
 - Interactive demos reinforce theory rather than replacing it
+- Browser-AI labs stay concept-first and do not require a backend or API key
 - Chapter recaps cover core concepts
 - Checkpoints test understanding, not trivia
 - Mobile and dark-mode rendering are preserved

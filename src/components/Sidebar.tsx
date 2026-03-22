@@ -30,7 +30,7 @@ export function Sidebar({
   guidedMode,
   onToggleGuidedMode,
   completedChapters,
-  courseTitle = "AI In-tuition",
+  courseTitle = "Course",
   onBackToCatalog,
 }: {
   chapters: SidebarChapter[];

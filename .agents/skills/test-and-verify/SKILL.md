@@ -20,6 +20,8 @@ Use this skill whenever a change affects behavior, rendering, navigation, or les
 - No unused imports or dead props were introduced.
 - Keyboard navigation still works for chapter flow.
 - Any new form uses `react-hook-form` and `zod`.
+- Browser-AI labs should be testable in mock mode so CI does not need live model downloads.
+- For browser-AI UI changes, include at least one smoke path that renders the lab shell and fallback/loading copy.
 - The final handoff clearly states what was verified and what was not.
 
 ## Failure Handling

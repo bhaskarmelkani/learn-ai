@@ -13,7 +13,8 @@ subtitle: "Base models, assistant behavior, and the practical failure modes team
   map={["Pretraining", "Base LLM", "Instruction tuning", "Aligned assistant"]}
   trackFocus={{
     conceptual: "The key distinction is base model vs assistant behavior.",
-    builder: "Treat an LLM product as a system layer stack: base model, alignment, retrieval, tool use, and UX guardrails."
+    builder:
+      "Treat an LLM product as a system layer stack: base model, alignment, retrieval, tool use, and UX guardrails.",
   }}
 />
 
@@ -55,24 +56,39 @@ Modern AI products often add **retrieval**, **tool use**, or **workflow logic** 
 
 That can make the product much more useful, but it also means the visible behavior is not coming from the base model alone.
 
+Here is the retrieval layer by itself:
+
+<SemanticSearchLab />
+
+And here is the product consequence of that layer when we compare a model-only answer with a retrieved-evidence answer:
+
+<RetrievalVsModelOnlyLab />
+
 <CaseCards
   title="What aligned LLM systems really look like"
   cards={[
     {
       title: "Customer-support assistant with retrieval",
-      product: "The system answers with a language model plus retrieved help-center content.",
-      modelIdea: "The base model generates text, but retrieval supplies grounded context and the product wrapper decides how that context is used.",
-      failureMode: "If retrieval fetches the wrong document, the assistant can still sound polished while being wrong.",
+      product:
+        "The system answers with a language model plus retrieved help-center content.",
+      modelIdea:
+        "The base model generates text, but retrieval supplies grounded context and the product wrapper decides how that context is used.",
+      failureMode:
+        "If retrieval fetches the wrong document, the assistant can still sound polished while being wrong.",
       trackPrompt: {
-        builder: "Do not attribute every product behavior to the base model. System design choices around retrieval often dominate quality."
-      }
+        builder:
+          "Do not attribute every product behavior to the base model. System design choices around retrieval often dominate quality.",
+      },
     },
     {
       title: "Teacher-facing lesson generator",
-      product: "A classroom tool turns prompts and standards into lesson drafts and quizzes.",
-      modelIdea: "Instruction tuning makes the model more assistant-like, but quality also depends on prompt structure, templates, review flows, and user trust.",
-      failureMode: "A fluent draft can hide shallow pedagogy or factual slips if the surrounding workflow has no review checkpoints."
-    }
+      product:
+        "A classroom tool turns prompts and standards into lesson drafts and quizzes.",
+      modelIdea:
+        "Instruction tuning makes the model more assistant-like, but quality also depends on prompt structure, templates, review flows, and user trust.",
+      failureMode:
+        "A fluent draft can hide shallow pedagogy or factual slips if the surrounding workflow has no review checkpoints.",
+    },
   ]}
 />
 
@@ -83,18 +99,24 @@ That can make the product much more useful, but it also means the visible behavi
   concepts={["llms", "pretraining", "alignment", "assistant systems"]}
   options={[
     {
-      label: "Pretraining produces a base language model, and alignment steps can make that model behave more like an assistant.",
+      label:
+        "Pretraining produces a base language model, and alignment steps can make that model behave more like an assistant.",
       correct: true,
-      explanation: "Yes. This is the cleanest way to separate base LLM training from later assistant behavior."
+      explanation:
+        "Yes. This is the cleanest way to separate base LLM training from later assistant behavior.",
     },
     {
-      label: "An LLM is only an LLM after instruction tuning and preference optimization.",
-      explanation: "That is too narrow. A pretrained transformer language model is already an LLM, even before assistant-style alignment steps."
+      label:
+        "An LLM is only an LLM after instruction tuning and preference optimization.",
+      explanation:
+        "That is too narrow. A pretrained transformer language model is already an LLM, even before assistant-style alignment steps.",
     },
     {
-      label: "Retrieval and tool use happen inside the model's weights, so product teams do not need to think about them separately.",
-      explanation: "In practice they are often system layers around the model, and they need separate product and engineering design."
-    }
+      label:
+        "Retrieval and tool use happen inside the model's weights, so product teams do not need to think about them separately.",
+      explanation:
+        "In practice they are often system layers around the model, and they need separate product and engineering design.",
+    },
   ]}
 />
 
@@ -105,18 +127,23 @@ That can make the product much more useful, but it also means the visible behavi
   concepts={["hallucination", "LLM failure", "generation"]}
   options={[
     {
-      label: "Because they predict likely continuations based on learned patterns, not verified facts — so they can produce fluent but unsupported text.",
+      label:
+        "Because they predict likely continuations based on learned patterns, not verified facts — so they can produce fluent but unsupported text.",
       correct: true,
-      explanation: "Right. The model optimizes for plausible next tokens, not factual accuracy. Fluency does not equal truth."
+      explanation:
+        "Right. The model optimizes for plausible next tokens, not factual accuracy. Fluency does not equal truth.",
     },
     {
       label: "Because they deliberately make up information to test the user.",
-      explanation: "There is no intentionality. Hallucination is a consequence of pattern-based generation, not a design choice."
+      explanation:
+        "There is no intentionality. Hallucination is a consequence of pattern-based generation, not a design choice.",
     },
     {
-      label: "Because they only hallucinate on topics that were not in the training data.",
-      explanation: "Models can hallucinate even on well-covered topics by generating plausible but incorrect combinations."
-    }
+      label:
+        "Because they only hallucinate on topics that were not in the training data.",
+      explanation:
+        "Models can hallucinate even on well-covered topics by generating plausible but incorrect combinations.",
+    },
   ]}
 />
 
@@ -127,21 +154,28 @@ That can make the product much more useful, but it also means the visible behavi
   concepts={["system design", "retrieval", "tool use", "guardrails"]}
   options={[
     {
-      label: "Because the visible behavior depends on retrieval, tool use, prompts, guardrails, and UX — not just the base model.",
+      label:
+        "Because the visible behavior depends on retrieval, tool use, prompts, guardrails, and UX — not just the base model.",
       correct: true,
-      explanation: "Exactly. Attributing everything to 'the model' misses the system layers that actually shape product quality."
+      explanation:
+        "Exactly. Attributing everything to 'the model' misses the system layers that actually shape product quality.",
     },
     {
-      label: "Because the model itself is too small to produce useful outputs alone.",
-      explanation: "Model size is not the issue. Even large models benefit from system layers like retrieval and evaluation."
+      label:
+        "Because the model itself is too small to produce useful outputs alone.",
+      explanation:
+        "Model size is not the issue. Even large models benefit from system layers like retrieval and evaluation.",
     },
     {
-      label: "Because system layers replace the need for model training entirely.",
-      explanation: "The model still needs training. System layers complement it, they do not replace it."
-    }
+      label:
+        "Because system layers replace the need for model training entirely.",
+      explanation:
+        "The model still needs training. System layers complement it, they do not replace it.",
+    },
   ]}
 />
 
 <Callout type="warning" title="Modern Product Reality">
-An LLM product is usually not just "one model." It is a model plus prompts, retrieval, tool access, guardrails, UX, evaluation, and human oversight.
+  An LLM product is usually not just "one model." It is a model plus prompts,
+  retrieval, tool access, guardrails, UX, evaluation, and human oversight.
 </Callout>

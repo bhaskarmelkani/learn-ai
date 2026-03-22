@@ -12,8 +12,10 @@ subtitle: "How language becomes numbers a neural network can work with"
   unlocks="Attention, next-token prediction, and the later discussion of LLM training and alignment."
   map={["Text", "Tokens", "Embeddings", "Numeric representation"]}
   trackFocus={{
-    conceptual: "The main leap is simple: text must be converted into learned numeric representations before a neural network can use it.",
-    builder: "Tokenization and embeddings are implementation choices with real downstream effects on cost, context length, and behavior."
+    conceptual:
+      "The main leap is simple: text must be converted into learned numeric representations before a neural network can use it.",
+    builder:
+      "Tokenization and embeddings are implementation choices with real downstream effects on cost, context length, and behavior.",
   }}
 />
 
@@ -40,7 +42,7 @@ A token might be:
 
 The reason is practical: a model needs a discrete unit it can look up, count, and represent numerically.
 
-<TokenizerPlayground />
+<TokenizerArena />
 
 ## Step 2: Turn Tokens into Vectors
 
@@ -50,14 +52,22 @@ So each token is turned into a vector of numbers called an **embedding**.
 
 You can think of an embedding as the model's learned numeric representation of a token.
 
-| Token | Idea |
-|-------|------|
-| `dog` | one learned vector |
+| Token | Idea                   |
+| ----- | ---------------------- |
+| `dog` | one learned vector     |
 | `cat` | another learned vector |
-| `(` | another learned vector |
+| `(`   | another learned vector |
 | `ing` | another learned vector |
 
 The important shift is this: once tokens become embeddings, language is now in a form a neural network can transform.
+
+Context budgets also become easier to reason about once you stop thinking in whole words and start thinking in model-specific token pieces:
+
+<ContextBudgetLab />
+
+And once text is embedded, we can compare phrases numerically instead of only by exact string match:
+
+<EmbeddingSimilarityLab />
 
 <Checkpoint
   id="ch10-embeddings"
@@ -66,18 +76,22 @@ The important shift is this: once tokens become embeddings, language is now in a
   concepts={["tokens", "embeddings", "llms"]}
   options={[
     {
-      label: "They turn discrete tokens into learned numeric vectors so the network can work with them.",
+      label:
+        "They turn discrete tokens into learned numeric vectors so the network can work with them.",
       correct: true,
-      explanation: "Exactly. Embeddings are the bridge between symbolic token IDs and the numeric world neural networks operate in."
+      explanation:
+        "Exactly. Embeddings are the bridge between symbolic token IDs and the numeric world neural networks operate in.",
     },
     {
       label: "They are the final output probabilities over next tokens.",
-      explanation: "Output probabilities come later. Embeddings are the internal representations used before later transformations and predictions."
+      explanation:
+        "Output probabilities come later. Embeddings are the internal representations used before later transformations and predictions.",
     },
     {
       label: "They replace the need for tokenization entirely.",
-      explanation: "Embeddings depend on tokens. Tokenization happens first so the model knows which discrete units it is representing."
-    }
+      explanation:
+        "Embeddings depend on tokens. Tokenization happens first so the model knows which discrete units it is representing.",
+    },
   ]}
 />
 
@@ -88,18 +102,23 @@ The important shift is this: once tokens become embeddings, language is now in a
   concepts={["tokenization", "discrete units", "vocabulary"]}
   options={[
     {
-      label: "Because the model needs discrete units it can look up, count, and convert into numeric representations.",
+      label:
+        "Because the model needs discrete units it can look up, count, and convert into numeric representations.",
       correct: true,
-      explanation: "Right. Neural networks need numbers. Tokenization is the first step from raw text to numbers."
+      explanation:
+        "Right. Neural networks need numbers. Tokenization is the first step from raw text to numbers.",
     },
     {
-      label: "Because tokenization translates text into a different human language first.",
-      explanation: "Tokenization splits text into pieces, not languages. Translation is a separate task."
+      label:
+        "Because tokenization translates text into a different human language first.",
+      explanation:
+        "Tokenization splits text into pieces, not languages. Translation is a separate task.",
     },
     {
       label: "Because the model can only process exactly one word at a time.",
-      explanation: "Tokens can be subwords, whole words, or punctuation. The model processes sequences of tokens together."
-    }
+      explanation:
+        "Tokens can be subwords, whole words, or punctuation. The model processes sequences of tokens together.",
+    },
   ]}
 />
 
@@ -110,23 +129,30 @@ The important shift is this: once tokens become embeddings, language is now in a
   concepts={["BPE", "subword tokenization", "vocabulary"]}
   options={[
     {
-      label: "So the model can handle rare or unseen words by combining familiar parts.",
+      label:
+        "So the model can handle rare or unseen words by combining familiar parts.",
       correct: true,
-      explanation: "Exactly. Subword tokenization balances vocabulary size with coverage of new words."
+      explanation:
+        "Exactly. Subword tokenization balances vocabulary size with coverage of new words.",
     },
     {
-      label: "Because splitting words always reduces the total number of tokens in a sequence.",
-      explanation: "Subword splitting usually increases token count. The benefit is vocabulary flexibility, not sequence length."
+      label:
+        "Because splitting words always reduces the total number of tokens in a sequence.",
+      explanation:
+        "Subword splitting usually increases token count. The benefit is vocabulary flexibility, not sequence length.",
     },
     {
-      label: "Because whole words are too simple for modern hardware to process.",
-      explanation: "Hardware can handle whole words fine. The issue is that a whole-word vocabulary cannot cover every possible word."
-    }
+      label:
+        "Because whole words are too simple for modern hardware to process.",
+      explanation:
+        "Hardware can handle whole words fine. The issue is that a whole-word vocabulary cannot cover every possible word.",
+    },
   ]}
 />
 
 <Callout type="idea" title="Takeaway">
-Before an LLM can predict language, text must be broken into tokens and converted into learned numeric representations.
+  Before an LLM can predict language, text must be broken into tokens and
+  converted into learned numeric representations.
 </Callout>
 
 <ChapterRecap
@@ -134,15 +160,17 @@ Before an LLM can predict language, text must be broken into tokens and converte
   summary={[
     "Language models work on tokens, not raw human meaning.",
     "Embeddings turn tokens into learned numeric vectors.",
-    "This numeric view is what lets later transformer layers operate on language."
+    "This numeric view is what lets later transformer layers operate on language.",
   ]}
   checks={[
     "Why does a neural network need tokenization before it can model text?",
-    "What problem do embeddings solve?"
+    "What problem do embeddings solve?",
   ]}
   nextStep="Next we explain how tokens use context and influence one another through attention."
   trackActions={{
-    conceptual: "Keep the phrase 'text becomes numbers' in mind. It makes the rest of the LLM stack easier to trust and inspect.",
-    builder: "Think about how tokenization choices affect latency, context size, and downstream behavior."
+    conceptual:
+      "Keep the phrase 'text becomes numbers' in mind. It makes the rest of the LLM stack easier to trust and inspect.",
+    builder:
+      "Think about how tokenization choices affect latency, context size, and downstream behavior.",
   }}
 />

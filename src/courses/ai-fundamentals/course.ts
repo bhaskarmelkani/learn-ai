@@ -2,7 +2,7 @@ import type { CourseManifest } from "../types";
 
 export const course: CourseManifest = {
   slug: "ai-fundamentals",
-  title: "AI In-tuition",
+  title: "AI Foundations",
   subtitle:
     "Build real intuition for how AI works — from the simplest model to large language models — through interactive demos and concise explanations.",
   profession: "general",

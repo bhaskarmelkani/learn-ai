@@ -12,8 +12,10 @@ subtitle: "Tokens, context, next-token prediction, and why the output keeps unfo
   unlocks="Practical prompting, better expectations, and a clearer grasp of why models can sound coherent while still being wrong."
   map={["Text", "Tokens", "Context", "Next-token prediction"]}
   trackFocus={{
-    conceptual: "The main goal is to stop treating the model like a mind and start treating it like a powerful pattern engine.",
-    builder: "The main goal is to notice what changes quality and cost: context length, tokenization, and output control."
+    conceptual:
+      "The main goal is to stop treating the model like a mind and start treating it like a powerful pattern engine.",
+    builder:
+      "The main goal is to notice what changes quality and cost: context length, tokenization, and output control.",
   }}
 />
 
@@ -47,7 +49,15 @@ That matters because tokenization affects:
 - context length
 - how the model chunks meaning
 
-<TokenizerPlayground />
+<TokenizerArena />
+
+The same idea shows up again when you think about context windows.
+
+It is not just **your** words that count.
+
+System instructions, examples, chat wrappers, and the output you still want all spend the same finite budget.
+
+<ContextBudgetLab />
 
 ## Step 2: Context Shapes the Next Step
 
@@ -67,11 +77,17 @@ Two settings often matter to beginners:
 Low temperature usually feels more stable and repetitive. Higher temperature often feels more varied and creative, but also less controlled.
 
 <Callout type="tip" title="Useful simplification">
-You do not need transformer math to use Gen AI well. The durable intuition is that the model sees tokens, uses context, and keeps predicting the next step.
+  You do not need transformer math to use Gen AI well. The durable intuition is
+  that the model sees tokens, uses context, and keeps predicting the next step.
 </Callout>
 
-<Exercise title="Predict the Loop" hint="A good answer sounds like: the model breaks my request into tokens, reads them in context, estimates what token should come next, outputs one, then repeats until the response is done.">
-Write the LLM loop in your own words without using the phrase **artificial intelligence**. Aim for one or two sentences that would make sense to a beginner.
+<Exercise
+  title="Predict the Loop"
+  hint="A good answer sounds like: the model breaks my request into tokens, reads them in context, estimates what token should come next, outputs one, then repeats until the response is done."
+>
+  Write the LLM loop in your own words without using the phrase **artificial
+  intelligence**. Aim for one or two sentences that would make sense to a
+  beginner.
 </Exercise>
 
 <Checkpoint
@@ -81,18 +97,23 @@ Write the LLM loop in your own words without using the phrase **artificial intel
   concepts={["tokens", "context", "cost"]}
   options={[
     {
-      label: "Because the model works over token sequences, and tokenization affects context use, behavior, and cost.",
+      label:
+        "Because the model works over token sequences, and tokenization affects context use, behavior, and cost.",
       correct: true,
-      explanation: "Yes. Tokenization is part of how the system actually sees your input."
+      explanation:
+        "Yes. Tokenization is part of how the system actually sees your input.",
     },
     {
-      label: "Because tokens are only a billing detail and do not affect behavior.",
-      explanation: "Billing is one consequence, but tokenization also shapes how text is chunked and processed."
+      label:
+        "Because tokens are only a billing detail and do not affect behavior.",
+      explanation:
+        "Billing is one consequence, but tokenization also shapes how text is chunked and processed.",
     },
     {
       label: "Because tokens are the model's final answers, not its inputs.",
-      explanation: "Tokens are both input and output units in the generation loop."
-    }
+      explanation:
+        "Tokens are both input and output units in the generation loop.",
+    },
   ]}
 />
 
@@ -105,16 +126,21 @@ Write the LLM loop in your own words without using the phrase **artificial intel
     {
       label: "It repeatedly predicts the next token from the context so far.",
       correct: true,
-      explanation: "Exactly. That loop is the core of the system's generation behavior."
+      explanation:
+        "Exactly. That loop is the core of the system's generation behavior.",
     },
     {
-      label: "It searches a database for a complete sentence and copies it out.",
-      explanation: "Some outputs may resemble memorized patterns, but the core generation loop is probabilistic prediction."
+      label:
+        "It searches a database for a complete sentence and copies it out.",
+      explanation:
+        "Some outputs may resemble memorized patterns, but the core generation loop is probabilistic prediction.",
     },
     {
-      label: "It reasons the full answer silently first, then reveals it word for word from memory.",
-      explanation: "That picture is too neat. Generation unfolds step by step from the active context."
-    }
+      label:
+        "It reasons the full answer silently first, then reveals it word for word from memory.",
+      explanation:
+        "That picture is too neat. Generation unfolds step by step from the active context.",
+    },
   ]}
 />
 
@@ -125,18 +151,22 @@ Write the LLM loop in your own words without using the phrase **artificial intel
   concepts={["temperature", "sampling", "control"]}
   options={[
     {
-      label: "The output often becomes more varied and less tightly controlled.",
+      label:
+        "The output often becomes more varied and less tightly controlled.",
       correct: true,
-      explanation: "Right. Higher temperature usually spreads probability mass more broadly across possible next tokens."
+      explanation:
+        "Right. Higher temperature usually spreads probability mass more broadly across possible next tokens.",
     },
     {
       label: "The model suddenly gains access to new private documents.",
-      explanation: "Temperature affects generation style, not what information the model can access."
+      explanation:
+        "Temperature affects generation style, not what information the model can access.",
     },
     {
       label: "The model switches from token prediction to search.",
-      explanation: "Temperature does not change the basic kind of system you are using."
-    }
+      explanation:
+        "Temperature does not change the basic kind of system you are using.",
+    },
   ]}
 />
 
@@ -145,15 +175,16 @@ Write the LLM loop in your own words without using the phrase **artificial intel
   summary={[
     "LLMs process token sequences, not raw meaning.",
     "Generation unfolds through repeated next-token prediction over context.",
-    "Controls like temperature affect how stable or varied the output feels."
+    "Controls like temperature affect how stable or varied the output feels.",
   ]}
   checks={[
     "Can you explain why changing earlier context changes later output?",
-    "Can you explain why token count matters for both behavior and cost?"
+    "Can you explain why token count matters for both behavior and cost?",
   ]}
   nextStep="Now that the loop is clear, we can treat prompting as interface design instead of mystical wording."
   trackActions={{
     conceptual: "Describe an LLM as a loop, not a personality.",
-    builder: "Notice one workflow where shorter, more structured context would probably improve reliability."
+    builder:
+      "Notice one workflow where shorter, more structured context would probably improve reliability.",
   }}
 />

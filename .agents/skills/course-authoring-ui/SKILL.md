@@ -36,10 +36,12 @@ The course registry at `src/courses/registry.ts` auto-discovers courses via `imp
 2. Reuse components from `src/components/mdx/` such as callouts, checkpoints, recaps, and bridges.
 3. Keep educational language concise and supportive.
 4. Put interactive teaching widgets in `src/components/interactive/`.
-5. Preserve chapter progress, navigation, and sidebar behaviors.
-6. If a lesson adds forms or answer validation, use `react-hook-form` with `zod`.
-7. Chapter frontmatter requires `title`, `chapter` (number), and optional `subtitle`.
-8. The `courseSlug` is injected by the registry loader — do not add it to frontmatter.
+5. Reuse the shared browser-AI labs and `src/lib/browser-ai/` runtime before inventing a one-off Gen AI interactive.
+6. If a new browser-AI lab is necessary, follow [$browser-ai-labs](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/.agents/skills/browser-ai-labs/SKILL.md).
+7. Preserve chapter progress, navigation, and sidebar behaviors.
+8. If a lesson adds forms or answer validation, use `react-hook-form` with `zod`.
+9. Chapter frontmatter requires `title`, `chapter` (number), and optional `subtitle`.
+10. The `courseSlug` is injected by the registry loader — do not add it to frontmatter.
 
 ## Quality Bar
 
