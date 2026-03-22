@@ -31,8 +31,8 @@ jobs:
         if: github.event.action != 'closed'
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'pnpm'
+          node-version: "22"
+          cache: "pnpm"
 
       - name: Install dependencies
         if: github.event.action != 'closed'
@@ -75,7 +75,9 @@ jobs:
             pages_url="${owner}.github.io/${repo_name}"
           fi
 
-          pages_url="${pages_url%/}/"
+          # `pages-base-url` should not end with `/` because the preview action
+          # appends its own slash before the preview path.
+          pages_url="${pages_url%/}"
 
           echo "preview_base=$preview_base" >> "$GITHUB_OUTPUT"
           echo "pages_url=$pages_url" >> "$GITHUB_OUTPUT"
