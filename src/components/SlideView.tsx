@@ -25,7 +25,7 @@ export function SlideView({ chapter }: { chapter: SlideChapter }) {
             </div>
           </div>
         </div>
-        <div className="bg-white px-4 py-8 dark:bg-gray-900 md:px-8 md:py-10">
+        <div className="bg-white px-4 py-8 text-stone-900 dark:bg-gray-900 dark:text-gray-100 md:px-8 md:py-10">
           <Component components={mdxComponents} />
         </div>
       </article>

@@ -43,6 +43,14 @@
   --destructive-foreground: 0 0% 100%;
 }
 
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 html,
 body,
 #root {
