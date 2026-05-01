@@ -2,19 +2,19 @@
 
 These docs mirror the internal agent skills in a tool-agnostic format so coding agents can follow the same contributor workflow publicly.
 
-Substantive contributions to this repo are expected to use these workflows together with [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
+Substantive contributions to this repo are expected to use these workflows together with [AGENTS.md](../../AGENTS.md) or `CLAUDE.md` if present in your local checkout.
 
 Available guides:
 
-- [Create course](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/create-course.md)
-- [Add chapter](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/add-chapter.md)
-- [Course review](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/course-review.md)
-- [Course authoring UI](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/course-authoring-ui.md)
-- [Browser AI labs](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/browser-ai-labs.md)
-- [Design system guard](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/design-system-guard.md)
-- [Test and verify](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/test-and-verify.md)
-- [Form and validation](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/form-and-validation.md)
-- [Accessibility audit](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/accessibility-audit.md)
+- [Create course](create-course.md)
+- [Add chapter](add-chapter.md)
+- [Course review](course-review.md)
+- [Course authoring UI](course-authoring-ui.md)
+- [Browser AI labs](browser-ai-labs.md)
+- [Design system guard](design-system-guard.md)
+- [Test and verify](test-and-verify.md)
+- [Form and validation](form-and-validation.md)
+- [Accessibility audit](accessibility-audit.md)
 
 ## Minimum Workflow
 
