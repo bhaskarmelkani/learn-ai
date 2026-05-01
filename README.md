@@ -103,17 +103,17 @@ The registry auto-discovers courses with `import.meta.glob`, so there is no manu
 
 Useful docs:
 
-- [Course contribution guide](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/contributing-courses.md)
-- [Skill docs](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md)
-- [Agent-ready playbook](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/agent-ready-playbook.md)
+- [Course contribution guide](docs/contributing-courses.md)
+- [Skill docs](docs/skills/README.md)
+- [Agent-ready playbook](docs/agent-ready-playbook.md)
 
 ## Contributor Workflow
 
 Substantive contributions to this repo are expected to go through coding agents that follow the repo instructions and mirrored skill docs.
 
-1. Start from [CONTRIBUTING.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CONTRIBUTING.md).
-2. Read [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
-3. Follow the workflows in [docs/skills/README.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md).
+1. Start from [CONTRIBUTING.md](CONTRIBUTING.md).
+2. Read [AGENTS.md](AGENTS.md) or `CLAUDE.md` if present in your local checkout.
+3. Follow the workflows in [docs/skills/README.md](docs/skills/README.md).
 4. Run the validation commands above.
 5. Open a PR with screenshots or notes for visible UI changes.
 
@@ -122,6 +122,10 @@ Contributions that bypass the documented agent workflow may be declined so the r
 ## Hosting Notes
 
 This is a client-side routed SPA. Production hosting must rewrite unknown paths to `index.html`, or deep links like `/courses/ai-fundamentals/4` will 404 on refresh.
+
+## License
+
+This project is released under the [MIT License](LICENSE).
 
 ## Contributing Ideas
 

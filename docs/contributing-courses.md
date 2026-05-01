@@ -7,8 +7,8 @@ This guide is for contributors adding or extending courses in the multi-course p
 1. Fork the repo or create a feature branch.
 2. Run `pnpm install`.
 3. Start the app with `pnpm dev`.
-4. Read [AGENTS.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/AGENTS.md) or [CLAUDE.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/CLAUDE.md).
-5. Read [docs/skills/README.md](/Users/bhaskar.melkani/Documents/Projects/bhaskar/learn-ai/docs/skills/README.md) before making structural changes.
+4. Read [AGENTS.md](../AGENTS.md) or `CLAUDE.md` if present in your local checkout.
+5. Read [docs/skills/README.md](skills/README.md) before making structural changes.
 
 ## Contribution Policy
 
