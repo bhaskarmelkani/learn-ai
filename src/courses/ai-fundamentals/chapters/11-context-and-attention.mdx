@@ -1,0 +1,120 @@
+---
+title: "Context, Attention, and Next-Token Prediction"
+chapter: 11
+subtitle: "How tokens influence one another and how a language model chooses what comes next"
+---
+
+# Context, Attention, and Next-Token Prediction
+
+<ChapterBridge
+  why="Once text becomes tokens and embeddings, the next challenge is context: the meaning of a token depends on what came before it."
+  buildsOn="Tokens and embeddings as numeric inputs to a neural network."
+  unlocks="Transformers, next-token training, and later discussion of assistant behavior and failure modes."
+  map={["Context", "Attention", "Token scores", "Next-token distribution"]}
+  trackFocus={{
+    conceptual: "Treat attention as a mechanism for deciding which other tokens matter right now.",
+    builder: "This is the core transformer insight: context is not bolted on afterward. It is built into how tokens influence one another."
+  }}
+/>
+
+For language, context matters.
+
+The token after "The cat sat on the" should be influenced by what came before it.
+
+That need leads to **attention**: a way for tokens to weigh which other tokens matter for the next prediction.
+
+## Attention as Context Selection
+
+At a high level, attention asks:
+
+- which earlier tokens matter most right now?
+- how strongly should they influence this position?
+- how should that context change the next prediction?
+
+This does **not** mean the model "understands" context like a person. It means the architecture has a learned way to move information between tokens.
+
+<AttentionHeatmap />
+
+## Predict the Next Token
+
+Once the model has context-aware representations, it produces a probability distribution over possible next tokens.
+
+That distribution is the immediate output of the language model.
+
+<TokenPredictionDemo />
+
+## Why the Transformer Matters
+
+The architecture built around attention is called the **transformer**.
+
+Transformers matter because they let tokens interact with one another in a flexible, learned way instead of treating every token in isolation.
+
+<Checkpoint
+  id="ch11-attention"
+  chapter={11}
+  prompt="What is attention doing in this simplified story?"
+  concepts={["attention", "context", "transformers"]}
+  options={[
+    {
+      label: "It lets tokens weigh which other tokens matter for the current prediction.",
+      correct: true,
+      explanation: "Right. Attention is the architecture's way of moving context information between tokens in a learned, flexible way."
+    },
+    {
+      label: "It memorizes the entire training corpus word for word before making any prediction.",
+      explanation: "Attention is about context interaction inside the current sequence, not literal storage of the whole training set."
+    },
+    {
+      label: "It replaces tokenization by working directly on raw character meaning.",
+      explanation: "Tokenization still happens first. Attention operates on the token representations that come afterward."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch11-next-token"
+  chapter={11}
+  prompt="What is the immediate output of a language model at each position?"
+  concepts={["next-token prediction", "probability distribution", "LLM output"]}
+  options={[
+    {
+      label: "A probability distribution over possible next tokens.",
+      correct: true,
+      explanation: "Right. The model assigns a probability to every token in its vocabulary for the next position."
+    },
+    {
+      label: "A single definite word that is always correct.",
+      explanation: "The model outputs probabilities, not certainties. The final token is sampled or selected from that distribution."
+    },
+    {
+      label: "A complete sentence generated all at once.",
+      explanation: "Generation happens one token at a time. Each step produces a distribution over just the next token."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch11-transformer-value"
+  chapter={11}
+  prompt="Why is the transformer architecture significant?"
+  concepts={["transformer", "attention", "architecture"]}
+  options={[
+    {
+      label: "It lets tokens interact with one another in a flexible, learned way instead of treating each token in isolation.",
+      correct: true,
+      explanation: "Yes. The transformer's attention mechanism is what enables rich context-dependent processing."
+    },
+    {
+      label: "It is the only architecture that can process text at all.",
+      explanation: "Earlier architectures (RNNs, LSTMs) also processed text. Transformers are significant because of how well they do it."
+    },
+    {
+      label: "It removes the need for training data by using attention instead.",
+      explanation: "Transformers still need massive training data. Attention is about how the model processes sequences, not a data substitute."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Takeaway">
+Attention helps tokens use context, and the model's immediate job is still the same: predict a probability distribution over the next token.
+</Callout>

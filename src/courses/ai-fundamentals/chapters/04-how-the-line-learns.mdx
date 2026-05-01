@@ -1,0 +1,155 @@
+---
+title: "How the Line Learns"
+chapter: 4
+subtitle: "Error, loss, gradient descent, and why outliers matter"
+---
+
+# How the Line Learns
+
+<ChapterBridge
+  why="This is the chapter where the model stops being a static equation and becomes something that improves itself from data."
+  buildsOn="Weight, bias, and the idea that changing parameters changes predictions."
+  unlocks="Optimization, robustness, and the same training loop inside later neural networks."
+  map={["Prediction", "Loss", "Gradient", "Update"]}
+  trackFocus={{
+    conceptual: "Treat loss as a 'badness score' and gradient descent as repeated downhill steps.",
+    builder: "Notice how the update rule turns a static model into a trainable system."
+  }}
+/>
+
+Drawing a good line by hand is helpful for intuition.
+
+But once we have many houses, we want the model to improve its own line from data.
+
+That requires two ideas:
+
+1. a way to measure how wrong the line is
+2. a way to update the line so it becomes less wrong
+
+## Measuring Error
+
+For one example, the error is simple:
+
+$$\text{error} = \text{actual} - \text{prediction}$$
+
+For many examples, we need one summary number. A common choice is **mean squared error (MSE)**:
+
+$$\text{MSE} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2$$
+
+The name matters less than the intuition: lower MSE means the line fits the data better.
+
+## Improving the Line
+
+Once we can measure badness, we can ask a new question:
+
+how should we change the line so that badness goes down?
+
+That update process is called **gradient descent**.
+
+<GradientDescentDemo />
+
+<Checkpoint
+  id="ch4-learning-rate"
+  chapter={4}
+  prompt="What happens if the learning rate is too high?"
+  concepts={["gradient descent", "optimization", "learning rate"]}
+  options={[
+    {
+      label: "Updates can overshoot the good region and bounce around instead of settling down.",
+      correct: true,
+      explanation: "Exactly. Larger steps can help only up to a point. After that, the update rule becomes unstable."
+    },
+    {
+      label: "The model always learns faster and reaches a better answer.",
+      explanation: "A higher learning rate is not automatically better. Too much step size can work against convergence."
+    },
+    {
+      label: "The data points move to make the loss surface easier.",
+      explanation: "The data stays fixed. The learning rate changes step size on the same loss surface."
+    }
+  ]}
+/>
+
+## One Weird Point Can Move the Whole Story
+
+Not all data points have the same effect on the fitted line.
+
+If one house sale looks very unusual, it can pull the line away from the main cluster.
+
+<LinearRegressionOutlierDemo />
+
+## Guided Lab
+
+Now that the loop is clear, edit the training code directly and watch the numbers move.
+
+<LinearRegressionNotebook />
+
+<Checkpoint
+  id="ch4-loss-purpose"
+  chapter={4}
+  prompt="What is the purpose of the loss function?"
+  concepts={["loss", "MSE", "training"]}
+  options={[
+    {
+      label: "It gives one summary number for how wrong the model is, so training knows which direction to improve.",
+      correct: true,
+      explanation: "Exactly. Without a loss, the model has no signal for whether its predictions are getting better or worse."
+    },
+    {
+      label: "It removes bad data points from the training set.",
+      explanation: "Loss measures model error, not data quality. All data points contribute to the loss."
+    },
+    {
+      label: "It decides the final architecture of the model.",
+      explanation: "Architecture is chosen before training. Loss guides parameter updates, not structural decisions."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch4-outlier-effect"
+  chapter={4}
+  prompt="Why can one unusual data point have an outsized effect on the fitted line?"
+  concepts={["outliers", "MSE", "robustness"]}
+  options={[
+    {
+      label: "Because squaring the error makes large mistakes count much more than small ones.",
+      correct: true,
+      explanation: "Right. MSE squares errors, so one far-off point can dominate the total loss and pull the line toward it."
+    },
+    {
+      label: "Because the model memorizes every data point exactly.",
+      explanation: "Linear regression fits a line, not a lookup table. But outliers still pull the line because of how squared error works."
+    },
+    {
+      label: "Because outliers are always removed before training begins.",
+      explanation: "Outliers are not automatically removed. If present, they influence the fit — which is the product risk."
+    }
+  ]}
+/>
+
+<Exercise title="Describe the Loop" hint="The model guesses a price, we measure how far off the guess was, we nudge the weight in the direction that makes the guess less wrong, and then we repeat with the next example.">
+Say the training loop in plain language without math symbols: prediction, measurement, update, repeat.
+</Exercise>
+
+<Callout type="idea" title="Takeaway">
+Learning a line means measuring error and repeatedly updating the parameters until the fit improves.
+</Callout>
+
+<ChapterRecap
+  chapter={4}
+  summary={[
+    "Loss gives one summary number for how wrong the model is.",
+    "Gradient descent uses that signal to move parameters downhill.",
+    "Outliers matter because not every point pulls on the fit equally."
+  ]}
+  checks={[
+    "Why does a training loop need both a loss and an update rule?",
+    "What is the product risk of ignoring outliers or edge cases?"
+  ]}
+  nextStep="Next we keep the same training story but change the shape of the model when a straight line stops being enough."
+  trackActions={{
+    conceptual: "Keep the picture of downhill steps. That picture survives even when the math gets harder.",
+    builder: "Notice how sensitive training can be to hyperparameters and data quality even in tiny examples."
+  }}
+/>

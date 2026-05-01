@@ -1,0 +1,145 @@
+@import "katex/dist/katex.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-content: "Source Serif 4", ui-serif, Georgia, serif;
+  --radius: 1rem;
+  --background: 36 33% 98%;
+  --foreground: 24 10% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 24 10% 14%;
+  --primary: 191 91% 36%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 195 40% 96%;
+  --secondary-foreground: 191 50% 20%;
+  --muted: 36 20% 94%;
+  --muted-foreground: 24 8% 42%;
+  --border: 30 16% 86%;
+  --input: 30 16% 86%;
+  --ring: 191 91% 36%;
+  --destructive: 0 72% 52%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+.dark {
+  --background: 228 20% 8%;
+  --foreground: 210 20% 96%;
+  --card: 222 22% 11%;
+  --card-foreground: 210 20% 96%;
+  --primary: 191 95% 58%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 222 16% 18%;
+  --secondary-foreground: 210 20% 96%;
+  --muted: 222 16% 18%;
+  --muted-foreground: 215 16% 70%;
+  --border: 222 16% 20%;
+  --input: 222 16% 20%;
+  --ring: 191 95% 58%;
+  --destructive: 0 72% 58%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  font-family: var(--font-ui);
+}
+
+body {
+  @apply bg-stone-100 text-stone-900 antialiased dark:bg-gray-950 dark:text-gray-50;
+  font-feature-settings:
+    "liga" 1,
+    "kern" 1,
+    "ss01" 1;
+}
+
+.katex {
+  color: inherit;
+  font-size: 1.1em;
+}
+
+.katex-display {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+/* Chapter transition */
+.chapter-content {
+  animation: fadeIn 200ms ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Code block styling */
+[data-rehype-pretty-code-figure] pre {
+  @apply rounded-lg border p-4 text-sm leading-relaxed;
+  @apply border-gray-200 dark:border-gray-700;
+  background: #f6f8fa !important;
+}
+.dark [data-rehype-pretty-code-figure] pre {
+  background: #22272e !important;
+}
+
+[data-rehype-pretty-code-figure] code {
+  @apply grid;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  @apply px-4;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  @apply border-l-2 border-blue-400;
+  @apply bg-blue-50 dark:bg-gray-800/50;
+}
+
+/* Inline code */
+:not(pre) > code {
+  @apply rounded px-1.5 py-0.5 text-sm font-mono;
+  @apply bg-gray-100 text-blue-700 dark:bg-gray-800 dark:text-blue-300;
+}
+
+.chapter-content {
+  text-wrap: pretty;
+}
+
+.chapter-content article {
+  text-wrap: pretty;
+}
+
+.chapter-content :is(h1, h2, h3, blockquote, p, ul, ol, table, hr) {
+  scroll-margin-top: 8rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+  @apply bg-gray-300 dark:bg-gray-700;
+}

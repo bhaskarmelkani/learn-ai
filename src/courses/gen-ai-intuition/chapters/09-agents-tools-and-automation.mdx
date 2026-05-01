@@ -1,0 +1,156 @@
+---
+title: "Agents, Tools, and Automation"
+chapter: 9
+subtitle: "A practical mental model for multi-step workflows without the hype fog"
+---
+
+# Agents, Tools, and Automation
+
+<ChapterBridge
+  why="The word 'agent' gets used for everything from a simple workflow to a deeply autonomous system. This chapter makes the term useful again."
+  buildsOn="Prompting, grounding, and tool selection from the earlier chapters."
+  unlocks="A more honest way to design or evaluate multi-step workflows without overcomplicating them."
+  map={["Goal", "Tool access", "Multi-step workflow", "Human checkpoint"]}
+  trackFocus={{
+    conceptual: "The key move is to separate useful automation from marketing fog.",
+    builder: "The key move is to choose the simplest workflow that solves the job before reaching for 'agentic' complexity."
+  }}
+/>
+
+An **agentic workflow** usually means a system that can do more than answer once.
+
+It can:
+
+- plan steps
+- use tools
+- retrieve information
+- call other systems
+- revise its own output
+- keep working toward a goal across multiple actions
+
+That sounds powerful, but the practical beginner question is:
+
+> Does this task really need an agent, or would a simpler workflow do better?
+
+## Three Levels of Workflow Complexity
+
+| Pattern | What it does | When it fits |
+|-----------|-------|-------|
+| Single-turn chat | one answer from one prompt | drafting, explanation, brainstorming |
+| Structured workflow | prompt plus retrieval, schema, or review step | summaries, extraction, document Q&A |
+| Agentic workflow | multi-step plan with tool use and iteration | research, coordination, multi-system tasks |
+
+Many teams overuse the word **agent** when they really mean **workflow**.
+
+That matters because complexity adds new failure modes:
+
+- the wrong tool is used
+- the plan drifts
+- the system keeps going when it should stop
+- the user loses visibility into where the answer came from
+
+<CaseCards
+  title="When agentic complexity helps and when it hurts"
+  cards={[
+    {
+      title: "Research across many sources",
+      product: "A system searches, reads, compares, and synthesizes multiple documents before drafting a report.",
+      modelIdea: "This can benefit from a multi-step workflow because the job is not just one response. It is coordinated evidence gathering and synthesis.",
+      failureMode: "Without source visibility, the user gets a polished report but cannot inspect where the claims came from."
+    },
+    {
+      title: "Simple policy answer",
+      product: "A user asks for the travel reimbursement limit from the handbook.",
+      modelIdea: "This usually does not need an agent. It mainly needs good retrieval from the right source.",
+      failureMode: "An over-engineered agent adds delay, cost, and extra places to go wrong."
+    }
+  ]}
+/>
+
+<Exercise title="Choose the Simplest Workflow" hint="A strong answer sounds like: 'This task only needs retrieval plus a structured answer, not a full agent, because the system is answering one question from one document set and a human can review the final response.'">
+Pick one real task and decide whether it needs single-turn chat, a structured workflow, or an agentic workflow. Explain what extra capability would justify the added complexity.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch9-agent"
+  chapter={9}
+  prompt="What makes a workflow more agentic than a simple chat interaction?"
+  concepts={["agents", "tool use", "workflow"]}
+  options={[
+    {
+      label: "It can take multiple steps, use tools, and keep working toward a goal across actions.",
+      correct: true,
+      explanation: "Yes. The difference is in the workflow behavior, not just in the marketing label."
+    },
+    {
+      label: "It uses a more confident tone and a better chatbot avatar.",
+      explanation: "Presentation is not what makes a workflow agentic."
+    },
+    {
+      label: "It always replaces the need for human review.",
+      explanation: "Agentic systems often increase the need for visibility and review."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch9-complexity"
+  chapter={9}
+  prompt="Why is 'simplest workflow that works' a good design rule?"
+  concepts={["workflow design", "complexity", "reliability"]}
+  options={[
+    {
+      label: "Because more steps and more tool calls create more ways for the workflow to drift or fail.",
+      correct: true,
+      explanation: "Exactly. Extra capability should be justified by the task, not added by default."
+    },
+    {
+      label: "Because agents are never useful.",
+      explanation: "Agents can be useful. The point is that complexity should earn its place."
+    },
+    {
+      label: "Because simpler workflows always give more creative outputs.",
+      explanation: "Creativity is not the core issue here. Reliability and fit are."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch9-source-visibility"
+  chapter={9}
+  prompt="What should you worry about most in a multi-step agentic workflow?"
+  concepts={["agentic systems", "visibility", "review"]}
+  options={[
+    {
+      label: "Whether you can still see the sources, decisions, and failure points well enough to review the result.",
+      correct: true,
+      explanation: "Right. Visibility and review become more important as the workflow becomes more complex."
+    },
+    {
+      label: "Whether the system uses enough trendy terminology.",
+      explanation: "Naming does not tell you whether the workflow is trustworthy."
+    },
+    {
+      label: "Whether the system is complicated enough to impress the team.",
+      explanation: "Impressive complexity is not the same as useful complexity."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={9}
+  summary={[
+    "An agentic workflow usually means multi-step work with tools, planning, or iteration.",
+    "Many tasks need a structured workflow, not a full agent.",
+    "As complexity rises, visibility and human review matter more, not less."
+  ]}
+  checks={[
+    "Can you explain why a simple grounded workflow is sometimes better than an agent?",
+    "Can you name the extra failure mode added by multi-step tool use?"
+  ]}
+  nextStep="Next we shift from capability to responsibility: privacy, sensitive data, deepfakes, and human oversight."
+  trackActions={{
+    conceptual: "Take one 'agent' example you have seen and ask whether it is really an agent or just a workflow.",
+    builder: "Define one situation where you would reject agentic complexity and keep the workflow simple."
+  }}
+/>

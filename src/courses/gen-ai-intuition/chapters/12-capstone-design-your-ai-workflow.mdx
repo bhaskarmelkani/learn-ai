@@ -1,0 +1,138 @@
+---
+title: "Capstone: Design Your AI Workflow"
+chapter: 12
+subtitle: "Bring the whole course together through task choice, context design, risk thinking, and review"
+---
+
+# Capstone: Design Your AI Workflow
+
+<ChapterBridge
+  why="The course becomes real when learners can design a useful workflow rather than just recognize vocabulary. This capstone turns the concepts into a practical system design habit."
+  buildsOn="Everything in the course: task framing, prompting, grounding, multimodality, tool selection, responsibility, and review."
+  unlocks="Independent judgment about when and how to use Gen AI on real work instead of copying isolated tricks."
+  map={["Task", "Workflow pattern", "Context", "Review loop"]}
+  trackFocus={{
+    conceptual: "Your goal is to design a workflow you understand deeply enough to trust with the right level of caution.",
+    builder: "Your goal is to design a workflow that would still make sense if another teammate had to run it without you."
+  }}
+/>
+
+Throughout the course, one repeated question kept showing up:
+
+- what exact job is this workflow doing?
+- what context does it need?
+- what kind of output should it produce?
+- what can go wrong?
+- how would a human catch that?
+
+Now use those questions on a workflow of your own.
+
+<GenAICapstoneStudio />
+
+<CaseCards
+  title="What strong capstones usually include"
+  cards={[
+    {
+      title: "Clear justification",
+      product: "A workflow that explains why chat, grounding, or automation is the right pattern for the task.",
+      modelIdea: "Strong capstones justify the workflow choice instead of assuming more AI is always better.",
+      failureMode: "Weak capstones pick tools first and define the job second."
+    },
+    {
+      title: "Honest failure thinking",
+      product: "A workflow that names how the output could mislead someone and how a human would notice.",
+      modelIdea: "Good design is not just generation quality. It is review quality too.",
+      failureMode: "If no one can tell when the workflow is wrong, the design is not ready."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch12-pattern-choice"
+  chapter={12}
+  prompt="What is a sign of a strong Gen AI workflow design?"
+  concepts={["workflow design", "tool choice", "review"]}
+  options={[
+    {
+      label: "It chooses the workflow pattern deliberately, names the needed context, and explains how mistakes get caught.",
+      correct: true,
+      explanation: "Yes. Strong design covers both usefulness and failure handling."
+    },
+    {
+      label: "It uses the newest tool in the market regardless of the task.",
+      explanation: "Novelty is not the same as fit."
+    },
+    {
+      label: "It tries to automate every step so no human ever has to look at the result.",
+      explanation: "Removing review entirely is often a sign of weak judgment rather than strong design."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch12-context"
+  chapter={12}
+  prompt="Why does a good capstone specify the context source clearly?"
+  concepts={["context", "grounding", "workflow quality"]}
+  options={[
+    {
+      label: "Because many useful workflows depend on the right source material, not just a well-written prompt.",
+      correct: true,
+      explanation: "Exactly. Context quality often matters more than prompt cleverness."
+    },
+    {
+      label: "Because naming a source automatically guarantees the system used it correctly.",
+      explanation: "It helps, but source choice and source use still need review."
+    },
+    {
+      label: "Because context only matters in programming tasks.",
+      explanation: "Context matters in policy, support, learning, research, and many no-code workflows."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch12-human-review"
+  chapter={12}
+  prompt="What should the human review plan answer?"
+  concepts={["human review", "capstone", "trust"]}
+  options={[
+    {
+      label: "Who checks the output, what they check for, and what happens when the workflow is wrong.",
+      correct: true,
+      explanation: "Right. A review plan is concrete: reviewer, criteria, and correction path."
+    },
+    {
+      label: "Which marketing tag line best describes the tool.",
+      explanation: "Branding is not a review plan."
+    },
+    {
+      label: "How to make the result sound more intelligent.",
+      explanation: "Polish is not the main point. Trustworthy correction is."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Final takeaway">
+The strongest sign of Gen AI understanding is not vocabulary. It is being able to design a workflow that is useful, grounded, and honest about where it can fail.
+</Callout>
+
+<ChapterRecap
+  chapter={12}
+  summary={[
+    "A strong workflow design starts from the task, not the hype.",
+    "Grounding, tool choice, and human review are part of the design, not afterthoughts.",
+    "Transfer matters most: you should now be able to design a realistic Gen AI workflow of your own."
+  ]}
+  checks={[
+    "Can you explain why your chosen workflow pattern fits the job better than the alternatives?",
+    "Can you name the failure mode and the review path without hiding behind jargon?"
+  ]}
+  nextStep="From here, the best next step is to apply the workflow to one real task and refine it with the same review habit you built in the course."
+  trackActions={{
+    conceptual: "Run your capstone on one real task and see whether the review step changes your trust in the output.",
+    builder: "Turn your capstone into a reusable operating note someone else on your team could follow."
+  }}
+/>
+
+<CompletionDashboard />

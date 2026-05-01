@@ -1,0 +1,137 @@
+---
+title: "Using Gen AI Responsibly"
+chapter: 10
+subtitle: "Privacy, sensitive data, copyright, deepfakes, and the human oversight line"
+---
+
+# Using Gen AI Responsibly
+
+<ChapterBridge
+  why="A useful beginner course cannot stop at capability. It also needs a practical responsibility framework for where Gen AI can cause harm or create false confidence."
+  buildsOn="The earlier chapters on trust, grounding, multimodality, and workflow complexity."
+  unlocks="Safer day-to-day judgment about when to use Gen AI, what data to share, and when a human must stay in the loop."
+  map={["Sensitive context", "Potential harm", "Review requirement", "Safer use"]}
+  trackFocus={{
+    conceptual: "Think in terms of consequence: who could be harmed, and how would the mistake show up?",
+    builder: "Think in terms of guardrails: what the workflow should refuse, escalate, or require human approval for."
+  }}
+/>
+
+Responsible use is not mainly about sounding ethical.
+
+It is about noticing where a workflow could:
+
+- expose sensitive information
+- mislead someone with false certainty
+- produce harmful or deceptive media
+- create a result that looks authoritative without the right expertise
+
+## Four Questions to Ask Before You Use Gen AI
+
+1. does this involve sensitive or private data?
+2. could a wrong answer cause meaningful harm?
+3. does this output need expert sign-off?
+4. could this artifact mislead someone if taken at face value?
+
+If several answers are yes, slow down the workflow and add more review.
+
+## Common Responsibility Zones
+
+| Risk area | Why it matters | Safer habit |
+|-----------|-------|-------|
+| Privacy | prompts may include sensitive or internal information | share the minimum needed, use approved tools |
+| Copyright and provenance | outputs may draw on unclear source boundaries or generate misleading claims of originality | review reuse carefully, avoid blind publishing |
+| Deepfakes and synthetic media | realistic-looking media can mislead or impersonate | label synthetic content where needed, verify source media |
+| High-stakes advice | errors in medical, legal, financial, or HR contexts can harm people | require expert review and original sources |
+
+<Callout type="warning" title="A good red flag">
+If the output will be trusted by someone who cannot easily verify it, your review bar should go up immediately.
+</Callout>
+
+<Exercise title="Run the Responsibility Check" hint="A strong answer might say: 'This task includes customer account data and a public-facing answer. I would remove sensitive fields, use an approved tool, and require a human review before sending anything externally.'">
+Choose one Gen AI workflow you would actually like to use. Write which responsibility risks apply to it and what rule you would set before using it in real life.
+</Exercise>
+
+<Checkpoint
+  id="genai-ch10-sensitive"
+  chapter={10}
+  prompt="What should you ask first before pasting information into a Gen AI tool?"
+  concepts={["privacy", "sensitive data", "responsibility"]}
+  options={[
+    {
+      label: "Whether the information is sensitive, private, or inappropriate to share in that tool.",
+      correct: true,
+      explanation: "Yes. Data sensitivity is one of the first responsibility checks."
+    },
+    {
+      label: "Whether the prompt sounds clever enough.",
+      explanation: "Prompt style is secondary to whether the data should be shared at all."
+    },
+    {
+      label: "Whether the tool can generate images too.",
+      explanation: "Extra features do not answer the privacy question."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch10-high-stakes"
+  chapter={10}
+  prompt="Why should high-stakes domains keep a strong human review layer?"
+  concepts={["high stakes", "human review", "harm"]}
+  options={[
+    {
+      label: "Because confident mistakes in high-stakes contexts can materially harm people, even when the language sounds professional.",
+      correct: true,
+      explanation: "Right. The consequence of error drives the review standard upward."
+    },
+    {
+      label: "Because Gen AI is never useful in those areas at all.",
+      explanation: "It can still help with drafting or summarizing, but the review and oversight bar is higher."
+    },
+    {
+      label: "Because human review directly retrains the model every time.",
+      explanation: "Human review is a system safeguard. It does not automatically change the model's weights."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="genai-ch10-deepfakes"
+  chapter={10}
+  prompt="Why do synthetic images, audio, or video need special care?"
+  concepts={["deepfakes", "synthetic media", "trust"]}
+  options={[
+    {
+      label: "Because realistic media can mislead people about what was seen, said, or recorded.",
+      correct: true,
+      explanation: "Exactly. Synthetic media changes the trust problem because realism can outrun verification."
+    },
+    {
+      label: "Because media generation is only relevant to entertainment work.",
+      explanation: "Synthetic media affects politics, marketing, education, identity, and public trust too."
+    },
+    {
+      label: "Because synthetic media is harmless as long as it looks polished.",
+      explanation: "Polish can make the trust risk worse, not better."
+    }
+  ]}
+/>
+
+<ChapterRecap
+  chapter={10}
+  summary={[
+    "Responsible use starts with consequence, sensitivity, and who could be misled or harmed.",
+    "Privacy, provenance, synthetic media, and high-stakes advice need stronger guardrails.",
+    "Human review matters more as risk and consequence rise."
+  ]}
+  checks={[
+    "Can you explain why a polished answer in a high-stakes workflow still needs expert review?",
+    "Can you name one rule you would set before using Gen AI on sensitive information?"
+  ]}
+  nextStep="Next we bring the whole course closer to everyday work by mapping durable Gen AI workflows across roles."
+  trackActions={{
+    conceptual: "Pick one workflow you would now use more carefully because the consequence of error is higher than it first seemed.",
+    builder: "Write one guardrail rule you would add before letting a team use a new Gen AI workflow."
+  }}
+/>

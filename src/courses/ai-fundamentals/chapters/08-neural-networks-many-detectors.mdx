@@ -1,0 +1,122 @@
+---
+title: "Neural Networks: Many Detectors Working Together"
+chapter: 8
+subtitle: "Layers, neurons, and the idea of learned internal features"
+---
+
+# Neural Networks: Many Detectors Working Together
+
+<ChapterBridge
+  why="Now that the need for multiple internal signals is clear, this chapter gives that need a concrete structure: layers of simple detectors that feed later detectors."
+  buildsOn="The idea that one boundary is not enough for some patterns."
+  unlocks="Backpropagation, representation learning, and the bridge to modern deep models."
+  map={["Neuron", "Layer", "Hidden representation", "Final output"]}
+  trackFocus={{
+    conceptual: "A neuron is just a small pattern detector. Keep that sentence close.",
+    builder: "Think less about neuron mythology and more about representation flow between layers."
+  }}
+/>
+
+Once we accept that one score is not always enough, the next step is natural:
+
+let the model learn several internal detectors, then combine them.
+
+That system is called a **neural network**.
+
+## One Neuron
+
+A neuron is still doing a familiar job:
+
+1. compute a score
+2. apply a non-linearity
+3. pass the result forward
+
+So a neuron is not magic. It is a small detector.
+
+## Several Neurons in Parallel
+
+When we place many neurons in a layer, each one can specialize in a different pattern.
+
+One neuron might respond to one feature. Another might respond to a different one. The next layer can combine them into richer patterns.
+
+<NeuralNetworkDemo />
+
+## XOR as the Proof Case
+
+XOR is the clean demonstration that one detector can fail while a tiny network can succeed.
+
+<XorDemo />
+
+## The Big Intuition
+
+Neural networks matter because they can build internal representations automatically instead of forcing us to hand-design every useful feature ourselves.
+
+<Checkpoint
+  id="ch8-hidden-layer"
+  chapter={8}
+  prompt="Why does adding a hidden layer help?"
+  concepts={["neural networks", "hidden layers", "representations"]}
+  options={[
+    {
+      label: "Because the model can build intermediate signals before making the final decision.",
+      correct: true,
+      explanation: "Yes. The hidden layer adds representational power by letting the model ask useful internal questions first."
+    },
+    {
+      label: "Because a hidden layer automatically guarantees better generalization on every task.",
+      explanation: "More capacity helps only when it is trained well and matches the problem. It does not guarantee better outcomes everywhere."
+    },
+    {
+      label: "Because the output layer stops needing data once a hidden layer exists.",
+      explanation: "The whole network still depends on training data. Hidden layers change representation, not the need for evidence."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch8-neuron-job"
+  chapter={8}
+  prompt="What is a single neuron doing?"
+  concepts={["neuron", "activation", "detector"]}
+  options={[
+    {
+      label: "Computing a weighted score, applying a non-linearity, and passing the result forward.",
+      correct: true,
+      explanation: "Exactly. A neuron is a small pattern detector — nothing more mysterious than that."
+    },
+    {
+      label: "Storing one complete memory from the training data.",
+      explanation: "Neurons are not memory cells. They compute a signal from their inputs each time they are activated."
+    },
+    {
+      label: "Deciding the final output class by itself.",
+      explanation: "A single neuron contributes one signal. The final decision comes from combining many neurons across layers."
+    }
+  ]}
+/>
+
+<Checkpoint
+  id="ch8-depth-benefit"
+  chapter={8}
+  prompt="Why does stacking multiple layers help?"
+  concepts={["deep networks", "layers", "composition"]}
+  options={[
+    {
+      label: "Each layer builds on the previous layer's features, enabling progressively richer pattern recognition.",
+      correct: true,
+      explanation: "Right. Depth lets the network compose simple features into complex ones — edges become shapes become objects."
+    },
+    {
+      label: "More layers always mean higher accuracy regardless of the task.",
+      explanation: "Depth helps only when the problem benefits from hierarchical features. Too many layers can also cause training difficulties."
+    },
+    {
+      label: "Stacking layers removes the need for a loss function.",
+      explanation: "The network still needs a loss function to guide training, no matter how many layers it has."
+    }
+  ]}
+/>
+
+<Callout type="idea" title="Takeaway">
+Neural networks are many small detectors arranged in layers so later layers can use what earlier layers discovered.
+</Callout>
