@@ -92,6 +92,10 @@ And here is the product consequence of that layer when we compare a model-only a
   ]}
 />
 
+<Exercise title="Separate the Layers" hint="A strong answer might say: 'In a support chatbot, the base model writes fluent answers, instruction tuning helps it follow support-style tasks, retrieval provides policy evidence, and the product UI should force citations or review before sending.'">
+Pick one LLM product. Separate what likely comes from the base model, what comes from assistant tuning, what comes from retrieval or tools, and what must come from product guardrails.
+</Exercise>
+
 <Checkpoint
   id="ch12-base-vs-aligned"
   chapter={12}
@@ -179,3 +183,23 @@ And here is the product consequence of that layer when we compare a model-only a
   An LLM product is usually not just "one model." It is a model plus prompts,
   retrieval, tool access, guardrails, UX, evaluation, and human oversight.
 </Callout>
+
+<ChapterRecap
+  chapter={12}
+  summary={[
+    "Pretraining creates a base language model optimized for next-token prediction.",
+    "Assistant behavior comes from later alignment steps and product-system choices.",
+    "Retrieval, tools, guardrails, evaluation, and human oversight are system layers around the model.",
+  ]}
+  checks={[
+    "Can you explain why a base model and an assistant product are not the same thing?",
+    "Can you name which layer should catch unsupported or risky outputs?",
+  ]}
+  nextStep="Next you will use the whole course to tear down an AI product end to end."
+  trackActions={{
+    conceptual:
+      "Choose one assistant you use and list the visible system layers around the model.",
+    builder:
+      "Draft an LLM product stack with model, context source, tool boundary, evaluation, and review path.",
+  }}
+/>

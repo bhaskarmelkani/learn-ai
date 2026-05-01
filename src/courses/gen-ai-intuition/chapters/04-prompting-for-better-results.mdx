@@ -72,12 +72,12 @@ When the model is tiny, vague prompts break faster and structured prompts help m
 </Callout>
 
 <Exercise
-  title="Upgrade the Prompt"
-  hint="A strong revision might add audience, output structure, and uncertainty handling: 'Extract the risks from this proposal for an operations lead. Return a table with risk, impact, and missing information. If evidence is weak, mark it unclear.'"
+  title="Debug the Prompt"
+  hint="A strong revision might add audience, source boundary, output structure, and uncertainty handling: 'Extract the risks from this proposal for an operations lead. Use only the proposal text. Return a table with risk, evidence, impact, and missing information. If evidence is weak, mark it unclear.'"
 >
-  Take the prompt you wrote in the last chapter. Improve it in three ways: add
-  one useful constraint, add a better output structure, and add one instruction
-  about uncertainty, missing information, or evidence.
+  Take the prompt you wrote in the last chapter. Mark the ambiguity first, then
+  improve it in four ways: audience, source boundary, output structure, and one
+  instruction about uncertainty, missing information, or evidence.
 </Exercise>
 
 <Checkpoint
