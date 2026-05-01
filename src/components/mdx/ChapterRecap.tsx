@@ -33,7 +33,7 @@ export function ChapterRecap({
     <details
       open
       data-lesson-block="recap"
-      className="my-10 overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-gray-800 dark:bg-gray-900"
+      className="my-10 scroll-mt-28 overflow-hidden rounded-2xl border border-stone-200 bg-white dark:border-gray-800 dark:bg-gray-900"
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4">
         <div>

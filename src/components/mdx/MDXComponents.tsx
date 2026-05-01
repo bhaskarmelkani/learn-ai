@@ -95,7 +95,7 @@ export const mdxComponents: MDXComponentsType = {
   ),
   h2: (props) => (
     <h2
-      className="mb-4 mt-12 w-full border-t border-stone-200/80 pt-6 text-pretty text-[clamp(1.18rem,1.35vw,1.52rem)] font-semibold leading-[1.16] tracking-[-0.012em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
+      className="mb-4 mt-12 w-full scroll-mt-28 border-t border-stone-200/80 pt-6 text-pretty text-[clamp(1.18rem,1.35vw,1.52rem)] font-semibold leading-[1.16] tracking-[-0.012em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
       {...props}
     />
   ),

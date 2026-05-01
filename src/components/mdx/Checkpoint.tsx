@@ -31,7 +31,7 @@ export function Checkpoint({
   }, [stored]);
 
   return (
-    <div data-lesson-block="checkpoint" className="my-8 rounded-2xl border border-amber-200 bg-amber-50/72 px-5 py-5 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10">
+    <div data-lesson-block="checkpoint" className="my-8 scroll-mt-28 rounded-2xl border border-amber-200 bg-amber-50/72 px-5 py-5 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-amber-800 dark:text-amber-200">

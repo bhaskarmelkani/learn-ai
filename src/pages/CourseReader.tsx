@@ -22,6 +22,9 @@ type LessonMeta = {
   recaps: number;
 };
 
+const OVERVIEW_SECTION_ID = "overview";
+const CHECKPOINT_SECTION_ID = "checkpoint-recap";
+
 const STORAGE_KEYS = {
   sidebarCollapsed: "learn-ai-sidebar-collapsed",
 };
@@ -151,8 +154,69 @@ function CourseReaderInner({
     checkpoints: 0,
     recaps: 0,
   });
+  const [activeLessonSection, setActiveLessonSection] =
+    useState(OVERVIEW_SECTION_ID);
   const contentRef = useRef<HTMLDivElement>(null);
   const prevIsDesktop = useRef(isDesktop);
+
+  const updateActiveLessonSection = useCallback(() => {
+    const root = contentRef.current;
+    if (!root) return;
+
+    const rootTop = root.getBoundingClientRect().top;
+    const activationLine = rootTop + 170;
+    const headings = Array.from(
+      root.querySelectorAll<HTMLElement>("article h2")
+    );
+    const checkpointTarget = root.querySelector<HTMLElement>(
+      '[data-lesson-block="checkpoint"], [data-lesson-block="recap"]'
+    );
+
+    if (
+      checkpointTarget &&
+      checkpointTarget.getBoundingClientRect().top <= activationLine
+    ) {
+      setActiveLessonSection(CHECKPOINT_SECTION_ID);
+      return;
+    }
+
+    let active = OVERVIEW_SECTION_ID;
+    for (const heading of headings) {
+      if (heading.getBoundingClientRect().top <= activationLine) {
+        active = heading.id || active;
+      }
+    }
+
+    if (root.scrollTop + root.clientHeight >= root.scrollHeight - 80) {
+      active = CHECKPOINT_SECTION_ID;
+    }
+
+    setActiveLessonSection(active);
+  }, []);
+
+  const scrollToLessonSection = useCallback((id: string) => {
+    const root = contentRef.current;
+    if (!root) return;
+
+    setActiveLessonSection(id);
+
+    if (id === OVERVIEW_SECTION_ID) {
+      root.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (id === CHECKPOINT_SECTION_ID) {
+      const target = root.querySelector<HTMLElement>(
+        '[data-lesson-block="checkpoint"], [data-lesson-block="recap"]'
+      );
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    root
+      .querySelector<HTMLElement>(`#${CSS.escape(id)}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   useEffect(() => {
     const onResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -207,28 +271,51 @@ function CourseReaderInner({
   // Scroll to top on chapter change
   useEffect(() => {
     contentRef.current?.scrollTo(0, 0);
+    setActiveLessonSection(OVERVIEW_SECTION_ID);
   }, [currentIndex]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
       const root = contentRef.current;
       if (!root) return;
-      const headings = Array.from(root.querySelectorAll("article h2"));
+      const headings = Array.from(
+        root.querySelectorAll<HTMLElement>("article h2")
+      );
       setLessonMeta({
-        sections: headings.map((heading, index) => ({
-          id: heading.id || `section-${index + 1}`,
-          title: heading.textContent?.trim() || `Section ${index + 1}`,
-        })),
+        sections: headings.map((heading, index) => {
+          if (!heading.id) {
+            heading.id = `chapter-${chapter?.chapter ?? "current"}-section-${
+              index + 1
+            }`;
+          }
+          return {
+            id: heading.id,
+            title: heading.textContent?.trim() || `Section ${index + 1}`,
+          };
+        }),
         exercises: root.querySelectorAll('[data-lesson-block="exercise"]')
           .length,
         checkpoints: root.querySelectorAll('[data-lesson-block="checkpoint"]')
           .length,
         recaps: root.querySelectorAll('[data-lesson-block="recap"]').length,
       });
+      updateActiveLessonSection();
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [currentIndex, chapter]);
+  }, [currentIndex, chapter, updateActiveLessonSection]);
+
+  useEffect(() => {
+    const root = contentRef.current;
+    if (!root) return;
+
+    root.addEventListener("scroll", updateActiveLessonSection, {
+      passive: true,
+    });
+    updateActiveLessonSection();
+
+    return () => root.removeEventListener("scroll", updateActiveLessonSection);
+  }, [currentIndex, updateActiveLessonSection]);
 
   if (loading) {
     return (
@@ -347,6 +434,8 @@ function CourseReaderInner({
             totalChapters={chapters.length}
             meta={lessonMeta}
             trackLabel={getTrackLabel(track)}
+            activeSectionId={activeLessonSection}
+            onSelectSection={scrollToLessonSection}
           />
         </div>
       </main>
@@ -370,14 +459,21 @@ function LessonCompanion({
   totalChapters,
   meta,
   trackLabel,
+  activeSectionId,
+  onSelectSection,
 }: {
   chapter: CourseChapter;
   totalChapters: number;
   meta: LessonMeta;
   trackLabel: string;
+  activeSectionId: string;
+  onSelectSection: (id: string) => void;
 }) {
+  const isOverviewActive = activeSectionId === OVERVIEW_SECTION_ID;
+  const isCheckpointActive = activeSectionId === CHECKPOINT_SECTION_ID;
+
   return (
-    <aside className="sticky top-28 hidden h-fit space-y-4 pt-6 xl:block">
+    <aside className="sticky top-24 hidden max-h-[calc(100vh-8rem)] space-y-4 overflow-y-auto py-6 pr-1 xl:block">
       <section className="rounded-2xl border border-stone-200/85 bg-white/82 p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900/82">
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -392,22 +488,70 @@ function LessonCompanion({
         </div>
 
         <ol className="mt-5 space-y-3 border-l border-stone-200 pl-4 dark:border-gray-800">
-          <li className="relative text-xs font-medium text-cyan-800 dark:text-cyan-200">
-            <span className="absolute -left-[1.42rem] top-1 h-2.5 w-2.5 rounded-full bg-cyan-600 ring-4 ring-cyan-50 dark:bg-cyan-400 dark:ring-gray-900" />
-            Overview
+          <li className="relative">
+            <span
+              className={`absolute -left-[1.42rem] top-1 h-2.5 w-2.5 rounded-full ring-4 ${
+                isOverviewActive
+                  ? "bg-cyan-600 ring-cyan-50 dark:bg-cyan-400 dark:ring-gray-900"
+                  : "border border-stone-300 bg-white ring-white dark:border-gray-700 dark:bg-gray-900 dark:ring-gray-900"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => onSelectSection(OVERVIEW_SECTION_ID)}
+              className={`w-full rounded-sm text-left text-xs leading-5 transition-colors hover:text-cyan-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 dark:hover:text-cyan-200 ${
+                isOverviewActive
+                  ? "font-semibold text-cyan-800 dark:text-cyan-200"
+                  : "text-stone-600 dark:text-gray-400"
+              }`}
+            >
+              Overview
+            </button>
           </li>
           {meta.sections.slice(0, 6).map((section, index) => (
             <li
               key={`${section.id}-${index}`}
-              className="relative text-xs leading-5 text-stone-600 dark:text-gray-400"
+              className="relative"
             >
-              <span className="absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full border border-stone-300 bg-white dark:border-gray-700 dark:bg-gray-900" />
-              {section.title}
+              <span
+                className={`absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full ${
+                  activeSectionId === section.id
+                    ? "bg-cyan-600 ring-4 ring-cyan-50 dark:bg-cyan-400 dark:ring-gray-900"
+                    : "border border-stone-300 bg-white dark:border-gray-700 dark:bg-gray-900"
+                }`}
+              />
+              <button
+                type="button"
+                onClick={() => onSelectSection(section.id)}
+                className={`w-full rounded-sm text-left text-xs leading-5 transition-colors hover:text-cyan-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/50 dark:hover:text-cyan-200 ${
+                  activeSectionId === section.id
+                    ? "font-semibold text-cyan-800 dark:text-cyan-200"
+                    : "text-stone-600 dark:text-gray-400"
+                }`}
+              >
+                {section.title}
+              </button>
             </li>
           ))}
-          <li className="relative text-xs leading-5 text-stone-600 dark:text-gray-400">
-            <span className="absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full border border-amber-300 bg-white dark:border-amber-500/40 dark:bg-gray-900" />
-            Checkpoint and recap
+          <li className="relative">
+            <span
+              className={`absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full ${
+                isCheckpointActive
+                  ? "bg-amber-400 ring-4 ring-amber-50 dark:bg-amber-300 dark:ring-gray-900"
+                  : "border border-amber-300 bg-white dark:border-amber-500/40 dark:bg-gray-900"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => onSelectSection(CHECKPOINT_SECTION_ID)}
+              className={`w-full rounded-sm text-left text-xs leading-5 transition-colors hover:text-amber-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/50 dark:hover:text-amber-200 ${
+                isCheckpointActive
+                  ? "font-semibold text-amber-800 dark:text-amber-200"
+                  : "text-stone-600 dark:text-gray-400"
+              }`}
+            >
+              Checkpoint and recap
+            </button>
           </li>
         </ol>
 
