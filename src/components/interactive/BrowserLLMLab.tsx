@@ -100,7 +100,7 @@ export function BrowserLLMLab() {
         onSelect={selectScenario}
       />
 
-      <div className="mt-4 rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/60">
+      <div className="learning-card mt-4 p-4">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
           Shared context
         </p>
@@ -113,14 +113,14 @@ export function BrowserLLMLab() {
         <button
           type="button"
           onClick={() => applyScenarioPrompt("vague")}
-          className="rounded-full border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-medium text-rose-900 transition hover:bg-rose-100 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100 dark:hover:bg-rose-500/20"
+          className="soft-button border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-100"
         >
           Use vague prompt
         </button>
         <button
           type="button"
           onClick={() => applyScenarioPrompt("better")}
-          className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900 transition hover:bg-emerald-100 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
+          className="soft-button border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100"
         >
           Use better prompt
         </button>
@@ -131,11 +131,11 @@ export function BrowserLLMLab() {
         <textarea
           value={prompt}
           onChange={(event) => setPrompt(event.target.value)}
-          className="mt-2 min-h-40 w-full rounded-[1.25rem] border border-stone-200 bg-stone-50 px-4 py-3 text-sm leading-6 text-stone-800 outline-none transition focus:border-cyan-400 dark:border-gray-800 dark:bg-gray-950/60 dark:text-gray-100"
+          className="mt-2 min-h-40 w-full rounded-[1.2rem] border border-stone-200 bg-stone-50 px-4 py-3 text-sm leading-6 text-stone-800 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-500/10 dark:border-gray-800 dark:bg-gray-950/60 dark:text-gray-100"
         />
       </label>
 
-      <div className="mt-5 grid gap-4 rounded-[1.5rem] border border-stone-200 bg-stone-50 p-4 dark:border-gray-800 dark:bg-gray-950/60 lg:grid-cols-2">
+      <div className="learning-card mt-5 grid gap-4 p-4 lg:grid-cols-2">
         <Slider
           label="Temp"
           max={1.2}
@@ -167,14 +167,14 @@ export function BrowserLLMLab() {
         <button
           type="button"
           onClick={() => void loadModel()}
-          className="rounded-full bg-cyan-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-500"
+          className="primary-button"
         >
           {generationLab.isLoaded ? "Tiny model ready" : "Load tiny model"}
         </button>
         <button
           type="button"
           onClick={() => void runPrompt()}
-          className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-medium text-stone-700 transition hover:bg-stone-100 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200 dark:hover:bg-gray-800"
+          className="soft-button"
         >
           Run prompt
         </button>

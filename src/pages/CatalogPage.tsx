@@ -1,4 +1,12 @@
-import { Github, Moon, SunMedium } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  Github,
+  Moon,
+  Sparkles,
+  SunMedium,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { courses } from "../courses/registry";
@@ -44,14 +52,12 @@ export function CatalogPage() {
   const ThemeIcon = dark ? SunMedium : Moon;
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.08),_transparent_22%),linear-gradient(180deg,#f8f5ef_0%,#f2ede5_100%)] text-stone-900 dark:bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.1),_transparent_22%),linear-gradient(180deg,#0b1220_0%,#111827_100%)] dark:text-gray-50">
-      <header className="border-b border-stone-200/80 bg-stone-50/90 backdrop-blur-xl dark:border-gray-800/80 dark:bg-gray-950/90">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-6 md:px-8">
+    <div className="app-shell min-h-screen">
+      <header className="border-b border-stone-200/80 bg-white/78 backdrop-blur-xl dark:border-gray-800/80 dark:bg-gray-950/80">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 md:px-8">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
-              Learn AI
-            </p>
-            <h1 className="mt-1 text-2xl font-semibold text-stone-900 dark:text-white">
+            <p className="overline">Learn AI</p>
+            <h1 className="mt-1 text-xl font-semibold text-stone-950 dark:text-white">
               Course Catalog
             </h1>
           </div>
@@ -60,7 +66,7 @@ export function CatalogPage() {
               href={githubRepoUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+              className="soft-button min-h-9 px-3 text-xs"
               aria-label="Open the Learn AI GitHub repository"
             >
               <Github className="h-3.5 w-3.5" />
@@ -68,7 +74,7 @@ export function CatalogPage() {
             </a>
             <button
               onClick={() => setDark((value) => !value)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-600 transition-colors hover:border-stone-300 hover:text-stone-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/70 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:text-gray-100"
+              className="soft-button min-h-9 px-3 text-xs"
               aria-label={themeActionLabel}
             >
               <ThemeIcon className="h-3.5 w-3.5" />
@@ -78,32 +84,48 @@ export function CatalogPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-14 md:px-8">
-        <section className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
-            Beginner-first AI courses
-          </p>
-          <h2 className="mt-4 text-[clamp(2.55rem,5.5vw,4rem)] font-semibold leading-[1.01] tracking-[-0.045em] text-stone-950 dark:text-white [font-family:var(--font-content)]">
-            <span className="block">Courses that build</span>
-            <span className="block">
-              <span className="relative inline-block">
-                <span className="absolute inset-x-1 bottom-[0.14em] h-[0.18em] rounded-full bg-cyan-300/55 dark:bg-cyan-500/18" />
-                <span className="relative">intuition</span>
-              </span>{" "}
-              for how AI works.
-            </span>
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-stone-600 dark:text-gray-300">
-            Pick a course, choose your preferred track, and resume exactly where
-            you left off.
-          </p>
-          <p className="mt-5 text-sm text-stone-500 dark:text-gray-400">
-            {courses.length} course{courses.length === 1 ? "" : "s"},{" "}
-            {totalChapters} chapters, {totalMinutes} minutes of guided study.
-          </p>
+      <main className="mx-auto max-w-6xl px-4 py-12 md:px-8 md:py-16">
+        <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+          <div>
+            <p className="accent-overline">Beginner-first AI courses</p>
+            <h2 className="serif-display mt-4 text-[clamp(2.7rem,6vw,5.4rem)] leading-[0.95]">
+              <span className="block">Courses that build</span>
+              <span className="block">
+                <span className="relative inline-block">
+                  <span className="absolute inset-x-1 bottom-[0.14em] h-[0.18em] rounded-full bg-cyan-300/55 dark:bg-cyan-500/18" />
+                  <span className="relative">intuition</span>
+                </span>{" "}
+                for how AI works.
+              </span>
+            </h2>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-600 dark:text-gray-300">
+              Pick a course, choose your preferred track, and resume exactly
+              where you left off.
+            </p>
+          </div>
+          <div className="premium-panel rounded-[1.75rem] p-5">
+            <p className="overline">Learning system</p>
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              {[
+                { label: "Courses", value: courses.length, icon: BookOpen },
+                { label: "Chapters", value: totalChapters, icon: CheckCircle2 },
+                { label: "Minutes", value: totalMinutes, icon: Sparkles },
+              ].map(({ label, value, icon: Icon }) => (
+                <div key={label} className="learning-card p-4">
+                  <Icon className="h-4 w-4 text-cyan-700 dark:text-cyan-300" />
+                  <p className="mt-3 text-2xl font-semibold text-stone-950 dark:text-white">
+                    {value}
+                  </p>
+                  <p className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
-        <section className="mt-12 rounded-[1.9rem] border border-stone-200/80 bg-white/82 p-5 shadow-sm backdrop-blur dark:border-gray-800/80 dark:bg-gray-900/78">
+        <section className="premium-panel mt-12 rounded-[1.6rem] p-4 md:p-5">
           <div className="flex flex-wrap items-center gap-2">
             <span className="mr-2 text-xs font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
               Audience
@@ -115,7 +137,7 @@ export function CatalogPage() {
                 key={option}
                 type="button"
                 onClick={() => setProfessionFilter(option)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`segment-button ${
                   professionFilter === option
                     ? "bg-cyan-600 text-white"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
@@ -134,7 +156,7 @@ export function CatalogPage() {
                 key={option}
                 type="button"
                 onClick={() => setTrackFilter(option)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`segment-button ${
                   trackFilter === option
                     ? "bg-cyan-600 text-white"
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
@@ -153,10 +175,8 @@ export function CatalogPage() {
         <section className="mt-16">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-stone-500 dark:text-gray-500">
-                Courses
-              </p>
-              <h3 className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-stone-950 dark:text-white [font-family:var(--font-content)]">
+              <p className="overline">Courses</p>
+              <h3 className="serif-display mt-2 text-3xl">
                 Choose your next chapter.
               </h3>
             </div>
@@ -167,7 +187,7 @@ export function CatalogPage() {
           </div>
 
           {filtered.length === 0 ? (
-            <div className="mt-8 rounded-[1.75rem] border border-stone-200/80 bg-white/80 px-6 py-12 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900/80">
+            <div className="premium-panel mt-8 rounded-[1.75rem] px-6 py-12 text-center">
               <p className="text-sm text-stone-500 dark:text-gray-400">
                 No courses match the current filters. Try broadening your
                 selection.
@@ -176,7 +196,7 @@ export function CatalogPage() {
           ) : (
             <div
               className={`mt-10 grid gap-7 ${
-                filtered.length === 1 ? "max-w-3xl" : "md:grid-cols-2"
+                filtered.length === 1 ? "max-w-3xl" : "lg:grid-cols-2"
               }`}
             >
               {filtered.map((course) => (
@@ -220,28 +240,30 @@ function CourseCard({
   const hasStarted = progress.lastChapter > 1 || reviewed > 0;
 
   return (
-    <article className="flex min-h-[21.5rem] flex-col rounded-[1.85rem] border border-stone-200/80 bg-white/88 p-7 shadow-sm transition-shadow hover:shadow-md dark:border-gray-800/80 dark:bg-gray-900/84 md:p-8">
+    <article className="premium-panel group flex min-h-[22rem] flex-col rounded-[1.85rem] p-6 transition-[box-shadow,transform] hover:-translate-y-1 hover:shadow-[0_34px_90px_-54px_rgba(15,23,42,0.55)] md:p-8">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-medium text-stone-600 dark:bg-gray-800 dark:text-gray-400">
+        <span className="learning-chip">
           {PROFESSION_LABELS[course.profession]}
         </span>
         {course.featured && (
-          <span className="rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+          <span className="learning-chip border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200">
             Featured
           </span>
         )}
       </div>
 
-      <h4 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.03em] text-stone-950 dark:text-white [font-family:var(--font-content)]">
+      <h4 className="serif-display mt-5 text-3xl leading-[1.06]">
         {course.title}
       </h4>
       <p className="mt-3 text-sm leading-7 text-stone-600 dark:text-gray-300">
         {course.subtitle}
       </p>
 
-      <div className="mt-7 flex flex-wrap items-center gap-4 text-xs font-medium uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
-        <span>{course.chapterCount} chapters</span>
-        {course.estimatedMinutes && <span>~{course.estimatedMinutes} min</span>}
+      <div className="mt-7 flex flex-wrap items-center gap-2">
+        <span className="learning-chip">{course.chapterCount} chapters</span>
+        {course.estimatedMinutes && (
+          <span className="learning-chip">~{course.estimatedMinutes} min</span>
+        )}
       </div>
 
       <p className="mt-3 text-sm text-stone-500 dark:text-gray-400">
@@ -250,7 +272,7 @@ function CourseCard({
 
       <div className="mt-auto space-y-5 pt-8">
         {hasStarted && (
-          <div className="rounded-[1.35rem] border border-stone-200/70 bg-stone-50/80 px-4 py-4 dark:border-gray-800 dark:bg-gray-950/60">
+          <div className="learning-card px-4 py-4">
             <div className="flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.14em] text-stone-500 dark:text-gray-500">
               <span>Progress</span>
               <span>{percent}%</span>
@@ -273,9 +295,10 @@ function CourseCard({
             )
           }
           aria-label={`${hasStarted ? "Continue learning" : "Start course"}: ${course.title}`}
-          className="inline-flex w-fit items-center justify-center rounded-full bg-cyan-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_18px_40px_-24px_rgba(8,145,178,0.75)] transition-colors hover:bg-cyan-500"
+          className="primary-button w-fit"
         >
           {hasStarted ? "Continue learning" : "Start course"}
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
     </article>

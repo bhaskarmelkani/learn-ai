@@ -5,7 +5,7 @@ test("first-run onboarding lands on the catalog", async ({ page }) => {
 
   await expect(
     page.getByRole("heading", {
-      name: /interactive ai courses for curious learners/i,
+      name: /a learning path that respects your attention/i,
     })
   ).toBeVisible();
 
@@ -81,9 +81,7 @@ test("dark mode keeps chapter body copy readable", async ({ page }) => {
 
   await page.goto("/courses/ai-fundamentals/1");
 
-  await expect(
-    page.getByRole("button", { name: /light mode/i }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: /light mode/i })).toBeVisible();
 
   const bodyCopy = page.getByText("Imagine three products:");
   await expect(bodyCopy).toBeVisible();

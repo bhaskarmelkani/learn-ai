@@ -26,13 +26,30 @@ export function ChapterBridge({
   } = useLearning();
 
   return (
-    <section className="my-8 border-b border-stone-200/80 pb-7 dark:border-gray-800">
-      <p className="text-[0.64rem] font-semibold uppercase tracking-[0.22em] text-cyan-700 dark:text-cyan-300">
-        Why This Chapter Matters
-      </p>
-      <p className="mt-3 max-w-[70ch] text-[0.92rem] leading-8 text-stone-900 dark:text-gray-100 md:text-[0.98rem]">
-        {why}
-      </p>
+    <section className="my-7 rounded-2xl border border-stone-200/85 bg-stone-50/65 p-4 shadow-sm dark:border-gray-800 dark:bg-gray-950/45 md:p-6">
+      <div className="grid gap-4 lg:grid-cols-[1fr_0.86fr]">
+        <div>
+          <p className="accent-overline">Why This Chapter Matters</p>
+          <p className="mt-3 max-w-[58ch] text-[0.9rem] leading-7 text-stone-900 dark:text-gray-100 md:text-[0.98rem] md:leading-8">
+            {why}
+          </p>
+        </div>
+        <div className="hidden border-t border-stone-200/80 pt-4 dark:border-gray-800 sm:block lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0">
+          <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
+            Concept path
+          </p>
+          <div className="mt-3 flex flex-wrap items-center gap-2.5">
+            {map.map((step, index) => (
+              <Fragment key={step}>
+                <span className="learning-chip text-[0.58rem]">{step}</span>
+                {index < map.length - 1 && (
+                  <ChevronRight className="h-4 w-4 text-stone-400 dark:text-gray-600" />
+                )}
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
       <dl className="mt-5 grid gap-x-8 gap-y-4 border-t border-stone-200/75 pt-4 dark:border-gray-800 md:grid-cols-2">
         <div>
           <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
@@ -50,27 +67,8 @@ export function ChapterBridge({
             {unlocks}
           </dd>
         </div>
-        <div className="md:col-span-2">
-          <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-stone-500 dark:text-gray-500">
-            Concept path
-          </dt>
-          <dd className="mt-2">
-            <div className="flex flex-wrap items-center gap-2.5">
-              {map.map((step, index) => (
-                <Fragment key={step}>
-                  <span className="rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[0.58rem] font-semibold uppercase tracking-[0.1em] text-stone-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200">
-                    {step}
-                  </span>
-                  {index < map.length - 1 && (
-                    <ChevronRight className="h-4 w-4 text-stone-400 dark:text-gray-600" />
-                  )}
-                </Fragment>
-              ))}
-            </div>
-          </dd>
-        </div>
       </dl>
-      <div className="mt-5 rounded-[1.15rem] border border-cyan-200/75 bg-cyan-50/45 px-4 py-3 dark:border-cyan-500/20 dark:bg-cyan-500/5">
+      <div className="mt-5 rounded-xl border border-cyan-200/75 bg-cyan-50/45 px-4 py-3 dark:border-cyan-500/20 dark:bg-cyan-500/5">
         <p className="text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-cyan-700 dark:text-cyan-300">
           {getTrackLabel(track)} lens
         </p>
