@@ -54,17 +54,15 @@ export function Sidebar({
   const themeActionLabel = dark ? "Light mode" : "Dark mode";
   const ThemeIcon = dark ? SunMedium : Moon;
   const isMobileDrawer = !isDesktop;
-  const iconControlClass =
-    "flex h-11 w-11 items-center justify-center rounded-[1.25rem] border border-stone-300/80 bg-white/95 text-stone-500 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.55)] transition-[border-color,background-color,color,box-shadow] hover:border-stone-400/90 hover:bg-stone-50 hover:text-stone-900 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-100";
-  const pillControlClass =
-    "inline-flex min-h-11 items-center gap-2 rounded-full border border-stone-300/85 bg-white/95 px-4 py-2 text-[0.9rem] font-medium text-stone-700 shadow-[0_10px_30px_-24px_rgba(15,23,42,0.55)] transition-[border-color,background-color,color,box-shadow] hover:border-stone-400/90 hover:bg-stone-50 hover:text-stone-950 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-gray-100";
+  const iconControlClass = "soft-button h-11 w-11 px-0";
+  const pillControlClass = "soft-button min-h-11 px-4 text-[0.88rem]";
 
   return (
     <aside
-      className={`fixed z-30 flex flex-col bg-stone-50/98 backdrop-blur transition-[transform,width] duration-200 dark:bg-gray-950/98 ${
+      className={`fixed z-30 flex flex-col bg-white/92 backdrop-blur-xl transition-[transform,width] duration-200 dark:bg-gray-950/94 ${
         isMobileDrawer
           ? "bottom-3 left-3 top-3 h-auto w-[min(22rem,calc(100vw-1.5rem))] rounded-[2rem] border border-stone-200/90 shadow-[0_36px_80px_-32px_rgba(15,23,42,0.42)] dark:border-gray-800"
-          : "left-0 top-0 h-full border-r border-stone-200 shadow-xl dark:border-gray-800"
+          : "left-0 top-0 h-full border-r border-stone-200/90 shadow-[18px_0_70px_-54px_rgba(15,23,42,0.6)] dark:border-gray-800"
       } ${
         visible ? "translate-x-0" : "-translate-x-full"
       } ${isMobileDrawer ? "" : collapsed ? "w-[4.5rem]" : "w-72"}`}
@@ -172,18 +170,16 @@ export function Sidebar({
               </div>
             </div>
 
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-stone-500 dark:text-gray-500">
-              Learn AI
-            </p>
-            <h1 className="mt-2 text-[1.05rem] font-semibold text-stone-900 dark:text-white">
+            <p className="overline">Learn AI</p>
+            <p className="mt-2 text-[1.05rem] font-semibold text-stone-900 dark:text-white">
               {courseTitle}
-            </h1>
+            </p>
           </>
         )}
 
         {!collapsed && (
           <div
-            className={`mt-5 rounded-[1.6rem] border border-stone-200/90 bg-white shadow-[0_16px_35px_-28px_rgba(15,23,42,0.6)] dark:border-gray-800 dark:bg-gray-900 ${
+            className={`premium-panel mt-5 rounded-[1.45rem] ${
               isMobileDrawer ? "p-3.5" : "p-4"
             }`}
           >
@@ -217,7 +213,7 @@ export function Sidebar({
                   key={option}
                   type="button"
                   onClick={() => onSelectTrack(option)}
-                  className={`rounded-full px-3 py-1.5 text-xs transition-colors ${
+                  className={`segment-button ${
                     option === track
                       ? "bg-cyan-600 text-white"
                       : "bg-stone-100 text-stone-600 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700"
@@ -233,7 +229,11 @@ export function Sidebar({
 
       <nav
         className={`flex-1 overflow-y-auto ${
-          collapsed ? "px-2.5 py-5" : isMobileDrawer ? "px-3 py-4" : "px-3.5 py-5"
+          collapsed
+            ? "px-2.5 py-5"
+            : isMobileDrawer
+              ? "px-3 py-4"
+              : "px-3.5 py-5"
         }`}
       >
         {chapters.map((ch, i) => (
@@ -245,9 +245,9 @@ export function Sidebar({
               collapsed
                 ? i === current
                   ? "rounded-2xl bg-cyan-50 text-cyan-800 dark:bg-cyan-500/10 dark:text-cyan-200"
-                  : "rounded-2xl text-stone-600 hover:bg-white hover:text-stone-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-100"
+                  : "rounded-2xl text-stone-600 hover:bg-stone-50 hover:text-stone-900 dark:text-gray-400 dark:hover:bg-gray-900 dark:hover:text-gray-100"
                 : i === current
-                  ? "rounded-[1.5rem] border border-cyan-200/90 bg-cyan-50/90 text-cyan-800 shadow-[0_14px_28px_-24px_rgba(6,182,212,0.55)] dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-200"
+                  ? "rounded-[1.35rem] border border-cyan-200/90 bg-cyan-50/90 text-cyan-800 shadow-[0_14px_28px_-24px_rgba(6,182,212,0.55)] dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-200"
                   : "rounded-[1.5rem] border border-transparent text-stone-600 hover:border-stone-200/90 hover:bg-white hover:text-stone-900 dark:text-gray-400 dark:hover:border-gray-800 dark:hover:bg-gray-900 dark:hover:text-gray-100"
             } ${
               collapsed
@@ -297,8 +297,8 @@ export function Sidebar({
                     i === current
                       ? "bg-cyan-600 text-white ring-cyan-200 dark:bg-cyan-500 dark:text-white dark:ring-cyan-400/30"
                       : completedChapters[ch.chapter]
-                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
-                      : "bg-white text-stone-500 ring-stone-200 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800"
+                        ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300"
+                        : "bg-white text-stone-500 ring-stone-200 dark:bg-gray-900 dark:text-gray-400 dark:ring-gray-800"
                   }`}
                 >
                   {completedChapters[ch.chapter] && i !== current ? (

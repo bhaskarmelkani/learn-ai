@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { CheckCircle2, RotateCcw, Target } from "lucide-react";
 import { useLearning } from "../../learning/LearningContext";
 
 export function Checkpoint({
@@ -18,15 +19,11 @@ export function Checkpoint({
     correct?: boolean;
   }>;
 }) {
-  const {
-    recordCheckpoint,
-    checkpoints,
-    activeCourseSlug,
-  } = useLearning();
+  const { recordCheckpoint, checkpoints, activeCourseSlug } = useLearning();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const stored = checkpoints[id];
   const selectedOption =
-    selectedIndex === null ? null : options[selectedIndex] ?? null;
+    selectedIndex === null ? null : (options[selectedIndex] ?? null);
 
   const status = useMemo(() => {
     if (!stored) return null;
@@ -34,10 +31,11 @@ export function Checkpoint({
   }, [stored]);
 
   return (
-    <div className="my-6 rounded-2xl border border-amber-200 bg-amber-50/80 px-5 py-4 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10">
+    <div data-lesson-block="checkpoint" className="my-8 rounded-2xl border border-amber-200 bg-amber-50/72 px-5 py-5 shadow-sm dark:border-amber-500/20 dark:bg-amber-500/10">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-800 dark:text-amber-200">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-amber-800 dark:text-amber-200">
+            <Target className="h-4 w-4" />
             Checkpoint
           </p>
           <p className="mt-2 text-base font-semibold text-amber-950 dark:text-amber-100">
@@ -46,12 +44,17 @@ export function Checkpoint({
         </div>
         {status && (
           <span
-            className={`rounded-full px-3 py-1 text-xs font-medium ${
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
               status === "correct"
                 ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300"
                 : "bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-200"
             }`}
           >
+            {status === "correct" ? (
+              <CheckCircle2 className="h-3.5 w-3.5" />
+            ) : (
+              <RotateCcw className="h-3.5 w-3.5" />
+            )}
             {status === "correct" ? "Understood" : "Review again"}
           </span>
         )}
@@ -76,12 +79,12 @@ export function Checkpoint({
                   explanation: option.explanation,
                 });
               }}
-              className={`rounded-2xl border px-4 py-3 text-left text-sm transition-colors ${
+              className={`rounded-xl border px-4 py-3 text-left text-sm transition-[background-color,border-color,box-shadow] ${
                 active
                   ? option.correct
-                    ? "border-emerald-300 bg-white text-stone-900 dark:border-emerald-400 dark:bg-gray-900 dark:text-white"
-                    : "border-rose-300 bg-white text-stone-900 dark:border-rose-400 dark:bg-gray-900 dark:text-white"
-                  : "border-transparent bg-white/70 text-stone-700 hover:border-amber-200 dark:bg-gray-900/40 dark:text-gray-300 dark:hover:border-amber-500/20"
+                    ? "border-emerald-300 bg-white text-stone-900 shadow-sm dark:border-emerald-400 dark:bg-gray-900 dark:text-white"
+                    : "border-rose-300 bg-white text-stone-900 shadow-sm dark:border-rose-400 dark:bg-gray-900 dark:text-white"
+                  : "border-transparent bg-white/72 text-stone-700 hover:border-amber-200 dark:bg-gray-900/45 dark:text-gray-300 dark:hover:border-amber-500/20"
               }`}
             >
               {option.label}

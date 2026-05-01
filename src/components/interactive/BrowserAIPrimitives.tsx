@@ -24,13 +24,11 @@ export function BrowserAILabFrame({
   title: string;
 }) {
   return (
-    <div className="my-8 rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div className="premium-panel my-8 rounded-[1.65rem] p-5 md:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-700 dark:text-cyan-300">
-            {eyebrow}
-          </p>
-          <h3 className="mt-2 text-xl font-semibold text-stone-900 dark:text-white">
+          <p className="accent-overline">{eyebrow}</p>
+          <h3 className="mt-2 text-xl font-semibold text-stone-950 dark:text-white">
             {title}
           </h3>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-stone-600 dark:text-gray-400">
@@ -52,7 +50,7 @@ export function BrowserAIModelBadge({
   title: string;
 }) {
   return (
-    <div className="min-w-[14rem] rounded-[1.25rem] border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm text-cyan-950 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
+    <div className="min-w-[14rem] rounded-[1.2rem] border border-cyan-200 bg-cyan-50 px-4 py-3 text-sm text-cyan-950 shadow-sm dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-100">
       <p className="font-semibold">{title}</p>
       <p className="mt-1 text-xs leading-5 text-cyan-800 dark:text-cyan-200">
         {detail}
@@ -78,7 +76,7 @@ export function BrowserAIStatusPanel({
         : "border-stone-200 bg-stone-50 text-stone-900 dark:border-gray-800 dark:bg-gray-950/60 dark:text-gray-100";
 
   return (
-    <div className={`mt-4 rounded-[1.5rem] border p-4 ${phaseTone}`}>
+    <div className={`mt-4 rounded-[1.35rem] border p-4 ${phaseTone}`}>
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-white/80 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-stone-700 dark:bg-gray-900 dark:text-gray-200">
           {phase}
@@ -119,7 +117,7 @@ export function ScenarioPills({
           key={item}
           type="button"
           onClick={() => onSelect(index)}
-          className={`rounded-full px-4 py-2 text-sm transition-colors ${
+          className={`segment-button text-sm ${
             activeIndex === index
               ? "bg-cyan-600 text-white"
               : "bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
@@ -168,7 +166,7 @@ export function Panel({
   } as const;
 
   return (
-    <div className={`rounded-[1.5rem] border p-4 ${tones[tone]}`}>
+    <div className={`rounded-[1.35rem] border p-4 ${tones[tone]}`}>
       <p
         className={`text-xs font-semibold uppercase tracking-[0.2em] ${copyTones[tone]}`}
       >

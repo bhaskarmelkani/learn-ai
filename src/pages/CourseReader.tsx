@@ -10,6 +10,18 @@ import { getCourse, loadCourseChapters } from "../courses/registry";
 import { resolveChapterNumber } from "../courses/navigation";
 import type { CourseManifest, CourseChapter } from "../courses/types";
 
+type LessonSection = {
+  id: string;
+  title: string;
+};
+
+type LessonMeta = {
+  sections: LessonSection[];
+  exercises: number;
+  checkpoints: number;
+  recaps: number;
+};
+
 const STORAGE_KEYS = {
   sidebarCollapsed: "learn-ai-sidebar-collapsed",
 };
@@ -133,6 +145,12 @@ function CourseReaderInner({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(
     getInitialSidebarCollapsed
   );
+  const [lessonMeta, setLessonMeta] = useState<LessonMeta>({
+    sections: [],
+    exercises: 0,
+    checkpoints: 0,
+    recaps: 0,
+  });
   const contentRef = useRef<HTMLDivElement>(null);
   const prevIsDesktop = useRef(isDesktop);
 
@@ -191,6 +209,27 @@ function CourseReaderInner({
     contentRef.current?.scrollTo(0, 0);
   }, [currentIndex]);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      const root = contentRef.current;
+      if (!root) return;
+      const headings = Array.from(root.querySelectorAll("article h2"));
+      setLessonMeta({
+        sections: headings.map((heading, index) => ({
+          id: heading.id || `section-${index + 1}`,
+          title: heading.textContent?.trim() || `Section ${index + 1}`,
+        })),
+        exercises: root.querySelectorAll('[data-lesson-block="exercise"]')
+          .length,
+        checkpoints: root.querySelectorAll('[data-lesson-block="checkpoint"]')
+          .length,
+        recaps: root.querySelectorAll('[data-lesson-block="recap"]').length,
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentIndex, chapter]);
+
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-stone-100 text-stone-500 dark:bg-gray-950 dark:text-gray-400">
@@ -209,7 +248,7 @@ function CourseReaderInner({
     currentIndex < chapters.length - 1 ? chapters[currentIndex + 1] : null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.14),_transparent_24%),linear-gradient(180deg,#f7f4ee_0%,#f2eee6_100%)] text-stone-900 dark:bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_24%),linear-gradient(180deg,#0b1220_0%,#111827_100%)] dark:text-gray-50">
+    <div className="app-shell flex h-screen overflow-hidden">
       <Sidebar
         chapters={chapters}
         current={currentIndex}
@@ -247,39 +286,37 @@ function CourseReaderInner({
             : "lg:ml-0"
         }`}
       >
-        <div className="sticky top-0 z-10 border-b border-stone-200/70 bg-stone-100/82 backdrop-blur-xl dark:border-gray-800/70 dark:bg-gray-950/84">
-          <div className="mx-auto flex max-w-[74rem] items-center gap-4 px-4 py-4 md:px-8">
+        <div className="sticky top-0 z-10 border-b border-stone-200/70 bg-white/78 backdrop-blur-xl dark:border-gray-800/70 dark:bg-gray-950/82">
+          <div className="mx-auto flex max-w-[88rem] items-center gap-3 px-4 py-3 md:px-8 md:py-4">
             {!isDesktop && (
               <button
                 type="button"
                 onClick={onToggleSidebar}
-                className="inline-flex items-center gap-2 rounded-full border border-stone-300/80 bg-white/90 px-3 py-1.5 text-sm font-medium text-stone-700 transition-colors hover:border-stone-400 hover:text-stone-950 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:text-gray-50"
+                className="soft-button min-h-9 px-3 text-sm"
               >
                 <span className="text-base leading-none">&#8801;</span>
                 Chapters
               </button>
             )}
             <div className="min-w-0 flex-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-stone-500 dark:text-gray-500">
-                {manifest.title}
-              </p>
+              <p className="overline">{manifest.title}</p>
               <p className="mt-1 truncate text-[0.9rem] font-semibold text-stone-800 dark:text-gray-100">
                 {chapter.chapter}. {chapter.title}
               </p>
-              <p className="truncate text-[0.72rem] text-stone-500 dark:text-gray-400">
+              <p className="hidden truncate text-[0.72rem] text-stone-500 dark:text-gray-400 sm:block">
                 {chapter.subtitle ??
                   "Build intuition step by step through concise explanations and live demos."}
               </p>
             </div>
             <div className="hidden items-center gap-2 md:flex">
-              <div className="rounded-full border border-stone-200/80 bg-white/90 px-3 py-1 text-[0.72rem] font-medium text-stone-700 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200">
+              <div className="learning-chip normal-case tracking-normal">
                 {getTrackLabel(track)}
               </div>
               <div
-                className={`rounded-full border px-3 py-1 text-[0.72rem] font-medium shadow-sm ${
+                className={`learning-chip normal-case tracking-normal ${
                   guidedMode
                     ? "border-amber-200 bg-amber-100 text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200"
-                    : "border-stone-200/80 bg-white/90 text-stone-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-200"
+                    : ""
                 }`}
               >
                 {guidedMode ? "Guided" : "Open Mode"}
@@ -294,7 +331,7 @@ function CourseReaderInner({
               </p>
             </div>
           </div>
-          <div className="mx-auto max-w-[74rem] px-4 pb-3 md:px-8">
+          <div className="mx-auto max-w-[88rem] px-4 pb-2 md:px-8 md:pb-3">
             <div className="h-1 w-full rounded-full bg-stone-200/80 dark:bg-gray-900">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 transition-[width] duration-300"
@@ -303,7 +340,15 @@ function CourseReaderInner({
             </div>
           </div>
         </div>
-        <SlideView key={`${courseSlug}-${currentIndex}`} chapter={chapter} />
+        <div className="mx-auto grid max-w-[88rem] gap-5 px-4 md:px-8 xl:grid-cols-[minmax(0,1fr)_16rem]">
+          <SlideView key={`${courseSlug}-${currentIndex}`} chapter={chapter} />
+          <LessonCompanion
+            chapter={chapter}
+            totalChapters={chapters.length}
+            meta={lessonMeta}
+            trackLabel={getTrackLabel(track)}
+          />
+        </div>
       </main>
       <NavigationBar
         current={currentIndex}
@@ -317,5 +362,79 @@ function CourseReaderInner({
         sidebarCollapsed={sidebarCollapsed}
       />
     </div>
+  );
+}
+
+function LessonCompanion({
+  chapter,
+  totalChapters,
+  meta,
+  trackLabel,
+}: {
+  chapter: CourseChapter;
+  totalChapters: number;
+  meta: LessonMeta;
+  trackLabel: string;
+}) {
+  return (
+    <aside className="sticky top-28 hidden h-fit space-y-4 pt-6 xl:block">
+      <section className="rounded-2xl border border-stone-200/85 bg-white/82 p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900/82">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="overline">Lesson map</p>
+            <p className="mt-2 text-sm font-semibold text-stone-900 dark:text-white">
+              Chapter {chapter.chapter} of {totalChapters}
+            </p>
+          </div>
+          <span className="rounded-full border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-[0.68rem] font-semibold text-cyan-800 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-200">
+            {trackLabel}
+          </span>
+        </div>
+
+        <ol className="mt-5 space-y-3 border-l border-stone-200 pl-4 dark:border-gray-800">
+          <li className="relative text-xs font-medium text-cyan-800 dark:text-cyan-200">
+            <span className="absolute -left-[1.42rem] top-1 h-2.5 w-2.5 rounded-full bg-cyan-600 ring-4 ring-cyan-50 dark:bg-cyan-400 dark:ring-gray-900" />
+            Overview
+          </li>
+          {meta.sections.slice(0, 6).map((section, index) => (
+            <li
+              key={`${section.id}-${index}`}
+              className="relative text-xs leading-5 text-stone-600 dark:text-gray-400"
+            >
+              <span className="absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full border border-stone-300 bg-white dark:border-gray-700 dark:bg-gray-900" />
+              {section.title}
+            </li>
+          ))}
+          <li className="relative text-xs leading-5 text-stone-600 dark:text-gray-400">
+            <span className="absolute -left-[1.34rem] top-1.5 h-2 w-2 rounded-full border border-amber-300 bg-white dark:border-amber-500/40 dark:bg-gray-900" />
+            Checkpoint and recap
+          </li>
+        </ol>
+
+        <div className="mt-5 border-t border-stone-200 pt-4 dark:border-gray-800">
+          <p className="overline">In this chapter</p>
+        </div>
+        <div className="mt-3 space-y-2 text-xs text-stone-600 dark:text-gray-400">
+          <div className="flex items-center justify-between gap-3">
+            <span>Exercises</span>
+            <strong className="text-stone-900 dark:text-gray-100">
+              {meta.exercises}
+            </strong>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span>Checkpoints</span>
+            <strong className="text-stone-900 dark:text-gray-100">
+              {meta.checkpoints}
+            </strong>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <span>Recaps</span>
+            <strong className="text-stone-900 dark:text-gray-100">
+              {meta.recaps}
+            </strong>
+          </div>
+        </div>
+      </section>
+    </aside>
   );
 }

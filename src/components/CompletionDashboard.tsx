@@ -1,3 +1,4 @@
+import { Award, CheckCircle2 } from "lucide-react";
 import { useLearning, getTrackLabel } from "../learning/LearningContext";
 import { getCourse } from "../courses/registry";
 
@@ -33,14 +34,13 @@ export function CompletionDashboard({
     conceptsCovered ?? DEFAULT_CONCEPTS_BY_COURSE[activeCourseSlug] ?? [];
 
   return (
-    <div className="my-8 rounded-[2rem] border border-stone-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+    <div className="premium-panel my-8 rounded-[2rem] p-6 md:p-8">
       <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-emerald-600 dark:text-emerald-400">
+        <p className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-emerald-600 dark:text-emerald-400">
+          <Award className="h-4 w-4" />
           Course Complete
         </p>
-        <h2 className="mt-3 bg-gradient-to-r from-sky-500 via-cyan-500 to-emerald-500 bg-clip-text text-3xl font-bold text-transparent">
-          Congratulations!
-        </h2>
+        <h2 className="serif-display mt-3 text-4xl">Congratulations!</h2>
         <p className="mx-auto mt-3 max-w-lg text-lg leading-8 text-stone-600 dark:text-gray-300">
           You have worked through all {course?.chapterCount ?? 0} chapters of{" "}
           {course?.title ?? "this course"}. Here is a summary of what you
@@ -49,7 +49,7 @@ export function CompletionDashboard({
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 text-center dark:border-gray-800 dark:bg-gray-950/60">
+        <div className="learning-card p-5 text-center">
           <p className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">
             {masterySummary.completedChecks}
           </p>
@@ -60,7 +60,7 @@ export function CompletionDashboard({
             of {masterySummary.attemptedChecks} attempted
           </p>
         </div>
-        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 text-center dark:border-gray-800 dark:bg-gray-950/60">
+        <div className="learning-card p-5 text-center">
           <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
             {masterySummary.reviewedChapters}
           </p>
@@ -71,7 +71,7 @@ export function CompletionDashboard({
             of {course?.chapterCount ?? 0} total
           </p>
         </div>
-        <div className="rounded-2xl border border-stone-200 bg-stone-50 p-5 text-center dark:border-gray-800 dark:bg-gray-950/60">
+        <div className="learning-card p-5 text-center">
           <p className="text-3xl font-bold text-violet-600 dark:text-violet-400">
             {getTrackLabel(track)}
           </p>
@@ -82,7 +82,7 @@ export function CompletionDashboard({
       </div>
 
       {coveredConcepts.length > 0 && (
-        <div className="mt-8 rounded-2xl border border-stone-200 bg-stone-50 p-5 dark:border-gray-800 dark:bg-gray-950/60">
+        <div className="learning-card mt-8 p-5">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 dark:text-gray-500">
             Concepts you covered
           </p>
@@ -92,17 +92,7 @@ export function CompletionDashboard({
                 key={concept}
                 className="flex items-start gap-2 text-sm text-stone-700 dark:text-gray-300"
               >
-                <svg
-                  className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-500"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-500" />
                 {concept}
               </div>
             ))}
@@ -120,7 +110,10 @@ export function CompletionDashboard({
           </p>
           <ul className="mt-3 space-y-1">
             {reviewQueue.slice(0, 6).map((item) => (
-              <li key={item.concept} className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200">
+              <li
+                key={item.concept}
+                className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200"
+              >
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-200 text-xs font-bold text-amber-800 dark:bg-amber-500/20 dark:text-amber-200">
                   {item.misses}
                 </span>
@@ -138,15 +131,28 @@ export function CompletionDashboard({
         <div className="mt-3 text-sm leading-6 text-cyan-900 dark:text-cyan-100">
           {track === "builder" ? (
             <ul className="space-y-2">
-              <li>Build a real prototype: pick one capstone scenario and turn it into working code.</li>
-              <li>Try fast.ai or Hugging Face courses for hands-on model training.</li>
+              <li>
+                Build a real prototype: pick one capstone scenario and turn it
+                into working code.
+              </li>
+              <li>
+                Continue with a hands-on model training resource when you want
+                deeper implementation practice.
+              </li>
               <li>Revisit any chapters where checkpoints felt uncertain.</li>
             </ul>
           ) : (
             <ul className="space-y-2">
-              <li>Repeat the capstone teardown on a real AI product you use daily.</li>
-              <li>Share your analysis with a colleague to test your explanation skill.</li>
-              <li>Switch to the Builder track and explore the Python notebooks.</li>
+              <li>
+                Repeat the capstone teardown on a real AI product you use daily.
+              </li>
+              <li>
+                Share your analysis with a colleague to test your explanation
+                skill.
+              </li>
+              <li>
+                Switch to the Builder track and explore the Python notebooks.
+              </li>
             </ul>
           )}
         </div>

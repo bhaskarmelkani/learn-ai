@@ -89,13 +89,13 @@ function BuilderOnlyNotebook({
 export const mdxComponents: MDXComponentsType = {
   h1: (props) => (
     <h1
-      className="mb-6 max-w-[34ch] text-pretty text-[clamp(1.62rem,2.5vw,2.42rem)] font-semibold leading-[1.04] tracking-[-0.03em] text-stone-950 dark:text-stone-50 [font-family:var(--font-content)]"
+      className="serif-display mb-5 max-w-[34ch] text-[clamp(1.62rem,2.35vw,2.42rem)] leading-[1.05]"
       {...props}
     />
   ),
   h2: (props) => (
     <h2
-      className="mb-4 mt-14 w-full border-t border-stone-200/80 pt-7 text-pretty text-[clamp(1.24rem,1.5vw,1.58rem)] font-semibold leading-[1.16] tracking-[-0.018em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
+      className="mb-4 mt-12 w-full border-t border-stone-200/80 pt-6 text-pretty text-[clamp(1.18rem,1.35vw,1.52rem)] font-semibold leading-[1.16] tracking-[-0.012em] text-stone-900 dark:border-gray-800 dark:text-stone-100 [font-family:var(--font-content)]"
       {...props}
     />
   ),
@@ -107,7 +107,7 @@ export const mdxComponents: MDXComponentsType = {
   ),
   p: (props) => (
     <p
-      className="my-4 w-full max-w-none text-pretty text-[0.97rem] font-[415] leading-[1.95] tracking-[0.002em] text-stone-800 dark:text-gray-100 md:text-[1.03rem] [font-family:var(--font-content)]"
+      className="my-4 w-full max-w-none text-pretty text-[0.96rem] font-[415] leading-[1.86] tracking-[0.002em] text-stone-800 dark:text-gray-100 md:text-[1.01rem] [font-family:var(--font-content)]"
       {...props}
     />
   ),
@@ -125,7 +125,7 @@ export const mdxComponents: MDXComponentsType = {
   ),
   li: (props) => <li className="leading-relaxed" {...props} />,
   table: (props) => (
-    <div className="my-8 overflow-x-auto rounded-[1.5rem] border border-stone-200/80 bg-stone-50/80 shadow-sm dark:border-gray-800 dark:bg-gray-950/70">
+    <div className="my-8 overflow-x-auto rounded-[1.35rem] border border-stone-200/80 bg-stone-50/80 shadow-sm dark:border-gray-800 dark:bg-gray-950/70">
       <table className="w-full text-left" {...props} />
     </div>
   ),
