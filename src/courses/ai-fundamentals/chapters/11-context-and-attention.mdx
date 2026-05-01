@@ -49,6 +49,10 @@ The architecture built around attention is called the **transformer**.
 
 Transformers matter because they let tokens interact with one another in a flexible, learned way instead of treating every token in isolation.
 
+<Exercise title="Trace the Context" hint="In 'The trophy would not fit in the suitcase because it was too large,' attention should connect 'it' more strongly to 'trophy' than to 'suitcase.' The useful habit is asking which earlier tokens reduce ambiguity.">
+Write one sentence where a later word depends on earlier context. Circle the word that needs help and name the earlier word or phrase it should attend to.
+</Exercise>
+
 <Checkpoint
   id="ch11-attention"
   chapter={11}
@@ -118,3 +122,23 @@ Transformers matter because they let tokens interact with one another in a flexi
 <Callout type="idea" title="Takeaway">
 Attention helps tokens use context, and the model's immediate job is still the same: predict a probability distribution over the next token.
 </Callout>
+
+<ChapterRecap
+  chapter={11}
+  summary={[
+    "Attention lets token representations use information from other tokens in the same context.",
+    "A language model predicts a distribution over possible next tokens, then generation chooses from that distribution.",
+    "Transformers matter because they make context interaction flexible and scalable.",
+  ]}
+  checks={[
+    "Can you explain attention without saying the model 'looks at everything equally'?",
+    "Can you separate the probability distribution from the sampled token that appears on screen?",
+  ]}
+  nextStep="Next we connect pretraining, assistant behavior, retrieval, tools, and product guardrails."
+  trackActions={{
+    conceptual:
+      "Read one ambiguous sentence and ask which earlier words resolve the ambiguity.",
+    builder:
+      "Use the token prediction demo to compare likely, surprising, and unsafe next-token choices.",
+  }}
+/>

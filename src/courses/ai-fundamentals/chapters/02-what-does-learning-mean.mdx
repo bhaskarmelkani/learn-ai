@@ -70,7 +70,7 @@ Most people do the same thing: they imagine a line between the known examples an
 
 That is where we start next.
 
-<Exercise title="Prediction First" hint="Looking at the data trend, a 1500 sqft house might sell for around $300k-$350k. The key is noticing that price rises roughly proportionally with size.">
+<Exercise title="Prediction First" hint="Looking at the data trend, a 1500 sqft house sits halfway between 1000 and 2000 sqft, so a simple first guess is about $240k. The key is noticing the roughly linear trend before reaching for a formula.">
 Before going to the next chapter, make a quick guess for the 1500 sqft house. You do not need a formula yet. Just use the trend you see.
 </Exercise>
 
@@ -143,3 +143,23 @@ Before going to the next chapter, make a quick guess for the 1500 sqft house. Yo
 <Callout type="idea" title="Takeaway">
 Learning is not magic. It is repeated improvement: predict, compare, adjust, repeat.
 </Callout>
+
+<ChapterRecap
+  chapter={2}
+  summary={[
+    "Training starts with imperfect predictions and improves them through repeated updates.",
+    "Supervised learning needs examples where inputs are paired with target outputs.",
+    "The portable loop is predict, compare, adjust, and repeat.",
+  ]}
+  checks={[
+    "Can you explain what changes during learning without saying the model 'just understands'?",
+    "Can you identify the input, target, and comparison step in a simple supervised task?",
+  ]}
+  nextStep="Next we turn the house-price intuition into a visible model: a line with a weight and a bias."
+  trackActions={{
+    conceptual:
+      "Describe one everyday prediction task as input, target, prediction, and correction signal.",
+    builder:
+      "Sketch the smallest dataset that would let a model measure whether a numeric prediction was wrong.",
+  }}
+/>

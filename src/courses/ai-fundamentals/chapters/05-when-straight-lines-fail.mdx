@@ -57,6 +57,10 @@ A line is great when the world looks roughly linear.
 
 But if the pattern bends, the model needs more expressive shape. That is the first hint that simple models may not be enough for all problems.
 
+<Exercise title="Choose the Shape" hint="For predicting commute time from distance, a line may work as a first approximation. For predicting plant growth from sunlight, a curve may be better because growth improves up to a point and then levels off or suffers.">
+Compare two real prediction tasks: one where a line might be enough, and one where the pattern probably bends. Explain what clue tells you the second task needs more shape.
+</Exercise>
+
 <Checkpoint
   id="ch5-expressiveness"
   chapter={5}
@@ -126,3 +130,23 @@ But if the pattern bends, the model needs more expressive shape. That is the fir
 <Callout type="idea" title="Takeaway">
 When reality bends, the model must gain more shape. That is the intuition behind non-linear models.
 </Callout>
+
+<ChapterRecap
+  chapter={5}
+  summary={[
+    "A model can be too simple for the pattern in the data.",
+    "Non-linear models add expressive shape when a straight line cannot capture the relationship.",
+    "More flexibility helps only when it captures signal instead of noise.",
+  ]}
+  checks={[
+    "Can you explain why a curve is sometimes justified without saying 'complex is better'?",
+    "Can you name the overfitting risk that comes with more flexible shapes?",
+  ]}
+  nextStep="Next we move from predicting numbers to making decisions with scores, probabilities, and thresholds."
+  trackActions={{
+    conceptual:
+      "Look for one task where the relationship bends, saturates, or changes direction.",
+    builder:
+      "Use the comparison demo to identify which curve fits signal and which one starts chasing noise.",
+  }}
+/>

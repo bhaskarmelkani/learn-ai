@@ -51,6 +51,10 @@ XOR is the clean demonstration that one detector can fail while a tiny network c
 
 Neural networks matter because they can build internal representations automatically instead of forcing us to hand-design every useful feature ourselves.
 
+<Exercise title="Detector Stack" hint="For image recognition, early detectors might notice edges or colors, middle detectors might notice shapes like wheels or eyes, and later layers combine those signals into labels such as bicycle or cat.">
+Choose one task a neural network might help with. Write three detector levels: a simple signal, a combined pattern, and the final output that could use those patterns.
+</Exercise>
+
 <Checkpoint
   id="ch8-hidden-layer"
   chapter={8}
@@ -120,3 +124,23 @@ Neural networks matter because they can build internal representations automatic
 <Callout type="idea" title="Takeaway">
 Neural networks are many small detectors arranged in layers so later layers can use what earlier layers discovered.
 </Callout>
+
+<ChapterRecap
+  chapter={8}
+  summary={[
+    "A neuron is a small learned detector, not a magic reasoning unit.",
+    "Hidden layers let the model create intermediate signals before the final answer.",
+    "Depth helps when useful features can be composed from simpler features.",
+  ]}
+  checks={[
+    "Can you describe what a hidden layer adds beyond one decision boundary?",
+    "Can you name a task where layered detectors make more sense than hand-written rules?",
+  ]}
+  nextStep="Next we train those layered detectors and learn how validation keeps us honest."
+  trackActions={{
+    conceptual:
+      "Explain a neural network as a detector stack to someone who has never seen the math.",
+    builder:
+      "Use the demo to trace how changing internal weights changes the final behavior.",
+  }}
+/>

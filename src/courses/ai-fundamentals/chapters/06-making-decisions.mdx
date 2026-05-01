@@ -84,6 +84,10 @@ That function is called **softmax**.
   ]}
 />
 
+<Exercise title="Set the Threshold" hint="For a medical triage alert, you might lower the threshold because missing an urgent case is costly, even if it creates more false alarms. For a promotional email classifier, you might set a stricter threshold to avoid annoying users.">
+Pick one decision system. Decide whether you would rather catch more positives or avoid more false positives, then explain how that choice should move the threshold.
+</Exercise>
+
 ## Guided Lab
 
 The notebook below lets you see the same idea in code: one model, one raw score, one probability, one decision.
@@ -159,3 +163,23 @@ The notebook below lets you see the same idea in code: one model, one raw score,
 <Callout type="idea">
 Classification starts with a score, then turns that score into a decision. Sigmoid handles two classes. Softmax handles many.
 </Callout>
+
+<ChapterRecap
+  chapter={6}
+  summary={[
+    "Classification starts with scores, then turns those scores into decisions.",
+    "Sigmoid helps with two-class probability stories; softmax helps when several classes compete.",
+    "Thresholds are product choices because different mistakes have different costs.",
+  ]}
+  checks={[
+    "Can you separate the raw score, probability, threshold, and final decision?",
+    "Can you explain who pays the cost when the threshold moves?",
+  ]}
+  nextStep="Next we look at why one boundary cannot express every decision pattern."
+  trackActions={{
+    conceptual:
+      "Describe one decision system in terms of false positives and false negatives.",
+    builder:
+      "Move a threshold in the lab and write down which metric improves and which metric gets worse.",
+  }}
+/>

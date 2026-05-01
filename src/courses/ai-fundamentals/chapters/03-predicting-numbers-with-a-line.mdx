@@ -60,6 +60,10 @@ Because this is the clearest first example of a trainable model:
 The important intuition is not "memorize the line equation." It is "a model can be a very simple shape with a few learned numbers."
 </Callout>
 
+<Exercise title="Name the Parts" hint="For predicting delivery time from distance, the input could be miles, the output could be minutes, the weight captures minutes added per mile, and the bias captures the baseline time even for a very short trip.">
+Pick a simple number-prediction task from real life. Name the input, output, weight story, and bias story in plain language.
+</Exercise>
+
 <Checkpoint
   id="ch3-weight-tilt"
   chapter={3}
@@ -129,3 +133,23 @@ The important intuition is not "memorize the line equation." It is "a model can 
 <Callout type="idea" title="Takeaway">
 Linear regression is the first concrete example of a model learning to predict a number from data.
 </Callout>
+
+<ChapterRecap
+  chapter={3}
+  summary={[
+    "A line is a model shape with two visible parameters: weight and bias.",
+    "The weight controls how strongly the prediction changes as the input changes.",
+    "The bias sets the baseline prediction before the input has much effect.",
+  ]}
+  checks={[
+    "Can you explain weight and bias without using the equation first?",
+    "Can you tell when a line is a reasonable first model and when it is probably too simple?",
+  ]}
+  nextStep="Next we stop adjusting the line by hand and learn how training nudges it automatically."
+  trackActions={{
+    conceptual:
+      "Use weight and bias language on one real prediction you already understand.",
+    builder:
+      "Change the demo line and predict what will happen before you move each control.",
+  }}
+/>

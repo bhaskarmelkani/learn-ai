@@ -153,3 +153,23 @@ Switch between underfit, balanced, and overfit. Which setting looks best on trai
 <Callout type="idea" title="Takeaway">
 Training a neural network is still the same prediction-measure-update loop. The difference is that we are now adjusting many layers of learned detectors.
 </Callout>
+
+<ChapterRecap
+  chapter={9}
+  summary={[
+    "Forward pass means the network makes a prediction; backward pass means the error signal updates the layers.",
+    "Validation data estimates whether learning transfers to examples the model did not train on.",
+    "Overfitting appears when training keeps improving while validation gets worse.",
+  ]}
+  checks={[
+    "Can you explain why low training loss alone is not enough evidence?",
+    "Can you tell underfitting, useful fitting, and overfitting apart from a curve?",
+  ]}
+  nextStep="Next we reuse the same numeric-representation idea for language."
+  trackActions={{
+    conceptual:
+      "Use the phrase 'practice data versus reality check data' to explain training and validation.",
+    builder:
+      "Tune a model until you can intentionally create underfit, balanced, and overfit behavior.",
+  }}
+/>
